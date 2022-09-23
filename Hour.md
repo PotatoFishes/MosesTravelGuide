@@ -19,4 +19,5 @@ We used [Trello](https://trello.com/b/rDML3qZz/ben-bryce-jason-yi-yutai) to keep
 
 ### Gannt Diagram
 
-![Gannt](www.google.com)
+![Gantt Chart](assets/img/GChart.png)
+![Gantt Resources](assets/img/GResource.png)
