@@ -15,7 +15,7 @@ author: Yi Ding
 
 navbar-links:
   Members: "Member"
-  Analytics: "google.com" #contributions gitub page
+  Analytics: "https://github.com/PotatoFishes/MosesTravelGuide/graphs/contributors"
   UC Videos: "google.com" #Github video directory
   Documentation: "google.com" #documentation pdf
   Issue Tracking: "google.com" #Issue tracking github page
