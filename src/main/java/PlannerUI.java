@@ -89,7 +89,7 @@ public class PlannerUI
 
         menu = new JMenu("Menu");
         menuBar.add(menu);
-        menuItem = new JMenuItem("Blacklist");
+        menuItem = new JMenuItem("");
         menuItem.addActionListener(new ActionListener()
         {
             @Override
