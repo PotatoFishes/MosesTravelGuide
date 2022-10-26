@@ -2,12 +2,15 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 public class AddLineDialog extends JFrame implements ActionListener
 {
     private final DefaultTableModel parent;
     private Vector<Object> adder = new Vector<>();
+    private List<Service> Services = new ArrayList<>();
     private int index;
     private JTextField txtId, txtName, txtType, txtSDate, txtEDate, txtLoc, txtNote;
     private JButton btnOK, btnCancel, btnAddServ;
@@ -81,6 +84,13 @@ public class AddLineDialog extends JFrame implements ActionListener
         adder.add("Remove");
     }
 
+    private void addService()
+    {
+        Service adding = new Service();
+        // TODO: make Add Service Dialog
+        Services.add(adding);
+    }
+
     @Override
     public void actionPerformed(ActionEvent e)
     {
@@ -118,7 +128,7 @@ public class AddLineDialog extends JFrame implements ActionListener
         else if(clicked == btnAddServ)
         {
             this.setVisible(false);
-            // TODO: make Add Service Dialog
+            addService();
             this.setVisible(true);
         }
     }
