@@ -3,8 +3,6 @@ public class User
     String name = "";
     String passwd = "";
 
-
-
     @Override
     public boolean equals(Object o)
     {

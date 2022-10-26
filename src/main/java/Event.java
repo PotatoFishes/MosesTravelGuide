@@ -1,48 +1,103 @@
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Comparator;
 import java.util.Date;
 
-public class Event implements Comparator<Event>
+public class Event
 {
-    Calendar start = Calendar.getInstance();
-    Calendar end = Calendar.getInstance();
-    SimpleDateFormat sdf = new SimpleDateFormat("mm/dd/yyyy hh:mm:ss a");
-
-    String note = "";
-    String name = "";
-
-    public void setStart(String d) throws ParseException
+    SimpleDateFormat sdf =
+            new SimpleDateFormat("MM/dd/YYYY hh:mm:ss a");
+    static int ID = 0;
+    String name;
+    int type;
+    Date sDate;
+    Date eDate;
+    String loc;
+    String note;
+    Event()
     {
-        start.setTime(sdf.parse(d));
+        ID = 0;
+        name = "Name";
+        type = 0;
+        sDate = new Date();
+        eDate = new Date();
+        loc = "";
+        note = "";
     }
-    public Date getStart()
+    Event(int id, String na, int t, String sD, String eD, String l, String n) throws ParseException
     {
-        return start.getTime();
+        ID = id;
+        name = na;
+        type = t;
+        sDate = new Date();
+        sDate = sdf.parse(sD);
+        eDate = new Date();
+        eDate = sdf.parse(eD);
+        loc = l;
+        note = n;
     }
 
-    public void setEnd(String d)throws ParseException
+    public int getID()
     {
-        end.setTime(sdf.parse(d));
+        return ID;
     }
-    public Date getEnd()
+    public String getName()
     {
-        return end.getTime();
+        return name;
+    }
+    public int getType()
+    {
+        return type;
+    }
+    public String getStartDate()
+    {
+        return sDate.toString();
+    }
+    public String getEndDate()
+    {
+        return eDate.toString();
+    }
+    public String getLocation()
+    {
+        return loc;
+    }
+    public String getNote()
+    {
+        return note;
     }
 
-    public void setNote(String n)
+    public void setName(String s)
+    {
+        name = s;
+    }
+    public void setID(int i)
+    {
+        ID = i;
+    }
+    public void setType(int t)
+    {
+        type = t;
+    }
+    public void setStartDate(String sD) throws ParseException
+    {
+        sDate = sdf.parse(sD);
+    }
+    public void setEndDate(String eD) throws ParseException
+    {
+        eDate = sdf.parse(eD);
+    }
+    public void setLocation(String l)
+    {
+        loc = l;
+    }
+    public void settNote(String n)
     {
         note = n;
     }
 
-    public int compareTo(Event p2)
+    public Object[] toArray()
     {
-        return this.name.compareTo(p2.name);
+        Object[] ev = new Object[]{sDate.toString(), eDate.toString(), name , note,"Edit", "Remove"};
+        return ev;
     }
 
-    @Override
-    public int compare(Event o1, Event o2) {
-        return 0;
-    }
 }
