@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2022-08-28" view-index="0" gantt-divider-location="366" resource-divider-location="300" version="3.2.3247" locale="en_US">
+    <description/>
+    <view zooming-state="default:6" id="gantt-chart">
+        <field id="tpd3" name="Name" width="197" order="0"/>
+        <field id="tpd4" name="Begin date" width="77" order="1"/>
+        <field id="tpd5" name="End date" width="76" order="2"/>
+        <option id="filter.completedTasks" value="false"/>
+    </view>
+    <view id="resource-table">
+        <field id="0" name="Name" width="210" order="0"/>
+        <field id="1" name="Default role" width="86" order="1"/>
+    </view>
+    <!-- -->
+    <calendars>
+        <day-types>
+            <day-type id="0"/>
+            <day-type id="1"/>
+            <default-week id="1" name="default" sun="1" mon="0" tue="0" wed="0" thu="0" fri="0" sat="1"/>
+            <only-show-weekends value="false"/>
+            <overriden-day-types/>
+            <days/>
+        </day-types>
+    </calendars>
+    <tasks empty-milestones="true">
+        <taskproperties>
+            <taskproperty id="tpd0" name="type" type="default" valuetype="icon"/>
+            <taskproperty id="tpd1" name="priority" type="default" valuetype="icon"/>
+            <taskproperty id="tpd2" name="info" type="default" valuetype="icon"/>
+            <taskproperty id="tpd3" name="name" type="default" valuetype="text"/>
+            <taskproperty id="tpd4" name="begindate" type="default" valuetype="date"/>
+            <taskproperty id="tpd5" name="enddate" type="default" valuetype="date"/>
+            <taskproperty id="tpd6" name="duration" type="default" valuetype="int"/>
+            <taskproperty id="tpd7" name="completion" type="default" valuetype="int"/>
+            <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
+            <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
+        </taskproperties>
+        <task id="0" name="Analysis" color="#8cb6ce" meeting="false" start="2022-08-22" duration="30" complete="0" thirdDate="2022-01-18" thirdDate-constraint="0" expand="true">
+            <depend id="4" type="2" difference="0" hardness="Strong"/>
+            <task id="9" name="project vision" color="#8cb6ce" meeting="false" start="2022-08-22" duration="4" complete="0" thirdDate="2022-02-14" thirdDate-constraint="0" expand="true"/>
+            <task id="10" name="team assembly" color="#8cb6ce" meeting="false" start="2022-08-26" duration="4" complete="0" thirdDate="2022-02-14" thirdDate-constraint="0" expand="true"/>
+            <task id="12" name="infrastructure initialization" color="#8cb6ce" meeting="false" start="2022-09-01" duration="4" complete="0" thirdDate="2022-02-14" thirdDate-constraint="0" expand="true"/>
+            <task id="15" name="requirements analysis" color="#8cb6ce" meeting="false" start="2022-09-07" duration="1" complete="0" thirdDate="2022-02-14" thirdDate-constraint="0" expand="true"/>
+            <task id="19" name="traceability matrix" color="#8cb6ce" meeting="false" start="2022-09-08" duration="1" complete="0" thirdDate="2022-02-14" thirdDate-constraint="0" expand="true"/>
+            <task id="17" name="use cases" color="#8cb6ce" meeting="false" start="2022-09-08" duration="3" complete="0" thirdDate="2022-02-14" thirdDate-constraint="0" expand="true"/>
+            <task id="21" name="system sequence diagrams" color="#8cb6ce" meeting="false" start="2022-09-08" duration="5" complete="0" thirdDate="2022-02-14" thirdDate-constraint="0" expand="true"/>
+            <task id="34" name="system operations" color="#8cb6ce" meeting="false" start="2022-09-12" duration="4" complete="0" thirdDate="2022-01-10" thirdDate-constraint="0" expand="true"/>
+            <task id="37" name="wireframes" color="#8cb6ce" meeting="false" start="2022-09-15" duration="3" complete="0" thirdDate="2022-01-10" thirdDate-constraint="0" expand="true"/>
+            <task id="39" name="domain model" color="#8cb6ce" meeting="false" start="2022-09-16" duration="4" complete="0" thirdDate="2022-01-10" thirdDate-constraint="0" expand="true"/>
+            <task id="42" name="presentation and reporting" color="#8cb6ce" meeting="false" start="2022-09-26" duration="5" complete="0" thirdDate="2022-01-10" thirdDate-constraint="0" expand="true"/>
+        </task>
+        <task id="4" name="Design" color="#8cb6ce" meeting="false" start="2022-10-03" duration="19" complete="0" thirdDate="2022-01-18" thirdDate-constraint="0" expand="true">
+            <task id="44" name="design model" color="#8cb6ce" meeting="false" start="2022-10-03" duration="2" complete="0" thirdDate="2022-01-10" thirdDate-constraint="0" expand="true"/>
+            <task id="47" name="sequence diagrams" color="#8cb6ce" meeting="false" start="2022-10-18" duration="4" complete="0" thirdDate="2022-01-10" thirdDate-constraint="0" expand="true"/>
+            <task id="50" name="package diagrams" color="#8cb6ce" meeting="false" start="2022-10-19" duration="3" complete="0" thirdDate="2022-01-10" thirdDate-constraint="0" expand="true"/>
+            <task id="54" name="GRAPS patterns" color="#8cb6ce" meeting="false" start="2022-10-25" duration="3" complete="0" thirdDate="2022-02-21" thirdDate-constraint="0" expand="true"/>
+            <task id="56" name="test coverage" color="#8cb6ce" meeting="false" start="2022-10-07" duration="4" complete="0" thirdDate="2022-03-07" thirdDate-constraint="0" expand="true"/>
+            <task id="59" name="prototyping" color="#8cb6ce" meeting="false" start="2022-10-05" duration="6" complete="0" thirdDate="2022-03-07" thirdDate-constraint="0" expand="true"/>
+            <task id="63" name="presentation and reporting" color="#8cb6ce" meeting="false" start="2022-10-26" duration="2" complete="0" thirdDate="2022-03-07" thirdDate-constraint="0" expand="true"/>
+        </task>
+        <task id="6" name="Implementation" color="#8cb6ce" meeting="false" start="2022-11-02" duration="16" complete="0" thirdDate="2022-01-18" thirdDate-constraint="0" expand="true">
+            <task id="68" name="backend" color="#8cb6ce" meeting="false" start="2022-11-02" duration="3" complete="0" thirdDate="2022-03-07" thirdDate-constraint="0" expand="true"/>
+            <task id="72" name="user interface" color="#8cb6ce" meeting="false" start="2022-11-02" duration="4" complete="0" thirdDate="2022-05-02" thirdDate-constraint="0" expand="true"/>
+            <task id="77" name="user input validation" color="#8cb6ce" meeting="false" start="2022-11-08" duration="3" complete="0" thirdDate="2022-05-02" thirdDate-constraint="0" expand="true"/>
+            <task id="79" name="Import/export" color="#8cb6ce" meeting="false" start="2022-11-11" duration="2" complete="0" thirdDate="2022-05-02" thirdDate-constraint="0" expand="true"/>
+            <task id="81" name="unit-testing" color="#8cb6ce" meeting="false" start="2022-11-16" duration="2" complete="0" thirdDate="2022-05-16" thirdDate-constraint="0" expand="true"/>
+            <task id="86" name="documentation" color="#8cb6ce" meeting="false" start="2022-11-18" duration="2" complete="0" thirdDate="2022-05-02" thirdDate-constraint="0" expand="true"/>
+            <task id="90" name="presentation and reporting" color="#8cb6ce" meeting="false" start="2022-11-23" duration="1" complete="0" thirdDate="2022-04-11" thirdDate-constraint="0" expand="true"/>
+        </task>
+    </tasks>
+    <resources>
+        <resource id="0" name="Analyst" function="1" contacts="" phone=""/>
+        <resource id="1" name="Developer" function="2" contacts="" phone=""/>
+        <resource id="2" name="Tester" function="3" contacts="" phone=""/>
+        <resource id="3" name="Team Lead" function="4" contacts="" phone=""/>
+    </resources>
+    <allocations>
+        <allocation task-id="0" resource-id="0" function="1" responsible="true" load="100.0"/>
+        <allocation task-id="4" resource-id="1" function="2" responsible="true" load="100.0"/>
+        <allocation task-id="6" resource-id="2" function="3" responsible="true" load="100.0"/>
+        <allocation task-id="0" resource-id="3" function="4" responsible="true" load="100.0"/>
+        <allocation task-id="4" resource-id="3" function="4" responsible="true" load="100.0"/>
+        <allocation task-id="6" resource-id="3" function="4" responsible="true" load="100.0"/>
+    </allocations>
+    <vacations/>
+    <previous/>
+    <roles roleset-name="Default"/>
+    <roles>
+        <role id="1" name="Analyst"/>
+        <role id="2" name="Developer"/>
+        <role id="3" name="Tester"/>
+        <role id="4" name="Team Lead"/>
+    </roles>
+</project>
