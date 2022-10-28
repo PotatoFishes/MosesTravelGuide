@@ -24,7 +24,7 @@ public class Planner extends JPanel {
     private int REMOVECELL = 5;
 
     private String[] columnNames = {
-            "Start Time", "End Time", "Name", "Note", "Edit", "Remove"
+            "Start Time", "End Time", "Name", "Note", " . . . ", " X "
     };
     private Object[][] data = {};
 
@@ -34,7 +34,7 @@ public class Planner extends JPanel {
 
         //Create a table with a sorter.
         final Class<?>[] columnClass = new Class[]{
-                String.class,String.class,String.class,String.class,String.class,String.class,
+                String.class,String.class,String.class,String.class,String.class,String.class
         };
         final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
             @Override
@@ -95,6 +95,27 @@ public class Planner extends JPanel {
             }
         };
         ButtonColumn colButEditor = new ButtonColumn(table, editor, EDITCELL);
+
+        // Settings (for notifications and stuff)
+        JButton settings = new JButton("Settings");
+        settings.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                SwingUtilities.invokeLater(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        setVisible(false);
+                        // TODO: make Settings
+                        //new SettingsDialog();
+                        setVisible(true);
+                    }
+                });
+            }
+        });
 
         //Dialog Button to add new events
         JButton eventButton = new JButton("Add Event");
