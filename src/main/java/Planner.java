@@ -108,12 +108,14 @@ public class Planner extends JPanel {
                     @Override
                     public void run()
                     {
-                        setVisible(false);
+                        //setVisible(false);
                         // TODO: fix the code for AddLineDialog
-                        Event temp = new Event();
-                        model.insertRow(0, temp.toArray());
-                        new AddLineDialog(0, model).setVisible(true);
-                        setVisible(true);
+                        //Event temp = new Event();
+                        //model.insertRow(0, temp.toArray());
+                        //new AddLineDialog(0, model).setVisible(true);
+                        //setVisible(true);
+                        AddEvent addEvent = new AddEvent(table);
+                        addEvent.show();
                     }
                 });
             }
@@ -132,12 +134,14 @@ public class Planner extends JPanel {
                     @Override
                     public void run()
                     {
-                        setVisible(false);
+                        //setVisible(false);
                         // TODO: make Add Business Dialog
-                        Event temp = new Event();
-                        model.insertRow(0, temp.toArray());
-                        new AddLineDialog(0, model).setVisible(true);
-                        setVisible(true);
+                        //Event temp = new Event();
+                        //model.insertRow(0, temp.toArray());
+                        //new AddLineDialog(0, model).setVisible(true);
+                        //setVisible(true);
+                        AddBusiness addBus = new AddBusiness(table);
+                        addBus.show();
                     }
                 });
             }

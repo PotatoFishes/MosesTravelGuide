@@ -23,15 +23,16 @@ public class Event
         loc = "";
         note = "";
     }
+    //Parse needs to be fixed
     Event(int id, String na, int t, String sD, String eD, String l, String n) throws ParseException
     {
         ID = id;
         name = na;
         type = t;
         sDate = new Date();
-        sDate = sdf.parse(sD);
+        //sDate = sdf.parse(sD);
         eDate = new Date();
-        eDate = sdf.parse(eD);
+        //eDate = sdf.parse(eD);
         loc = l;
         note = n;
     }
