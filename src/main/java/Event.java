@@ -1,11 +1,11 @@
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class Event
 {
-    SimpleDateFormat sdf =
-            new SimpleDateFormat("MM/dd/YYYY hh:mm a");
+    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY hh:mm a");
     static int ID = 0;
     String name;
     int type;
@@ -100,5 +100,4 @@ public class Event
         Object[] ev = new Object[]{sDate.toString(), eDate.toString(), loc, name , note," . . . ", " X "};
         return ev;
     }
-
 }

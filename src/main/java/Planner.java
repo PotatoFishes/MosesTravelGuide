@@ -33,6 +33,7 @@ public class Planner extends JPanel {
             "Start Time", "End Time", "Location", "Name", "Note", "Edit", "Remove"
     };
     private Object[][] data = {
+            //TODO: Event loading function
             { sdf.format(new Date()) , sdf.format(new Date()) ,"Waco, TX", "Tester" ,"This is a test value" , " . . . ", " X "}
     };
 

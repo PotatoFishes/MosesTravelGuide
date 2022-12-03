@@ -2,7 +2,9 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
@@ -14,7 +16,14 @@ public class EditDialog extends JFrame implements ActionListener
     private int index;
     private JTextField txtId, txtName, txtType, txtSDate, txtEDate, txtLoc, txtNote;
     private JButton btnOK, btnCancel, btnAddServ;
-
+    private SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY hh:mm a");
+    private String[] columnNames = {
+            "Start Time", "End Time", "Location", "Name", "Note", "Edit", "Remove"
+    };
+    private Object[][] data = {
+            //TODO: Service loading functions
+            { sdf.format(new Date()) , sdf.format(new Date()) ,"Waco, TX", "Tester" ,"This is a test value" , " . . . ", " X "}
+    };
     EditDialog(final int ndx, final DefaultTableModel model)
     {
         super("Edit Event");
