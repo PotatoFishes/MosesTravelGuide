@@ -1,4 +1,3 @@
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -6,30 +5,30 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
-public class Login extends JPanel implements PropertyChangeListener{
-    private JPanel loginForm;
-    private JLabel Label;
-    public JFrame mainFrame = new JFrame("Login");
+public class NewAccount extends JPanel implements PropertyChangeListener{
+    public JFrame mainFrame = new JFrame("Register");
 	private String userName = "";
 	private String password = "";
+	private String passwordR = "";
 	private JLabel userNameLabel;
 	private JLabel passwordLabel;
+	private JLabel passwordLabelR;
 	private static String colUserName = "Enter username: ";
 	private static String colPassword = "Enter password: ";
+	private static String colPasswordR = "Re-enter password: ";
 	private JFormattedTextField userNameField;
 	private JFormattedTextField passwordField;
-    
-    public Login() {
-    	super();
-    	//setLayout(new GroupLayout(this));
-    	//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-    	//setLayout(new BorderLayout());
-    	
-    	//GroupLayout layout = new GroupLayout();
-    	
-        //JFrame mainFrame = new JFrame("Login");
+	private JFormattedTextField passwordFieldR;
+	
+	public NewAccount() {
+		super();
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         this.setOpaque(true);
@@ -39,6 +38,7 @@ public class Login extends JPanel implements PropertyChangeListener{
     	
     	userNameLabel = new JLabel(colUserName);
     	passwordLabel = new JLabel(colPassword);
+    	passwordLabelR = new JLabel(colPasswordR);
     	
     	userNameField = new JFormattedTextField();
     	userNameField.setValue(new String(userName));
@@ -50,11 +50,17 @@ public class Login extends JPanel implements PropertyChangeListener{
 		passwordField.setColumns(20);
 		passwordField.addPropertyChangeListener("value", this);
 		
+    	passwordFieldR = new JFormattedTextField();
+    	passwordFieldR.setValue(new String(passwordR));
+		passwordFieldR.setColumns(20);
+		passwordFieldR.addPropertyChangeListener("value", this);
+		
 		userNameLabel.setLabelFor(userNameField);
 		passwordLabel.setLabelFor(passwordField);
+		passwordLabelR.setLabelFor(passwordFieldR);
 		
-		JButton loginButton = new JButton("Login");
-		loginButton.addActionListener(new ActionListener() {
+		JButton submitButton = new JButton("Submit");
+		submitButton.addActionListener(new ActionListener() {
 	     	@Override
         	public void actionPerformed(ActionEvent e) {
 	     		mainFrame.dispose();
@@ -68,73 +74,45 @@ public class Login extends JPanel implements PropertyChangeListener{
 	     	}
 		});
 		
-		JButton newButton = new JButton("New Account");
-		newButton.addActionListener(new ActionListener() {
-	     	@Override
-        	public void actionPerformed(ActionEvent e) {
-	     		mainFrame.dispose();
-        		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-        			@Override
-        			public void run() {
-        				NewAccount account = new NewAccount();
-        			}
-        		});
-	     	}
-		});
-		
 		JPanel buttonPane = new JPanel(new GridLayout(0,1));
-		buttonPane.add(loginButton);
-		buttonPane.add(newButton);
+		//buttonPane.add(submitButton);
 		
 		JPanel labelPane = new JPanel(new GridLayout(0,1));
 		labelPane.add(userNameLabel);
 		labelPane.add(passwordLabel);
+		labelPane.add(passwordLabelR);
 		
 		JPanel fieldPane = new JPanel(new GridLayout(0,1));
 		fieldPane.add(userNameField);
 		fieldPane.add(passwordField);
-		
-		//add(labelPane, BorderLayout.CENTER);
-		//add(fieldPane, BorderLayout.LINE_END);
-		//add(buttonPane, BorderLayout.PAGE_END);
+		fieldPane.add(passwordFieldR);
+		//fieldPane.add(submitButton);
 		
 		mainFrame.add(labelPane);
 		mainFrame.add(fieldPane);
 		mainFrame.add(buttonPane);
+		mainFrame.add(submitButton);
 		
         mainFrame.pack();
         mainFrame.setVisible(true);
-    }
-
-    private static void createUIComponents() {
-        //JFrame frame = new JFrame("Login");
-        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        /*Login home = new Login();
-        home.setOpaque(true);
-        frame.setContentPane(home);
-        
-        frame.pack();
-        frame.setVisible(true);*/
-    	
-        //JFrame mainFrame = new JFrame("Login");
-        //mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        Login home = new Login();
-        
-    }
-    
-	@Override
-	public void propertyChange(PropertyChangeEvent e) {
-		Object source = e.getSource();
 	}
-    
+    private static void createAndShowGUI() {
+		NewAccount home = new NewAccount();
+    }
+	
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		// TODO Auto-generated method stub
+	}
+	
     public static void main(String[] args) {
         //Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                createUIComponents();
+        SwingUtilities.invokeLater(new Runnable()
+        {
+            public void run()
+            {
+                createAndShowGUI();
             }
         });
     }
