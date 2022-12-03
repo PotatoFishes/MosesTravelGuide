@@ -120,7 +120,6 @@ public class Login extends JPanel implements PropertyChangeListener{
         //mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         Login home = new Login();
-        
     }
     
 	@Override
