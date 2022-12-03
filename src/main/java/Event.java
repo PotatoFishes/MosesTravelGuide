@@ -1,6 +1,8 @@
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Event
 {
@@ -13,6 +15,8 @@ public class Event
     Date eDate;
     String loc;
     String note;
+    Set<Service> usedServices;
+    
     Event()
     {
         ID = 0;
@@ -22,6 +26,7 @@ public class Event
         eDate = new Date();
         loc = "";
         note = "";
+        usedServices = new HashSet<Service>();
     }
     //Parse needs to be fixed
     Event(int id, String na, int t, String sD, String eD, String l, String n) throws ParseException
@@ -35,6 +40,7 @@ public class Event
         //eDate = sdf.parse(eD);
         loc = l;
         note = n;
+        usedServices = new HashSet<Service>();
     }
 
     public int getID()
@@ -100,5 +106,7 @@ public class Event
         Object[] ev = new Object[]{sDate.toString(), eDate.toString(), name , note,"Edit", "Remove"};
         return ev;
     }
-
+    public void addService(Service s) {
+    	usedServices.add(s);
+    }
 }
