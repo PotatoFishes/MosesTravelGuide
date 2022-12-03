@@ -6,15 +6,14 @@
 			"driver": "mysql8",
 			"name": "mosestravel.cljarowffwyg.us-east-2.rds.amazonaws.c",
 			"save-password": true,
-			"virtual-model-id": "mysql8-184c9652d46-6cef4f3f9412e397",
+			"show-system-objects": true,
 			"configuration": {
 				"host": "mosestravel.cljarowffwyg.us-east-2.rds.amazonaws.com",
 				"port": "3306",
 				"url": "jdbc:mysql://mosestravel.cljarowffwyg.us-east-2.rds.amazonaws.com:3306/",
 				"home": "mysql_client",
 				"type": "dev",
-				"auth-model": "native",
-				"handlers": {}
+				"auth-model": "native"
 			}
 		}
 	},
