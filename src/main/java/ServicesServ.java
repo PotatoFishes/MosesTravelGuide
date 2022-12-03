@@ -10,4 +10,10 @@ public class ServicesServ {
 	public void unbook(Service s) {
 		
 	}
+	public void addService(Service s) {
+		
+	}
+	public void removeService(Service s) {
+		
+	}
 }
