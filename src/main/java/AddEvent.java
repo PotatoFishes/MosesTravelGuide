@@ -5,7 +5,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.sql.Timestamp;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -104,13 +107,14 @@ public class AddEvent extends JDialog implements PropertyChangeListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					Event temp = new Event(ID, Name, Type, SDate, EDate, Loc, Note);
+					//List<Service> temp = new ArrayList<Service>();
+					Timestamp timestamp = null;
+					Timestamp timestamp2 = null;
+					
+					Event temp = new Event(ID, Name, timestamp, timestamp2, Loc, Note, "temp", 1);
 					((DefaultTableModel)table.getModel()).insertRow(0, temp.toArray());
 					dispose();
 				} catch (NumberFormatException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (ParseException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}

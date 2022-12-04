@@ -98,7 +98,7 @@ public class NewAccount extends JPanel implements PropertyChangeListener{
 		     				//create user here
 		     				User user = new User();
 		     				user.setUsername(userName);
-		     				userDAO.addUser(user);
+		     				//userDAO.addUser(user);
 		     				
 				     		mainFrame.dispose();
 			        		javax.swing.SwingUtilities.invokeLater(new Runnable() {
