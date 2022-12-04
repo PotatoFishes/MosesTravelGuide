@@ -108,7 +108,7 @@ public class Event
     public String getUsedServices() {
     	List<String> l=new ArrayList<String>();
     	String us=null;
-    	if(usedServices.isEmpty())
+    	if(!usedServices.isEmpty())
     	{
     		for(Service s:usedServices)
     			l.add(""+s.getID());

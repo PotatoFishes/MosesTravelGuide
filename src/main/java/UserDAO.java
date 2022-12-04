@@ -16,18 +16,13 @@ public class UserDAO {
 		User u=null;
 		try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
 				Statement stmt = conn.createStatement();){
-				ResultSet rs = stmt.executeQuery("SELECT password, location, email FROM Users WHERE username='"+un+'"');
+				ResultSet rs = stmt.executeQuery("SELECT ID, username, password, location, email, friends FROM Users WHERE username='"+un+"'");
 				// Extract data from result set
 				if (rs.next()) {
 					// Retrieve by column name
 					if(rs.getString("password").equals(pass))
 					{
-						u=new User();
-						User.id=rs.getInt("ID");
-						u.setUsername(rs.getString("username"));
-						u.setPassword(rs.getString("password"));
-						u.setLocation(rs.getString("location"));
-						u.setEmail(rs.getString("email"));
+						u=new User(rs.getInt("ID"),rs.getString("username"),rs.getString("password"),rs.getString("location"),rs.getString("email"),rs.getString("friends"));
 						return u;
 					}
 				}
@@ -63,7 +58,7 @@ public class UserDAO {
 		         // Extract data from result set
 		         if (rs.next()) {
 		            // Retrieve by column name
-		        	stmt.executeUpdate("DELETE from Event WHERE username="+e.getUsername());
+		        	stmt.executeUpdate("DELETE from Users WHERE username="+e.getUsername());
 		         }
 		      } catch (SQLException ex) {
 		         ex.printStackTrace();
