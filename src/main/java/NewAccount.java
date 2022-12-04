@@ -14,18 +14,28 @@ import javax.swing.SwingUtilities;
 
 public class NewAccount extends JPanel implements PropertyChangeListener{
     public JFrame mainFrame = new JFrame("Register");
+    private UserDAO userDAO = new UserDAO();
+    
 	private String userName = "";
 	private String password = "";
 	private String passwordR = "";
+	private String email = "";
+	private String location = "";
 	private JLabel userNameLabel;
 	private JLabel passwordLabel;
 	private JLabel passwordLabelR;
+	private JLabel emailLabel;
+	private JLabel locationLabel;
 	private static String colUserName = "Enter username: ";
 	private static String colPassword = "Enter password: ";
 	private static String colPasswordR = "Re-enter password: ";
+	private static String colEmail = "Enter email: ";
+	private static String colLocation = "Enter location: ";
 	private JFormattedTextField userNameField;
 	private JFormattedTextField passwordField;
 	private JFormattedTextField passwordFieldR;
+	private JFormattedTextField emailField;
+	private JFormattedTextField locationField;
 	
 	public NewAccount() {
 		super();
@@ -39,6 +49,8 @@ public class NewAccount extends JPanel implements PropertyChangeListener{
     	userNameLabel = new JLabel(colUserName);
     	passwordLabel = new JLabel(colPassword);
     	passwordLabelR = new JLabel(colPasswordR);
+    	emailLabel = new JLabel(colEmail);
+    	locationLabel = new JLabel(colLocation);
     	
     	userNameField = new JFormattedTextField();
     	userNameField.setValue(new String(userName));
@@ -55,42 +67,73 @@ public class NewAccount extends JPanel implements PropertyChangeListener{
 		passwordFieldR.setColumns(20);
 		passwordFieldR.addPropertyChangeListener("value", this);
 		
+    	emailField = new JFormattedTextField();
+    	emailField.setValue(new String(email));
+    	emailField.setColumns(20);
+    	emailField.addPropertyChangeListener("value", this);
+    	
+    	locationField = new JFormattedTextField();
+    	locationField.setValue(new String(location));
+    	locationField.setColumns(20);
+    	locationField.addPropertyChangeListener("value", this);
+		
 		userNameLabel.setLabelFor(userNameField);
 		passwordLabel.setLabelFor(passwordField);
 		passwordLabelR.setLabelFor(passwordFieldR);
+		emailLabel.setLabelFor(emailField);
+		locationLabel.setLabelFor(locationField);
+		
+		User user = new User();
+		user.setUsername("Bob");
+		user.setPassword("1234");
+		userDAO.addUser(user);
 		
 		JButton submitButton = new JButton("Submit");
 		submitButton.addActionListener(new ActionListener() {
 	     	@Override
         	public void actionPerformed(ActionEvent e) {
-	     		mainFrame.dispose();
-        		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-        			@Override
-        			public void run() {
-        				Planner planner = new Planner();
-        				planner.main(null);
-        			}
-        		});
+	     		if(!userName.equals("") && !password.equals("") && !email.equals("") && !location.equals("")) {
+	     			if(password.equals(passwordR)) {
+	     				if(!userDAO.nameExists(userName.toLowerCase())) {
+		     				//create user here
+		     				User user = new User();
+		     				user.setUsername(userName);
+		     				userDAO.addUser(user);
+		     				
+				     		mainFrame.dispose();
+			        		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			        			@Override
+			        			public void run() {
+			        				Planner planner = new Planner();
+			        				planner.main(null);
+			        			}
+			        		});
+	     				}
+	     				else {
+	     					userName = "";
+	     			    	userNameField.setValue(new String(userName));
+	     				}
+	     			}
+	     		}
 	     	}
 		});
 		
-		JPanel buttonPane = new JPanel(new GridLayout(0,1));
-		//buttonPane.add(submitButton);
-		
 		JPanel labelPane = new JPanel(new GridLayout(0,1));
+		labelPane.add(emailLabel);
+		labelPane.add(locationLabel);
 		labelPane.add(userNameLabel);
 		labelPane.add(passwordLabel);
 		labelPane.add(passwordLabelR);
 		
 		JPanel fieldPane = new JPanel(new GridLayout(0,1));
+		fieldPane.add(emailField);
+		fieldPane.add(locationField);
 		fieldPane.add(userNameField);
 		fieldPane.add(passwordField);
 		fieldPane.add(passwordFieldR);
-		//fieldPane.add(submitButton);
 		
 		mainFrame.add(labelPane);
 		mainFrame.add(fieldPane);
-		mainFrame.add(buttonPane);
 		mainFrame.add(submitButton);
 		
         mainFrame.pack();
@@ -101,8 +144,24 @@ public class NewAccount extends JPanel implements PropertyChangeListener{
     }
 	
 	@Override
-	public void propertyChange(PropertyChangeEvent evt) {
-		// TODO Auto-generated method stub
+	public void propertyChange(PropertyChangeEvent e) {
+		Object source = e.getSource();
+		
+		if(source == userNameField) {
+			userName = userNameField.getValue().toString();
+		}
+		else if(source == passwordField) {
+			password = passwordField.getValue().toString();
+		}
+		else if(source == passwordFieldR) {
+			passwordR = passwordFieldR.getValue().toString();
+		}
+		else if(source == emailField) {
+			email = emailField.getValue().toString();
+		}
+		else if(source == locationField) {
+			location = locationField.getValue().toString();
+		}
 	}
 	
     public static void main(String[] args) {
