@@ -60,7 +60,7 @@ public class Login extends JPanel implements PropertyChangeListener{
 	     	@Override
         	public void actionPerformed(ActionEvent e) {
 	     		//check if username and password are valid
-	     		if(userDAO.nameExists(userName.toLowerCase()) && userDAO.passwordExists(password)) {
+	     		//if(userDAO.nameExists(userName.toLowerCase()) && userDAO.passwordExists(password)) {
 		     		
 		     		mainFrame.dispose();
 	        		javax.swing.SwingUtilities.invokeLater(new Runnable() {
@@ -70,7 +70,7 @@ public class Login extends JPanel implements PropertyChangeListener{
 	        				planner.main(null);
 	        			}
 	        		});
-	     		}
+	     		//}
 	     	}
 		});
 		

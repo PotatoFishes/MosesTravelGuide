@@ -129,14 +129,26 @@ public class Planner extends JPanel {
                     @Override
                     public void run()
                     {
-                        //setVisible(false);
-                        // TODO: fix the code for AddLineDialog
-                        //Event temp = new Event();
-                        //model.insertRow(0, temp.toArray());
-                        //new AddLineDialog(0, model).setVisible(true);
-                        //setVisible(true);
                         AddEvent addEvent = new AddEvent(table);
                         addEvent.show();
+                    }
+                });
+            }
+        });
+        
+        JButton manageButton = new JButton("Manage Events");
+        manageButton.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                SwingUtilities.invokeLater(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        ManageEvents manageEvent = new ManageEvents(table);
+                        manageEvent.show();
                     }
                 });
             }
@@ -240,6 +252,7 @@ public class Planner extends JPanel {
         // Buttons Setup
         form.add(settings);
         form.add(eventButton);
+        form.add(manageButton);
         form.add(businessButton);
         form.add(pInvButton);
         form.add(eInvButton);

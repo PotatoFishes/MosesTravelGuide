@@ -86,7 +86,7 @@ public class NewAccount extends JPanel implements PropertyChangeListener{
 		User user = new User();
 		user.setUsername("Bob");
 		user.setPassword("1234");
-		userDAO.addUser(user);
+		//userDAO.addUser(user);
 		
 		JButton submitButton = new JButton("Submit");
 		submitButton.addActionListener(new ActionListener() {
@@ -94,7 +94,7 @@ public class NewAccount extends JPanel implements PropertyChangeListener{
         	public void actionPerformed(ActionEvent e) {
 	     		if(!userName.equals("") && !password.equals("") && !email.equals("") && !location.equals("")) {
 	     			if(password.equals(passwordR)) {
-	     				if(!userDAO.nameExists(userName.toLowerCase())) {
+	     				//if(!userDAO.nameExists(userName.toLowerCase())) {
 		     				//create user here
 		     				User user = new User();
 		     				user.setUsername(userName);
@@ -108,11 +108,11 @@ public class NewAccount extends JPanel implements PropertyChangeListener{
 			        				planner.main(null);
 			        			}
 			        		});
-	     				}
-	     				else {
-	     					userName = "";
-	     			    	userNameField.setValue(new String(userName));
-	     				}
+	     				//}
+	     				//else {
+	     					//userName = "";
+	     			    	//userNameField.setValue(new String(userName));
+	     				//}
 	     			}
 	     		}
 	     	}
