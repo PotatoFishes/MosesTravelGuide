@@ -1,3 +1,4 @@
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -6,10 +7,10 @@ import java.util.Date;
 public class Service
 {
     private static final SimpleDateFormat sdf =
-            new SimpleDateFormat("MM/dd/YYYY hh:mm:ss a");
+            new SimpleDateFormat("YYYY-MM-dd hh:mm:ss");
     private static final DecimalFormat df = new DecimalFormat("0.00");
     static int ID = 0;
-    float price;
+    double price;
     String name;
     Date sDate;
     Date eDate;
@@ -24,14 +25,12 @@ public class Service
         eDate = new Date();
         capacity = 0;
     }
-    Service(int id, String na, float p, String sD, String eD, int cap) throws ParseException {
+    Service(int id, String na, double p, Timestamp sD, Timestamp eD, int cap) {
         ID = id;
         name = na;
         price = p;
-        sDate = new Date();
-        sDate = sdf.parse(sD);
-        eDate = new Date();
-        eDate = sdf.parse(eD);
+        sDate = new Date(sD.getTime());
+        eDate = new Date(eD.getTime());
         capacity = cap;
     }
 

@@ -1,45 +1,48 @@
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 public class Event
 {
-    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY hh:mm a");
+    SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd hh:mm:ss");
     static int ID = 0;
     String name;
-    int type;
     Date sDate;
     Date eDate;
     String loc;
     String note;
-    Set<Service> usedServices;
+    List<Service> usedServices;
     
     Event()
     {
         ID = 0;
         name = "Name";
-        type = 0;
         sDate = new Date();
         eDate = new Date();
         loc = "";
         note = "";
-        usedServices = new HashSet<Service>();
+        usedServices = new ArrayList<Service>();
     }
     //Parse needs to be fixed
-    Event(int id, String na, int t, String sD, String eD, String l, String n) throws ParseException
+    Event(int id, String na, Timestamp timestamp, Timestamp timestamp2, String l, String n, String sl)
     {
         ID = id;
         name = na;
-        type = t;
         sDate = new Date();
         //sDate = sdf.parse(sD);
         eDate = new Date();
         //eDate = sdf.parse(eD);
         loc = l;
         note = n;
-        usedServices = new HashSet<Service>();
+        String[] r=sl.split(",");
+        int[] arr=new int[r.length];
+        for (int i = 0; i<r.length; i++) {
+            arr[i] = Integer.valueOf(r[i]);
+        }
+        usedServices=ServiceDAOImp.getServices(arr);
     }
 
     public int getID()
@@ -49,10 +52,6 @@ public class Event
     public String getName()
     {
         return name;
-    }
-    public int getType()
-    {
-        return type;
     }
     public String getStartDate()
     {
@@ -78,10 +77,6 @@ public class Event
     public void setID(int i)
     {
         ID = i;
-    }
-    public void setType(int t)
-    {
-        type = t;
     }
     public void setStartDate(String sD) throws ParseException
     {
