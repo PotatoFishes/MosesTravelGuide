@@ -1,3 +1,4 @@
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -5,16 +6,22 @@ import java.util.Date;
 
 public class Service
 {
-    private static final SimpleDateFormat sdf =
-            new SimpleDateFormat("MM/dd/YYYY hh:mm:ss a");
+    @Override
+	public String toString() {
+		return "Service [price=" + price + ", name=" + name + ", sDate=" + sDate + ", eDate=" + eDate + ", bookings="
+				+ bookings + ", capacity=" + capacity + "]";
+	}
+
+	private static final SimpleDateFormat sdf =
+            new SimpleDateFormat("YYYY-MM-dd hh:mm:ss.SSS");
     private static final DecimalFormat df = new DecimalFormat("0.00");
     static int ID = 0;
-    float price;
+    double price;
     String name;
     Date sDate;
     Date eDate;
     int bookings = 0;
-    int capacity;
+    int capacity = 0;
 
     Service() {
         ID = 0;
@@ -24,14 +31,12 @@ public class Service
         eDate = new Date();
         capacity = 0;
     }
-    Service(int id, String na, float p, String sD, String eD, int cap) throws ParseException {
+    Service(int id, String na, double p, Timestamp sD, Timestamp eD, int cap) {
         ID = id;
         name = na;
         price = p;
-        sDate = new Date();
-        sDate = sdf.parse(sD);
-        eDate = new Date();
-        eDate = sdf.parse(eD);
+        sDate = new Date(sD.getTime());
+        eDate = new Date(eD.getTime());
         capacity = cap;
     }
 
@@ -45,10 +50,10 @@ public class Service
         return Float.parseFloat(df.format(price));
     }
     public String getStartDate() {
-        return sDate.toString();
+        return sdf.format(sDate);
     }
     public String getEndDate() {
-        return eDate.toString();
+        return sdf.format(eDate);
     }
     public int getCapacity() {
         return capacity;
@@ -86,7 +91,7 @@ public class Service
     public Object[] toArray()
     {
         //TODO: make a table in Event Dialog that uses this array
-        Object[] ev = new Object[]{ name , bookings , capacity, "Edit", "Remove"};
+        Object[] ev = new Object[]{ name , bookings , capacity, " . . . ", " X "};
         return ev;
     }
 

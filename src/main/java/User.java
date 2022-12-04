@@ -1,5 +1,6 @@
 public class User
 {
+	static int id;
 	private String username = "", password = "", email = "", location = "";
 	
 	public User() {

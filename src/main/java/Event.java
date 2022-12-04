@@ -1,49 +1,61 @@
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 public class Event
 {
-    SimpleDateFormat sdf =
-            new SimpleDateFormat("MM/dd/YYYY hh:mm:ss a");
+    SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd hh:mm:ss.SSS");
     static int ID = 0;
     String name;
-    int type;
     Date sDate;
     Date eDate;
     String loc;
     String note;
-    Set<Service> usedServices;
+    List<Service> usedServices = new ArrayList<Service>();
+    int userID;
     
     Event()
     {
         ID = 0;
         name = "Name";
-        type = 0;
         sDate = new Date();
         eDate = new Date();
         loc = "";
         note = "";
-        usedServices = new HashSet<Service>();
     }
     //Parse needs to be fixed
-    Event(int id, String na, int t, String sD, String eD, String l, String n) throws ParseException
+    Event(int id, String na, Timestamp timestamp, Timestamp timestamp2, String l, String n, String sl, int uid)
     {
         ID = id;
         name = na;
-        type = t;
-        sDate = new Date();
-        //sDate = sdf.parse(sD);
-        eDate = new Date();
+        sDate = new Date(timestamp.getTime());
+        eDate = new Date(timestamp2.getTime());
         //eDate = sdf.parse(eD);
         loc = l;
         note = n;
-        usedServices = new HashSet<Service>();
+        String[] r = null;
+        if(!sl.equals(""))
+        {
+        	r=sl.split(",");
+        	int[] arr=new int[r.length];
+        	for (int i = 0; i<r.length; i++) {
+        		arr[i] = Integer.valueOf(r[i]);
+        	}
+        	usedServices=ServiceDAOImp.getServices(arr);
+        }
+        userID=uid;
     }
 
-    public int getID()
+    public int getUserID() {
+		return userID;
+	}
+	public void setUserID(int userID) {
+		this.userID = userID;
+	}
+	public int getID()
     {
         return ID;
     }
@@ -51,17 +63,13 @@ public class Event
     {
         return name;
     }
-    public int getType()
-    {
-        return type;
-    }
     public String getStartDate()
     {
-        return sDate.toString();
+        return sdf.format(sDate);
     }
     public String getEndDate()
     {
-        return eDate.toString();
+        return sdf.format(eDate);
     }
     public String getLocation()
     {
@@ -80,10 +88,6 @@ public class Event
     {
         ID = i;
     }
-    public void setType(int t)
-    {
-        type = t;
-    }
     public void setStartDate(String sD) throws ParseException
     {
         sDate = sdf.parse(sD);
@@ -101,9 +105,28 @@ public class Event
         note = n;
     }
 
-    public Object[] toArray()
+    public String getUsedServices() {
+    	List<String> l=new ArrayList<String>();
+    	String us=null;
+    	if(usedServices.isEmpty())
+    	{
+    		for(Service s:usedServices)
+    			l.add(""+s.getID());
+    		us=String.join(",", l);
+    	}
+		return us;
+	}
+	@Override
+	public String toString() {
+		return "Event [id=" + ID + ", name=" + name + ", sDate=" + sDate + ", eDate=" + eDate + ", loc=" + loc
+				+ ", note=" + note + ", usedServices=" + usedServices + ", userID=" + userID + "]";
+	}
+	public void setUsedServices(List<Service> usedServices) {
+		this.usedServices = usedServices;
+	}
+	public Object[] toArray()
     {
-        Object[] ev = new Object[]{sDate.toString(), eDate.toString(), name , note,"Edit", "Remove"};
+        Object[] ev = new Object[]{sDate.toString(), eDate.toString(), loc, name , note," . . . ", " X "};
         return ev;
     }
     public void addService(Service s) {

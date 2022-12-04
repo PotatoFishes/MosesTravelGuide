@@ -9,6 +9,8 @@ import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Planner extends JPanel {
     private static JTable table;
@@ -19,14 +21,21 @@ public class Planner extends JPanel {
     private JFileChooser fileChooser = new JFileChooser();
     private JPanel form = new JPanel(new SpringLayout());
     private TableRowSorter<DefaultTableModel> sorter;
-    private int NOTES = 3;
-    private int EDITCELL = 4;
-    private int REMOVECELL = 5;
+    private int NOTES = 4;
+    private int EDITCELL = 5;
+    private int REMOVECELL = 6;
+
+    //TODO: remove these debugging/testing variables
+    private SimpleDateFormat sdf =
+            new SimpleDateFormat("MM/dd/YYYY hh:mm a");
 
     private String[] columnNames = {
-            "Start Time", "End Time", "Name", "Note", " . . . ", " X "
+            "Start Time", "End Time", "Location", "Name", "Note", "Edit", "Remove"
     };
-    private Object[][] data = {};
+    private Object[][] data = {
+            //TODO: Event loading function
+            { sdf.format(new Date()) , sdf.format(new Date()) ,"Waco, TX", "Tester" ,"This is a test value" , " . . . ", " X "}
+    };
 
     public Planner() {
         super();
@@ -34,7 +43,7 @@ public class Planner extends JPanel {
 
         //Create a table with a sorter.
         final Class<?>[] columnClass = new Class[]{
-                String.class,String.class,String.class,String.class,String.class,String.class
+                String.class,String.class,String.class,String.class,String.class,String.class, String.class
         };
         final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
             @Override
@@ -75,7 +84,7 @@ public class Planner extends JPanel {
 
                 int modelRow = Integer.valueOf(e.getActionCommand());
                 int answer = JOptionPane.showConfirmDialog(null,
-                        "Do you want to remove " + model.getValueAt(modelRow, 0)
+                        "Do you want to remove " + model.getValueAt(modelRow, 2)
                                 + " " + model.getValueAt(modelRow,  1) + "?"
                         ,"Warning"
                         ,JOptionPane.YES_NO_OPTION);
@@ -192,12 +201,18 @@ public class Planner extends JPanel {
                     @Override
                     public void run()
                     {
-                        setVisible(false);
+                        frame.setVisible(false);
                         // TODO: make Invite to Planner dialog
-                        Event temp = new Event();
-                        model.insertRow(0, temp.toArray());
-                        new AddLineDialog(0, model).setVisible(true);
-                        setVisible(true);
+                        SwingUtilities.invokeLater(new Runnable()
+                        {
+                            public void run()
+                            {
+                                Event temp = new Event();
+                                model.insertRow(0, temp.toArray());
+                                new AddLineDialog(0, model).setVisible(true);
+                            }
+                        });
+                        frame.setVisible(true);
                     }
                 });
             }
@@ -290,6 +305,8 @@ public class Planner extends JPanel {
      */
     private static void createAndShowGUI()
     {
+
+
         //Create and set up the window.
         frame = new JFrame("Planner");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -302,6 +319,11 @@ public class Planner extends JPanel {
         //Display the window.
         frame.pack();
         frame.setVisible(true);
+    }
+
+    public void showGUI()
+    {
+        createAndShowGUI();
     }
 
     public static void main(String[] args)
