@@ -8,25 +8,21 @@ import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
-public class EditDialog extends JFrame implements ActionListener
+public class AddServiceDialog extends JFrame implements ActionListener
 {
+    SimpleDateFormat sdf =
+            new SimpleDateFormat("MM/dd/YYYY hh:mm a");
     private final DefaultTableModel parent;
     private Vector<Object> adder = new Vector<>();
     private List<Service> Services = new ArrayList<>();
+    private Event newE;
     private int index;
-    private JTextField txtId, txtName, txtType, txtSDate, txtEDate, txtLoc, txtNote;
+    private JTextField txtId, txtName, txtBookings, txtSDate, txtEDate, txtPrice, txtCapacity;
     private JButton btnOK, btnCancel, btnAddServ;
-    private SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY hh:mm a");
-    private String[] columnNames = {
-            "Start Time", "End Time", "Location", "Name", "Note", "Edit", "Remove"
-    };
-    private Object[][] data = {
-            //TODO: Service loading functions
-            { sdf.format(new Date()) , sdf.format(new Date()) ,"Waco, TX", "Tester" ,"This is a test value" , " . . . ", " X "}
-    };
-    EditDialog(final int ndx, final DefaultTableModel model)
+
+    AddServiceDialog(final int ndx, final DefaultTableModel model)
     {
-        super("Edit Event");
+        super("Add Service");
         setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         parent = model;
         index = ndx;
@@ -35,17 +31,17 @@ public class EditDialog extends JFrame implements ActionListener
         txtId = new JTextField(15);
         txtId.setText("ID");
         txtName = new JTextField(15);
-        txtName.setText( "" + model.getValueAt(ndx, 3) );
-        txtType = new JTextField(15);
-        txtType.setText("Type");
-        txtSDate = new JTextField(15);
-        txtSDate.setText("" + model.getValueAt(ndx, 0));
+        txtName.setText("Name");
+        txtPrice = new JTextField(15);
+        txtPrice.setText("Price");
+        txtSDate = new JTextField(3);
+        txtSDate.setText(sdf.format(new Date()));
         txtEDate = new JTextField(15);
-        txtEDate.setText("" + model.getValueAt(ndx, 1));
-        txtLoc = new JTextField(15);
-        txtLoc.setText("" + model.getValueAt(ndx, 2));
-        txtNote = new JTextField(15);
-        txtNote.setText("Note");
+        txtEDate.setText(sdf.format(new Date()));
+        txtBookings = new JTextField(15);
+        txtBookings.setText("Bookings");
+        txtCapacity = new JTextField(15);
+        txtCapacity.setText("Capacity");
 
         //Setting Label Names
         JPanel content = new JPanel(new SpringLayout());
@@ -54,22 +50,15 @@ public class EditDialog extends JFrame implements ActionListener
         content.add(new JLabel("Name:"));
         content.add(txtName);
         content.add(new JLabel("Type:"));
-        content.add(txtType);
-        content.add(new JLabel("Start Time:"));
+        content.add(txtPrice);
+        content.add(new JLabel("Start Date:"));
         content.add(txtSDate);
-        content.add(new JLabel("End Time:"));
+        content.add(new JLabel("End Date:"));
         content.add(txtEDate);
         content.add(new JLabel("Location:"));
-        content.add(txtLoc);
+        content.add(txtBookings);
         content.add(new JLabel("Note:"));
-        content.add(txtNote);
-
-        btnOK = new JButton("Yes");
-        btnOK.addActionListener(this);
-        btnCancel = new JButton("Cancel");
-        btnCancel.addActionListener(this);
-        btnAddServ = new JButton("Add Service");
-        btnAddServ.addActionListener(this);
+        content.add(txtCapacity);
 
         //Setting Buttons
         btnOK = new JButton("Save");
@@ -98,21 +87,21 @@ public class EditDialog extends JFrame implements ActionListener
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
+    private void initAdder()
+    {
+        adder.add(txtSDate.getText());
+        adder.add(txtEDate.getText());
+        adder.add(txtBookings.getText());
+        adder.add(txtBookings.getText());
+        adder.add(" . . . ");
+        adder.add(" X ");
+    }
+
     private void addService()
     {
         Service adding = new Service();
         // TODO: make Add Service Dialog
         Services.add(adding);
-    }
-
-    private void initAdder()
-    {
-        adder.add(txtSDate.getText());
-        adder.add(txtEDate.getText());
-        adder.add(txtLoc.getText());
-        adder.add(txtNote.getText());
-        adder.add(" . . . ");
-        adder.add(" X ");
     }
 
     @Override
@@ -124,7 +113,7 @@ public class EditDialog extends JFrame implements ActionListener
             try
             {
                 Integer.parseInt(txtId.getText());
-                Integer.parseInt(txtType.getText());
+                Double.parseDouble(txtPrice.getText());
             }
             catch(NumberFormatException nfe)
             {
@@ -137,6 +126,7 @@ public class EditDialog extends JFrame implements ActionListener
                 return;
             }
             initAdder();
+
             parent.removeRow(index);
             parent.insertRow(index,adder);
             dispose();
@@ -144,14 +134,13 @@ public class EditDialog extends JFrame implements ActionListener
         }
         else if(clicked == btnCancel)
         {
+            parent.removeRow(index);
             dispose();
             return;
         }
         else if(clicked == btnAddServ)
         {
-            this.setVisible(false);
             addService();
-            this.setVisible(true);
-        }
+         }
     }
 }
