@@ -14,7 +14,7 @@ public class Service
     Date sDate;
     Date eDate;
     int bookings = 0;
-    int capacity;
+    int capacity = 0;
 
     Service() {
         ID = 0;
@@ -86,7 +86,7 @@ public class Service
     public Object[] toArray()
     {
         //TODO: make a table in Event Dialog that uses this array
-        Object[] ev = new Object[]{ name , bookings , capacity, "Edit", "Remove"};
+        Object[] ev = new Object[]{ name , bookings , capacity, " . . . ", " X "};
         return ev;
     }
 

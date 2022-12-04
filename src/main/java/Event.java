@@ -6,8 +6,7 @@ import java.util.Set;
 
 public class Event
 {
-    SimpleDateFormat sdf =
-            new SimpleDateFormat("MM/dd/YYYY hh:mm:ss a");
+    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY hh:mm a");
     static int ID = 0;
     String name;
     int type;
@@ -57,11 +56,11 @@ public class Event
     }
     public String getStartDate()
     {
-        return sDate.toString();
+        return sdf.format(sDate);
     }
     public String getEndDate()
     {
-        return eDate.toString();
+        return sdf.format(eDate);
     }
     public String getLocation()
     {
@@ -103,7 +102,7 @@ public class Event
 
     public Object[] toArray()
     {
-        Object[] ev = new Object[]{sDate.toString(), eDate.toString(), name , note,"Edit", "Remove"};
+        Object[] ev = new Object[]{sDate.toString(), eDate.toString(), loc, name , note," . . . ", " X "};
         return ev;
     }
     public void addService(Service s) {
