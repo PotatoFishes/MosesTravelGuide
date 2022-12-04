@@ -1,5 +1,10 @@
+import net.coderazzi.filters.gui.AutoChoices;
+import net.coderazzi.filters.gui.TableFilterHeader;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
@@ -10,7 +15,9 @@ import java.util.Vector;
 
 public class EditDialog extends JFrame implements ActionListener
 {
-    private final DefaultTableModel parent;
+    private static JTable table;
+    private static JFrame frame;
+    private TableRowSorter<DefaultTableModel> sorter;
     private Vector<Object> adder = new Vector<>();
     private List<Service> Services = new ArrayList<>();
     private int index;
@@ -24,12 +31,75 @@ public class EditDialog extends JFrame implements ActionListener
             //TODO: Service loading functions
             { sdf.format(new Date()) , sdf.format(new Date()) ,"Waco, TX", "Tester" ,"This is a test value" , " . . . ", " X "}
     };
-    EditDialog(final int ndx, final DefaultTableModel model)
+
+    EditDialog(final int ndx)
     {
         super("Edit Event");
         setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
-        parent = model;
-        index = ndx;
+        index = 0;
+
+        //Create a table with a sorter.
+        final Class<?>[] columnClass = new Class[]{
+                String.class,String.class,String.class,String.class,String.class,String.class, String.class
+        };
+        final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+            @Override
+            public boolean isCellEditable(int row, int col) {
+                if(col < Planner.NOTES) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+            @Override
+            public Class <?> getColumnClass(int col)
+            {
+                return columnClass[col];
+            }
+        };
+
+        // Set table dimensions
+        sorter = new TableRowSorter<DefaultTableModel>(model);
+        table = new JTable(model);
+        table.setRowSorter(sorter);
+        table.setPreferredScrollableViewportSize(new Dimension(600, getToolkit().getScreenResolution()));
+        table.setFillsViewportHeight(true);
+        table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+
+        TableFilterHeader filterHeader = new TableFilterHeader(table, AutoChoices.ENABLED);
+
+        //Create the scroll pane and add the table to it.
+        JScrollPane scrollPane = new JScrollPane(table);
+
+        //Add the scroll pane to this panel.
+        add(scrollPane);
+
+        // Remove Row button
+        Action remove = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int modelRow = Integer.valueOf(e.getActionCommand());
+                int answer = JOptionPane.showConfirmDialog(null,
+                        "Do you want to remove " + model.getValueAt(modelRow, 2)
+                                + " " + model.getValueAt(modelRow,  1) + "?"
+                        ,"Warning"
+                        ,JOptionPane.YES_NO_OPTION);
+                if(answer == JOptionPane.YES_OPTION)
+                {
+                    model.removeRow(modelRow);
+                }
+            }
+        };
+        ButtonColumn colButRemover = new ButtonColumn(table, remove, Planner.REMOVECELL);
+
+        // Edit Row button
+        Action editor = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //new EditDialog(table.getSelectedRow(),model).setVisible(true);
+            }
+        };
+        ButtonColumn colButEditor = new ButtonColumn(table, editor, Planner.EDITCELL);
 
         //Setting Input Fields' Initial Values
         txtId = new JTextField(15);
@@ -119,6 +189,7 @@ public class EditDialog extends JFrame implements ActionListener
     public void actionPerformed(ActionEvent e)
     {
         JButton clicked = (JButton) e.getSource();
+        DefaultTableModel parent = ( (DefaultTableModel)table.getModel());
         if(clicked == btnOK)
         {
             try
@@ -132,7 +203,7 @@ public class EditDialog extends JFrame implements ActionListener
                         "Incorrect Value Given"
                         ,"Error"
                         ,JOptionPane.OK_OPTION);
-                this.parent.removeRow(index);
+                parent.removeRow(index);
                 dispose();
                 return;
             }
