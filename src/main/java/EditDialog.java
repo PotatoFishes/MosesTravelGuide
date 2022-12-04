@@ -14,7 +14,7 @@ public class EditDialog extends JFrame implements ActionListener
 
     EditDialog(final int ndx, final DefaultTableModel model)
     {
-        super("Edit an Animal");
+        super("Edit an Event");
         setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
 
         parent = model;
@@ -39,7 +39,7 @@ public class EditDialog extends JFrame implements ActionListener
         txtBreed.setText((String) model.getValueAt(ndx,5));
 
         txtColor = new JTextField(15);
-        txtColor.setText((String) model.getValueAt(ndx,6));
+        //txtColor.setText((String) model.getValueAt(ndx,6));
 
         JPanel content = new JPanel(new SpringLayout());
         content.add(new JLabel("ID:"));

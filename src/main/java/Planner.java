@@ -136,7 +136,7 @@ public class Planner extends JPanel {
                         //new AddLineDialog(0, model).setVisible(true);
                         //setVisible(true);
                         AddEvent addEvent = new AddEvent(table);
-                        addEvent.show();
+                        addEvent.setVisible(true);
                     }
                 });
             }
@@ -162,7 +162,8 @@ public class Planner extends JPanel {
                         //new AddLineDialog(0, model).setVisible(true);
                         //setVisible(true);
                         AddBusiness addBus = new AddBusiness(table);
-                        addBus.show();
+                        addBus.setVisible(true);
+                        //addBus.show();
                     }
                 });
             }
@@ -226,12 +227,8 @@ public class Planner extends JPanel {
                     @Override
                     public void run()
                     {
-                        setVisible(false);
-                        // TODO: make Friends List w/ Add Friends Dialog
-                        Event temp = new Event();
-                        model.insertRow(0, temp.toArray());
-                        new AddLineDialog(0, model).setVisible(true);
-                        setVisible(true);
+                    	new FriendsManagerUI();
+                        
                     }
                 });
             }

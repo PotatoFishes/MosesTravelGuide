@@ -104,7 +104,8 @@ public class AddEvent extends JDialog implements PropertyChangeListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					Event temp = new Event(ID, Name, Type, SDate, EDate, Loc, Note);
+					EventsServ eventsServ = new EventsServ();
+					Event temp = eventsServ.createEvent(ID, Name, Type, SDate, EDate, Loc, Note);
 					((DefaultTableModel)table.getModel()).insertRow(0, temp.toArray());
 					dispose();
 				} catch (NumberFormatException e1) {
