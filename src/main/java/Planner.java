@@ -269,7 +269,7 @@ public class Planner extends JPanel {
         form.add(pInvButton);
         form.add(eInvButton);
         form.add(friendsButton);
-        SpringUtilities.makeCompactGrid(form, 6, 1, 6, 6, 6, 6);
+        SpringUtilities.makeCompactGrid(form, 7, 1, 6, 6, 6, 6);
 
         // Add Buttons to the Right of the Table
         add(form);
