@@ -1,9 +1,10 @@
 import java.util.List;
 
-public interface UserDAO {
+public class UserDAO {
 
-	public List<User> getUsers(int[] uids);
-	public User getUser(int uid);
-	public void updateUser(User e);
-	public void deleteUser(User e);
+	static final String DB_URL = "jdbc:mysql://mosestravel.cljarowffwyg.us-east-2.rds.amazonaws.com:3306/MosesTravel";
+	static final String USER = "admin";
+	static final String PASS = "HelloWorld";
+	
+	
 }

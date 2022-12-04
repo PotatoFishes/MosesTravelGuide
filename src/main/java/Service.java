@@ -6,8 +6,14 @@ import java.util.Date;
 
 public class Service
 {
-    private static final SimpleDateFormat sdf =
-            new SimpleDateFormat("YYYY-MM-dd hh:mm:ss");
+    @Override
+	public String toString() {
+		return "Service [price=" + price + ", name=" + name + ", sDate=" + sDate + ", eDate=" + eDate + ", bookings="
+				+ bookings + ", capacity=" + capacity + "]";
+	}
+
+	private static final SimpleDateFormat sdf =
+            new SimpleDateFormat("YYYY-MM-dd hh:mm:ss.SSS");
     private static final DecimalFormat df = new DecimalFormat("0.00");
     static int ID = 0;
     double price;
@@ -44,10 +50,10 @@ public class Service
         return Float.parseFloat(df.format(price));
     }
     public String getStartDate() {
-        return sDate.toString();
+        return sdf.format(sDate);
     }
     public String getEndDate() {
-        return eDate.toString();
+        return sdf.format(eDate);
     }
     public int getCapacity() {
         return capacity;
