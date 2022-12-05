@@ -289,6 +289,24 @@ public class Planner extends JPanel {
             }
         });
 
+        JButton Cart = new JButton("Cart");
+        Cart.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                SwingUtilities.invokeLater(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        new CartDialog();
+
+                    }
+                });
+            }
+        });
+
         // Buttons Setup
         form.add(settings);
         form.add(eventButton);
@@ -297,7 +315,8 @@ public class Planner extends JPanel {
         form.add(pInvButton);
         form.add(eInvButton);
         form.add(friendsButton);
-        SpringUtilities.makeCompactGrid(form, 7, 1, 6, 6, 6, 6);
+        form.add(Cart);
+        SpringUtilities.makeCompactGrid(form, 8, 1, 6, 6, 6, 6);
 
         // Add Buttons to the Right of the Table
         add(form);
