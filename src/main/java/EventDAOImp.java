@@ -73,6 +73,21 @@ public class EventDAOImp{
 		return s;
 	}
 	
+	public static String getEventByNames(String o) {
+		try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+		         Statement stmt = conn.createStatement();
+		         ResultSet rs = stmt.executeQuery("SELECT DISTINCT eventName FROM Events WHERE eventName='"+o+"'");) {
+		         // Extract data from result set
+		        	if (rs.next()) {
+		 					// Retrieve by column name
+		        		return rs.getString("eventName");
+		 			}
+		      } catch (SQLException ex) {
+		         ex.printStackTrace();
+		      } 
+		return "";
+	}
+	
 	public static String getEventLocations() {
 		List<String> li=new ArrayList<String>();
 		try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
