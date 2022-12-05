@@ -16,7 +16,6 @@ public class preferences {
 	public String toString() {
 		return "preferences [noti=" + noti + ", priv=" + priv + ", gender=" + gender + "]";
 	}
-
 	
 	public int getUid() {
 		return uid;

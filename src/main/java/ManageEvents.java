@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -17,6 +19,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 public class ManageEvents extends JDialog implements PropertyChangeListener{
+	private EventsServ eventService = new EventsServ();
+	private static List<Event> events = new ArrayList<Event>();
 	JTable table;
     private JTextField filterText;
     private JTextField statusText;
@@ -30,12 +34,13 @@ public class ManageEvents extends JDialog implements PropertyChangeListener{
 	public ManageEvents(JTable owner) {
 		super(javax.swing.SwingUtilities.windowForComponent(owner));
 		table = owner;
+		events = eventService.getEventsForPlanner();
 		
         //Create a table with a sorter.
         final Class<?>[] columnClass = new Class[]{
-                String.class,String.class,String.class,String.class,String.class,String.class,
+                String.class,String.class,String.class,String.class,String.class,String.class,String.class,String.class,String.class
         };
-        final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        final DefaultTableModel model = new DefaultTableModel(eventService.getEventsForTable(), columnNames) {
             @Override
             public boolean isCellEditable(int row, int col) {
                     return true;
@@ -46,12 +51,12 @@ public class ManageEvents extends JDialog implements PropertyChangeListener{
                 return columnClass[col];
             }
         };
-		
-		for(int i = 0; i < table.getRowCount(); i++) {
-			for(int j = 0; j < table.getColumnCount(); j++) {
+		//events = eventService.getEventsForPlanner();
+		//for(int i = 0; i < table.getRowCount(); i++) {
+			//for(int j = 0; j < table.getColumnCount(); j++) {
 				//table.getValueAt(i, j);
-			}
-		}
+			//}
+		//}
 		
         sorter = new TableRowSorter<DefaultTableModel>(model);
         table = new JTable(model);
@@ -79,15 +84,8 @@ public class ManageEvents extends JDialog implements PropertyChangeListener{
 		}
 		);
 		
-		//JPanel buttonPane = new JPanel(new SpringLayout());
-		//buttonPane.add(serviceButton);
-		//add(buttonPane);
-		
         JScrollPane scrollPane = new JScrollPane(table);
         add(scrollPane);
-        //SpringUtilities.makeCompactGrid(buttonPane, 1, 1, 6, 6, 6, 6);
-		//add(buttonPane);
-        //SpringUtilities.makeCompactGrid(this, 1,2,10,10,10,10);
 
 		pack();
 		setLocationRelativeTo(getParent());
