@@ -11,7 +11,6 @@ import java.util.Vector;
 public class AddServiceDialog extends JFrame implements ActionListener
 {
     SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY hh:mm a");
-    private final DefaultTableModel parent;
     private Vector<Object> adder = new Vector<>();
     private List<Service> Services = new ArrayList<>();
     private Event newE;

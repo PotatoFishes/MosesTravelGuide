@@ -20,6 +20,7 @@ public class EditEventDialog extends JFrame implements ActionListener
     private static JFrame frame;
     private TableRowSorter<DefaultTableModel> sorter;
     private final DefaultTableModel parent;
+    int eventID;
     private Vector<Object> adder = new Vector<>();
     private List<Service> Services = new ArrayList<>();
     private int index;
@@ -33,12 +34,13 @@ public class EditEventDialog extends JFrame implements ActionListener
             { sdf.format(new Date()) , sdf.format(new Date()) ,"Waco, TX", "Tester" ,"This is a test value" , " . . . ", " X "}
     };
 
-    EditEventDialog(final int ndx, final DefaultTableModel eventModel, Event e)
+    EditEventDialog(final int ndx, final DefaultTableModel eventModel)
     {
         super("Edit Event");
         setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         parent = eventModel;
         index = ndx;
+        eventID = Integer.parseInt(((String)parent.getValueAt(ndx,0)).trim());
 
         //Create a table with a sorter.
         final Class<?>[] columnClass = new Class[]{
@@ -100,16 +102,14 @@ public class EditEventDialog extends JFrame implements ActionListener
         ButtonColumn colButEditor = new ButtonColumn(table, editor, Planner.EDITCELL);
 
         //Setting Input Fields' Initial Values
-        txtId = new JTextField(15);
-        txtId.setText("ID");
         txtName = new JTextField(15);
-        txtName.setText( "" + model.getValueAt(ndx, 3) );
+        txtName.setText( "" + model.getValueAt(ndx, 4) );
         txtSDate = new JTextField(15);
-        txtSDate.setText("" + model.getValueAt(ndx, 0));
+        txtSDate.setText("" + model.getValueAt(ndx, 1));
         txtEDate = new JTextField(15);
-        txtEDate.setText("" + model.getValueAt(ndx, 1));
+        txtEDate.setText("" + model.getValueAt(ndx, 2));
         txtLoc = new JTextField(15);
-        txtLoc.setText("" + model.getValueAt(ndx, 2));
+        txtLoc.setText("" + model.getValueAt(ndx, 3));
         txtNote = new JTextField(15);
         txtNote.setText("Note");
 
@@ -124,7 +124,7 @@ public class EditEventDialog extends JFrame implements ActionListener
         //Setting Label Names
         JPanel content = new JPanel(new SpringLayout());
         content.add(new JLabel("ID:"));
-        content.add(txtId);
+        content.add(new JLabel("" + eventID));
         content.add(new JLabel("Name:"));
         content.add(txtName);
         content.add(new JLabel("Start Time:"));
