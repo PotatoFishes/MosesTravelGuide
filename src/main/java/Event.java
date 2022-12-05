@@ -63,7 +63,6 @@ public class Event
         if(!sl.equals(""))
         {
         	r=sl.split(",");
-        	
         	Vector<Integer> arr = new Vector<Integer>();
         	for (int i = 0; i<r.length; i++) {
         		try {

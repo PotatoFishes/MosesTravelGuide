@@ -24,7 +24,7 @@ public class ServiceServ {
 		s.addBooking();
 	}
 	public void unbook(Service s) {
-
+		s.subBooking();
 	}
 	public void addService(Service s) {
 		
