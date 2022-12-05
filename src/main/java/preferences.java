@@ -1,10 +1,10 @@
 
-public class preferencesService {
+public class preferences {
 	int uid;
 	boolean noti,priv;
 	String gender;
 	
-	public preferencesService(int uid, boolean noti, boolean priv, String gender) {
+	public preferences(int uid, boolean noti, boolean priv, String gender) {
 		super();
 		this.uid = uid;
 		this.noti = noti;
@@ -16,7 +16,6 @@ public class preferencesService {
 	public String toString() {
 		return "preferences [noti=" + noti + ", priv=" + priv + ", gender=" + gender + "]";
 	}
-
 	
 	public int getUid() {
 		return uid;

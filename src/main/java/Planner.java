@@ -151,7 +151,7 @@ public class Planner extends JPanel {
                     @Override
                     public void run()
                     {
-                        new SettingDialog();
+                        new SettingDialog(UserLoginService.getUser());
                     }
                 });
             }

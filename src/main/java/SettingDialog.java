@@ -13,25 +13,43 @@ public class SettingDialog extends JFrame implements ItemListener {
     JPanel p, p2;
     JButton btnOK, btnCancel;
     JLabel l;
+    preferences p3;
+    int num = 0;
 
     // main class
-    public SettingDialog() {
+    public SettingDialog(User u) {
         // create a new frame
         f = new JFrame("Settings");
 
         // set layout of frame
         f.setLayout(new FlowLayout());
 
+        p3 = PreferenceDAO.getPreference(u.id);
+
         // create checkbox
         c1 = new JCheckBox("Be Notified of Events?");
-        c2 = new JCheckBox("Setting Option 2");
-        //TODO set the settings options
+        c2 = new JCheckBox("Private");
+        if (p3 != null) {
+            c1.setSelected(p3.isNoti());
+            c2.setSelected(p3.isPriv());
+        }
+
 
         // create gender combo box
         c3 = new JComboBox(s);
-        c3.setSelectedIndex(0);
+        if (p3 != null) {
+            for (String a : s) {
+                if (p3.getGender() == a) {
+                    break;
+                }
+                num++;
+            }
+        }
+
+        if (num != 0)
+            num--;
+        c3.setSelectedIndex(num);
         c3.addItemListener(this);
-        //TODO set gender
 
         l = new JLabel("Select Gender");
 
@@ -47,7 +65,13 @@ public class SettingDialog extends JFrame implements ItemListener {
         p.add(c3, BorderLayout.SOUTH);
 
         btnOK = new JButton("Save");
-        //btnOK.addActionListener(); //TODO save to database
+        btnOK.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                p3 = new preferences(u.id, c1.isSelected(), c2.isSelected(), c3.getSelectedItem().toString());
+                PreferenceDAO.updatePreference(p3);
+            }
+        });
 
         btnCancel = new JButton("Cancel");
         btnCancel.addActionListener(new ActionListener() {
