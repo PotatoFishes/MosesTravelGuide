@@ -1,29 +1,27 @@
 
 public class UserLoginService {
-	static private Integer userID;
-	static private String userName;
-	static private String userPassword;
+	static private User user;
 	static {
-		userID=null;
-		userName=null;
-		userPassword=null;
+		user=null;
 	}
-	public static Integer getUserID() {
-		return userID;
+	public static User getUser() {
+		return user;
 	}
-	public static void setUserID(Integer userID) {
-		UserLoginService.userID = userID;
+	public static User validateUser(String username, String password) {
+		User u = UserDAO.checkPassword(username, password);
+		if(u != null) {
+			user = u;
+		}
+		return u;
 	}
-	public static String getUserName() {
-		return userName;
+	public static void updateUser() {
+		if(user != null) {
+			UserDAO.updateUser(user);
+		}
 	}
-	public static void setUserName(String userName) {
-		UserLoginService.userName = userName;
-	}
-	public static String getUserPassword() {
-		return userPassword;
-	}
-	public static void setUserPassword(String userPassword) {
-		UserLoginService.userPassword = userPassword;
+	public static void deleteUser() {
+		if(user != null) {
+			UserDAO.deleteUser(user);
+		}
 	}
 }
