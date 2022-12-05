@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Vector;
 
 public class Event
@@ -78,7 +79,27 @@ public class Event
         userID=uid;
     }
 
-    public int getUserID() {
+    @Override
+	public int hashCode() {
+		return Objects.hash(eDate, loc, name, note, sDate, sdf, usedServices, userID);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Event other = (Event) obj;
+		return Objects.equals(eDate, other.eDate) && Objects.equals(loc, other.loc) && Objects.equals(name, other.name)
+				&& Objects.equals(note, other.note) && Objects.equals(sDate, other.sDate)
+				&& Objects.equals(sdf, other.sdf) && Objects.equals(usedServices, other.usedServices)
+				&& userID == other.userID;
+	}
+
+	public int getUserID() {
 		return userID;
 	}
 	public void setUserID(int userID) {
@@ -145,6 +166,9 @@ public class Event
     	}
 		return us;
 	}
+    public List<Service> getUsedServices(List<Service> serv){
+    	return usedServices;
+    }
 	@Override
 	public String toString() {
 		return "Event [id=" + ID + ", name=" + name + ", sDate=" + sDate + ", eDate=" + eDate + ", loc=" + loc

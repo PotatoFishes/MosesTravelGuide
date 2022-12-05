@@ -1,10 +1,20 @@
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class EventsServ {
 	public static List<Booking> getBookings(){
-		
-		return null;
+		Set<Booking> out = new HashSet<Booking>();
+		java.util.List<Event> events = EventDAOImp.getEvents();
+		for(Event e: events) {
+			List<Service> serv = e.getUsedServices(null);
+			for(Service s: serv) {
+				out.add(new Booking(e, s));
+			}
+		}
+		return new ArrayList<Booking>(out);
 	}
 	
 	public static Event createEvent() {
@@ -23,14 +33,7 @@ public class EventsServ {
 		java.util.List<Event> events = EventDAOImp.getEvents();
         Object[][] data = new Object[events.size()][];
         for(int i = 0; i < data.length; ++i) {
-        	data[i] = new Object[]{
-        			events.get(i).sDate,
-        			events.get(i).eDate,
-        			events.get(i).loc,
-        			events.get(i).name,
-        			events.get(i).note,
-        			" . . . ",
-        			" X "};
+        	data[i] = events.get(i).toArray();
         }
         return data;
 	}
