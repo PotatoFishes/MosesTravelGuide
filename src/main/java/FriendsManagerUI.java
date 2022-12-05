@@ -133,7 +133,13 @@ public class FriendsManagerUI extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		try {
 			Integer id = Integer.parseInt(idEntry.getText());
-			if(UserDAO.checkExists(id)) {
+			if(id.equals(UserLoginService.getUser().id)) {
+				JOptionPane.showMessageDialog(null,
+	                    "You cannot be your own friend\nPlease Enter a valid User ID"
+	                    ,"Error"
+	                    ,JOptionPane.OK_OPTION);
+			}
+			else if(UserDAO.checkExists(id)) {
 				FriendsService.addPermission(id);
 				updateOutgoingView();
 			}
