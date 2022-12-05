@@ -27,7 +27,7 @@ public class EditEventDialog extends JFrame implements ActionListener
     private Vector<Object> adder = new Vector<>();
     private List<Service> Services = new ArrayList<>();
     private int index;
-    private JTextField txtId, txtName, txtSDate, txtEDate, txtLoc, txtNote, txtServices;
+    private JTextField txtId, txtName, txtSDate, txtEDate, txtLoc, txtNote, txtServices = new JTextField(15);
     private JButton btnOK, btnCancel, btnAddServ;
     private int EIDCELL = 0;
     private int ESDATECELL = 1;
@@ -51,12 +51,11 @@ public class EditEventDialog extends JFrame implements ActionListener
         parent = eventModel;
         index = ndx;
         eventID = Integer.parseInt(((String)parent.getValueAt(ndx,EIDCELL)).trim());
-
         //Create a table with a sorter.
         final Class<?>[] columnClass = new Class[]{
                 String.class, String.class, String.class,String.class,String.class,String.class,String.class,String.class, String.class
         };
-        final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        final DefaultTableModel model = new DefaultTableModel(ServiceServ.getServicesForTable(eventID), columnNames) {
             @Override
             public boolean isCellEditable(int row, int col) {
                 if(col < SEDITCELL) {
@@ -177,26 +176,18 @@ public class EditEventDialog extends JFrame implements ActionListener
     {
         Service adding = new Service();
         // TODO: make Add Service Dialog
-        new AddServiceDialog(0, (DefaultTableModel) table.getModel());
+        new AddServiceDialog((DefaultTableModel) table.getModel(), eventID);
         Services.add(adding);
     }
 
     private void initAdder()
     {
-        adder.add(txtId.getText());
-        adder.add(txtSDate.getText());
-        adder.add(txtEDate.getText());
-        adder.add(txtLoc.getText());
-        adder.add(txtNote.getText());
+        adder.add(txtSDate.getText() + "");
+        adder.add(txtEDate.getText() + "");
+        adder.add(txtLoc.getText() + "");
+        adder.add(txtNote.getText() + "");
         adder.add(" . . . ");
         adder.add(" X ");
-        String temp = "";
-        for(Service s : Services)
-        {
-            temp += s.getID() + ",";
-        }
-        chop(temp);
-        txtServices.setText(temp);
     }
 
     public static void chop(String s)
@@ -216,23 +207,34 @@ public class EditEventDialog extends JFrame implements ActionListener
             initAdder();
             try
             {
-                Integer.parseInt(txtId.getText());
                 //List<Service> temp = new ArrayList<Service>();
                 Timestamp timestamp = AddEvent.convertStringToTimestamp(txtSDate.getText());
                 Timestamp timestamp2 = AddEvent.convertStringToTimestamp(txtEDate.getText());
                 timestamp.after(timestamp2);
 
-                Event temp = new Event(Integer.valueOf(txtId.getText()), txtName.getText(), timestamp, timestamp2,txtLoc.getText(), txtNote.getText(), txtServices.getText(), 1);
-                EventDAOImp.updateEvent(temp);
-                parent.insertRow(0, temp.toArray());
+                String tempS = "";
+                for(Service s : Services)
+                {
+                    tempS += s.getID() + ",";
+                }
+                chop(tempS);
+                txtServices.setText(tempS + "");
+
+                Event temp = new Event(eventID, txtName.getText(), timestamp, timestamp2,txtLoc.getText(), txtNote.getText(), txtServices.getText(), 1);
                 if(!EventsServ.checkTimesValid(temp))
                 {
                     JOptionPane.showConfirmDialog(null,
                             "Incorrect Time Format: Please Format as 'YYYY-MM-dd HH:mm:ss.SSS' from '1000-01-01' to '9999-12-31'"
                             , "Error"
                             , JOptionPane.OK_OPTION);
+                    dispose();
                 }
-                EventsServ.createEvent(temp);
+                else
+                {
+                    parent.removeRow(index);
+                    parent.insertRow(index,temp.toArray());
+                    EventsServ.createEvent(temp);
+                }
             }
             catch(NumberFormatException nfe)
             {
@@ -245,9 +247,7 @@ public class EditEventDialog extends JFrame implements ActionListener
             } catch (ParseException ex) {
                 ex.printStackTrace();
             }
-            parent.removeRow(index);
-            parent.insertRow(index,adder);
-            Event temp = new Event();
+
             dispose();
             return;
         }
@@ -258,9 +258,7 @@ public class EditEventDialog extends JFrame implements ActionListener
         }
         else if(clicked == btnAddServ)
         {
-            this.setVisible(false);
             addService();
-            this.setVisible(true);
         }
     }
 }

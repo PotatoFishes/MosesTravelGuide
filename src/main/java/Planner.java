@@ -290,7 +290,6 @@ public class Planner extends JPanel {
                     public void run()
                     {
                     	new FriendsManagerUI();
-                        
                     }
                 });
             }
