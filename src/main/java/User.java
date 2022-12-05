@@ -1,33 +1,25 @@
-import java.util.Arrays;
+import java.util.List;
 
 public class User
 {
-	static int id;
+	int id;
 	private String username = "", password = "", email = "", location = "";
-	int[] friends;
+	List<Integer> friends;
 	
 	public User() {
 		
 	}
 	@Override
 	public String toString() {
-		return "User [username=" + username + ", password=" + password + ", email=" + email + ", location=" + location
-				+ ", friends=" + Arrays.toString(friends) + "]";
+		return "User [username=" + username + ", password=" + password + ", email=" + email + ", location=" + location + "]";
 	}
-	public User(int id,String un,String pw,String em,String l,String f) {
+	public User(int id,String un,String pw,String em,String l, List<Integer> f) {
 		username=un;
 		password=pw;
 		email=em;
 		location=l;
 		String[] r = null;
-		if(!f.equals(""))
-        {
-        	r=f.split(",");
-        	friends=new int[r.length];
-        	for (int i = 0; i<r.length; i++) {
-        		friends[i] = Integer.valueOf(r[i]);
-        	}
-        }
+		friends=f;
 	}
 
 	public String getUsername() {
@@ -42,11 +34,11 @@ public class User
 		return password;
 	}
 
-	public int[] getFriends() {
+	public List<Integer> getFriends() {
 		return friends;
 	}
 
-	public void setFriends(int[] friends) {
+	public void setFriends(List<Integer> friends) {
 		this.friends = friends;
 	}
 
