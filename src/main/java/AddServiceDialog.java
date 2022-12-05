@@ -10,26 +10,21 @@ import java.util.Vector;
 
 public class AddServiceDialog extends JFrame implements ActionListener
 {
-    SimpleDateFormat sdf =
-            new SimpleDateFormat("MM/dd/YYYY hh:mm a");
-    private final DefaultTableModel parent;
+    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY hh:mm a");
     private Vector<Object> adder = new Vector<>();
     private List<Service> Services = new ArrayList<>();
     private Event newE;
     private int index;
-    private JTextField txtId, txtName, txtBookings, txtSDate, txtEDate, txtPrice, txtCapacity;
+    private JTextField txtName, txtBookings, txtSDate, txtEDate, txtPrice, txtCapacity;
     private JButton btnOK, btnCancel, btnAddServ;
 
-    AddServiceDialog(final int ndx, final DefaultTableModel model)
+    AddServiceDialog(int eventID)
     {
         super("Add Service");
         setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
-        parent = model;
-        index = ndx;
+        index = eventID;
 
         //Setting Input Fields' Initial Values
-        txtId = new JTextField(15);
-        txtId.setText("ID");
         txtName = new JTextField(15);
         txtName.setText("Name");
         txtPrice = new JTextField(15);
@@ -43,43 +38,35 @@ public class AddServiceDialog extends JFrame implements ActionListener
         txtCapacity = new JTextField(15);
         txtCapacity.setText("Capacity");
 
-        //Setting Label Names
-        JPanel content = new JPanel(new SpringLayout());
-        content.add(new JLabel("ID:"));
-        content.add(txtId);
-        content.add(new JLabel("Name:"));
-        content.add(txtName);
-        content.add(new JLabel("Type:"));
-        content.add(txtPrice);
-        content.add(new JLabel("Start Date:"));
-        content.add(txtSDate);
-        content.add(new JLabel("End Date:"));
-        content.add(txtEDate);
-        content.add(new JLabel("Location:"));
-        content.add(txtBookings);
-        content.add(new JLabel("Note:"));
-        content.add(txtCapacity);
-
         //Setting Buttons
         btnOK = new JButton("Save");
         btnOK.addActionListener(this);
         btnCancel = new JButton("Cancel");
         btnCancel.addActionListener(this);
-        btnAddServ = new JButton("Add Service");
-        btnAddServ.addActionListener(this);
+
+        //Setting Label Names
+        JPanel content = new JPanel(new SpringLayout());
+        content.add(new JLabel("ID: "));
+        content.add(new JLabel(""));
+        content.add(new JLabel("Name: "));
+        content.add(txtName);
+        content.add(new JLabel("Type: "));
+        content.add(txtPrice);
+        content.add(new JLabel("Start Date: "));
+        content.add(txtSDate);
+        content.add(new JLabel("End Date: "));
+        content.add(txtEDate);
+        content.add(new JLabel("Location: "));
+        content.add(txtBookings);
+        content.add(new JLabel("Note: "));
+        content.add(txtCapacity);
         content.add(btnOK);
         content.add(btnCancel);
         SpringUtilities.makeCompactGrid(content, 8, 2, 6, 6, 6, 6);
 
-        JPanel servicer = new JPanel();
-        servicer.setLayout(new SpringLayout());
-        servicer.add(btnAddServ);
-        SpringUtilities.makeCompactGrid(servicer, 1, 1, 6, 6, 6, 6);
-
         JPanel panelHolders = new JPanel();
         panelHolders.setLayout(new SpringLayout());
         panelHolders.add(content);
-        panelHolders.add(servicer);
         SpringUtilities.makeCompactGrid(panelHolders, 1, 2, 6, 6, 6, 6);
 
         setContentPane(panelHolders);
@@ -89,19 +76,14 @@ public class AddServiceDialog extends JFrame implements ActionListener
 
     private void initAdder()
     {
+        adder.add(txtName.getText());
+        adder.add(txtPrice.getText());
         adder.add(txtSDate.getText());
         adder.add(txtEDate.getText());
         adder.add(txtBookings.getText());
-        adder.add(txtBookings.getText());
+        adder.add(txtCapacity.getText());
         adder.add(" . . . ");
         adder.add(" X ");
-    }
-
-    private void addService()
-    {
-        Service adding = new Service();
-        // TODO: make Add Service Dialog
-        Services.add(adding);
     }
 
     @Override
@@ -112,7 +94,6 @@ public class AddServiceDialog extends JFrame implements ActionListener
         {
             try
             {
-                Integer.parseInt(txtId.getText());
                 Double.parseDouble(txtPrice.getText());
             }
             catch(NumberFormatException nfe)
@@ -121,7 +102,7 @@ public class AddServiceDialog extends JFrame implements ActionListener
                         "Incorrect Value Given"
                         ,"Error"
                         ,JOptionPane.OK_OPTION);
-                this.parent.removeRow(index);
+                parent.removeRow(index);
                 dispose();
                 return;
             }
@@ -138,9 +119,5 @@ public class AddServiceDialog extends JFrame implements ActionListener
             dispose();
             return;
         }
-        else if(clicked == btnAddServ)
-        {
-            addService();
-         }
     }
 }
