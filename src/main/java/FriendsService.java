@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class FriendsService {
@@ -25,5 +27,25 @@ public class FriendsService {
 			out.add(new String[] {ui.getName(), ui.getEmail(), ui.getLocation(), ui.getId().toString()});
 		}
 		return out;
+	}
+	static public List<String> getFriendNames(){
+		List<String> friends = new ArrayList<String>();
+		User u = UserLoginService.getUser();
+		Set<UserInfo> followed = UserDAO.getFollowed(u);
+		for(UserInfo ui: followed) {
+			friends.add(ui.getName());
+		}
+		
+		return friends;
+	}
+	static public Set<Integer> getFriendId(){
+		Set<Integer> friends = new HashSet<Integer>();
+		User u = UserLoginService.getUser();
+		Set<UserInfo> followed = UserDAO.getFollowed(u);
+		for(UserInfo ui: followed) {
+			friends.add(ui.getId());
+		}
+		
+		return friends;
 	}
 }
