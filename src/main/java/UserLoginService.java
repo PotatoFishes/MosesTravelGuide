@@ -12,6 +12,7 @@ public class UserLoginService {
 		if(u != null) {
 			user = u;
 		}
+		System.out.println(u);
 		return u;
 	}
 	public static void updateUser() {
