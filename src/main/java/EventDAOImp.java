@@ -50,7 +50,8 @@ public class EventDAOImp{
 		         Statement stmt = conn.createStatement();
 		         ResultSet rs = stmt.executeQuery("SELECT id, eventName, Start, End, Location, notes, usedServices, userid FROM Events WHERE id="+e.ID);) {
 		         // Extract data from result set
-		         if (rs.next()) {
+		         if (rs.next())
+				 {
 		            // Retrieve by column name
 		        	stmt.executeUpdate("UPDATE Events SET eventName='"+e.getName()+"', Start='"+e.getStartDate()+"', End='"+e.getEndDate()+"', location='"+e.getLocation()+"', notes='"+e.getNote()+"', usedServices='"+e.getUsedServices()+"', userid="+e.getUserID()+" WHERE id="+e.getID());
 		         }

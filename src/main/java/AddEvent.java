@@ -107,7 +107,6 @@ public class AddEvent extends JDialog implements PropertyChangeListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					//List<Service> temp = new ArrayList<Service>();
 					Timestamp timestamp = null;
 					Timestamp timestamp2 = null;
 					

@@ -21,12 +21,12 @@ public class Planner extends JPanel {
     private JFileChooser fileChooser = new JFileChooser();
     private JPanel form = new JPanel(new SpringLayout());
     private TableRowSorter<DefaultTableModel> sorter;
-    private int NOTES = 4;
-    private int EDITCELL = 5;
-    private int REMOVECELL = 6;
+    public static int NOTES = 4;
+    public static int EDITCELL = 5;
+    public static int REMOVECELL = 6;
 
     //TODO: remove these debugging/testing variables
-    private SimpleDateFormat sdf =
+    public SimpleDateFormat sdf =
             new SimpleDateFormat("MM/dd/YYYY hh:mm a");
 
     private String[] columnNames = {

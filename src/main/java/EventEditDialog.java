@@ -1,6 +1,10 @@
+import net.coderazzi.filters.gui.AutoChoices;
+import net.coderazzi.filters.gui.TableFilterHeader;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
@@ -9,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
-public class EditDialog extends JFrame implements ActionListener
+public class EventEditDialog extends JFrame implements ActionListener
 {
     public SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY hh:mm a");
     private static JTable table;
@@ -29,20 +33,77 @@ public class EditDialog extends JFrame implements ActionListener
             { sdf.format(new Date()) , sdf.format(new Date()) ,"Waco, TX", "Tester" ,"This is a test value" , " . . . ", " X "}
     };
 
-    EditDialog(final int ndx, final DefaultTableModel model)
+    EventEditDialog(final int ndx, final DefaultTableModel eventModel)
     {
         super("Edit Event");
         setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
-        parent = model;
-        index = ndx;
+        parent = eventModel;
+        index = 0;
+
+        //Create a table with a sorter.
+        final Class<?>[] columnClass = new Class[]{
+                String.class,String.class,String.class,String.class,String.class,String.class, String.class
+        };
+        final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+            @Override
+            public boolean isCellEditable(int row, int col) {
+                return true;
+            }
+            @Override
+            public Class <?> getColumnClass(int col)
+            {
+                return columnClass[col];
+            }
+        };
+
+        // Set table dimensions
+        sorter = new TableRowSorter<DefaultTableModel>(model);
+        table = new JTable(model);
+        table.setRowSorter(sorter);
+        table.setPreferredScrollableViewportSize(new Dimension(600, getToolkit().getScreenResolution()));
+        table.setFillsViewportHeight(true);
+        table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+
+        TableFilterHeader filterHeader = new TableFilterHeader(table, AutoChoices.ENABLED);
+
+        //Create the scroll pane and add the table to it.
+        JScrollPane scrollPane = new JScrollPane(table);
+
+        //Add the scroll pane to this panel.
+        add(scrollPane);
+
+        // Remove Row button
+        Action remove = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int modelRow = Integer.valueOf(e.getActionCommand());
+                int answer = JOptionPane.showConfirmDialog(null,
+                        "Do you want to remove " + model.getValueAt(modelRow, 2)
+                                + " " + model.getValueAt(modelRow,  1) + "?"
+                        ,"Warning"
+                        ,JOptionPane.YES_NO_OPTION);
+                if(answer == JOptionPane.YES_OPTION)
+                {
+                    model.removeRow(modelRow);
+                }
+            }
+        };
+        ButtonColumn colButRemover = new ButtonColumn(table, remove, Planner.REMOVECELL);
+
+        // Edit Row button
+        Action editor = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //new EditDialog(table.getSelectedRow(),model).setVisible(true);
+            }
+        };
+        ButtonColumn colButEditor = new ButtonColumn(table, editor, Planner.EDITCELL);
 
         //Setting Input Fields' Initial Values
         txtId = new JTextField(15);
         txtId.setText("ID");
         txtName = new JTextField(15);
         txtName.setText( "" + model.getValueAt(ndx, 3) );
-        txtType = new JTextField(15);
-        txtType.setText("Type");
         txtSDate = new JTextField(15);
         txtSDate.setText("" + model.getValueAt(ndx, 0));
         txtEDate = new JTextField(15);
@@ -58,8 +119,6 @@ public class EditDialog extends JFrame implements ActionListener
         content.add(txtId);
         content.add(new JLabel("Name:"));
         content.add(txtName);
-        content.add(new JLabel("Type:"));
-        content.add(txtType);
         content.add(new JLabel("Start Time:"));
         content.add(txtSDate);
         content.add(new JLabel("End Time:"));
@@ -90,7 +149,8 @@ public class EditDialog extends JFrame implements ActionListener
         JPanel servicer = new JPanel();
         servicer.setLayout(new SpringLayout());
         servicer.add(btnAddServ);
-        SpringUtilities.makeCompactGrid(servicer, 1, 1, 6, 6, 6, 6);
+        servicer.add(scrollPane);
+        SpringUtilities.makeCompactGrid(servicer, 2, 1, 6, 6, 6, 6);
 
         JPanel panelHolders = new JPanel();
         panelHolders.setLayout(new SpringLayout());
@@ -129,7 +189,6 @@ public class EditDialog extends JFrame implements ActionListener
             try
             {
                 Integer.parseInt(txtId.getText());
-                Integer.parseInt(txtType.getText());
             }
             catch(NumberFormatException nfe)
             {
