@@ -24,7 +24,7 @@ public class PreferenceDAO {
 			 else
 			 {
 				 System.out.println("Inserting new Preference");
-				 stmt.executeUpdate("INSERT INTO Preferences (notification, private, gender) VALUES('"+e.isNoti()+"', '"+e.isPriv()+"', '"+e.getGender()+"')");
+				 stmt.executeUpdate("INSERT INTO Preferences (userid, notification, private, gender) VALUES("+e.getUid()+", '"+e.isNoti()+"', '"+e.isPriv()+"', '"+e.getGender()+"')");
 			 }
 		  } catch (SQLException ex) {
 			 ex.printStackTrace();
