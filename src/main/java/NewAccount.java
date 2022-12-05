@@ -14,7 +14,7 @@ import javax.swing.SwingUtilities;
 
 public class NewAccount extends JPanel implements PropertyChangeListener{
     public JFrame mainFrame = new JFrame("Register");
-    private UserDAO userDAO = new UserDAO();
+    private UserLoginService userService = new UserLoginService();
     
 	private String userName = "";
 	private String password = "";
@@ -95,10 +95,12 @@ public class NewAccount extends JPanel implements PropertyChangeListener{
 	     		if(!userName.equals("") && !password.equals("") && !email.equals("") && !location.equals("")) {
 	     			if(password.equals(passwordR)) {
 	     				//if(!userDAO.nameExists(userName.toLowerCase())) {
+	     				if(userService.validateUser(userName, password) == null) {
 		     				//create user here
 		     				User user = new User();
 		     				user.setUsername(userName);
-		     				//userDAO.addUser(user);
+
+		     				userService.updateUser();
 		     				
 				     		mainFrame.dispose();
 			        		javax.swing.SwingUtilities.invokeLater(new Runnable() {
@@ -108,7 +110,7 @@ public class NewAccount extends JPanel implements PropertyChangeListener{
 			        				planner.main(null);
 			        			}
 			        		});
-	     				//}
+	     				}
 	     				//else {
 	     					//userName = "";
 	     			    	//userNameField.setValue(new String(userName));
