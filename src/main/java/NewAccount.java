@@ -39,7 +39,7 @@ public class NewAccount extends JPanel implements PropertyChangeListener{
 	
 	public NewAccount() {
 		super();
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         
         this.setOpaque(true);
         mainFrame.setContentPane(this);
@@ -95,12 +95,15 @@ public class NewAccount extends JPanel implements PropertyChangeListener{
 	     		if(!userName.equals("") && !password.equals("") && !email.equals("") && !location.equals("")) {
 	     			if(password.equals(passwordR)) {
 	     				//if(!userDAO.nameExists(userName.toLowerCase())) {
-	     				if(userService.validateUser(userName, password) == null) {
+	     				if(UserLoginService.validateUser(userName, password) == null) {
 		     				//create user here
 		     				User user = new User();
+		     				user.setLocation(location);
+		     				user.setEmail(email);
+		     				user.setPassword(password);
 		     				user.setUsername(userName);
 
-		     				userService.updateUser();
+		     				UserLoginService.updateUser(user);
 		     				
 				     		mainFrame.dispose();
 			        		javax.swing.SwingUtilities.invokeLater(new Runnable() {

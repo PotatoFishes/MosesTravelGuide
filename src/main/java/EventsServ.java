@@ -1,3 +1,4 @@
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,16 +18,48 @@ public class EventsServ {
 		return new ArrayList<Booking>(out);
 	}
 	
-	public static Event createEvent() {
-		return new Event();
+	public static void createEvent(Event e)
+	{
+		EventDAOImp.updateEvent(e);
+	}
+
+	public static boolean checkTimesValid(Event e) throws ParseException {
+		boolean valid = true;
+		Timestamp timestamp = AddEvent.convertStringToTimestamp(e.getStartDate());
+		Timestamp timestamp2 = AddEvent.convertStringToTimestamp(e.getEndDate());
+
+		valid = timestamp.before(timestamp2);
+		
+		for(Event ev: EventDAOImp.getEvents())
+		{
+			if(!valid)
+			{
+				break;
+			}
+			valid = AddEvent.convertStringToTimestamp(ev.getStartDate()).before(timestamp2)
+					|| AddEvent.convertStringToTimestamp(ev.getEndDate()).after(timestamp);
+			
+		}
+		return valid;
 	}
 	
 	public static Event createEvent(int id, String na, int t, String sD, String eD, String l, String n) throws ParseException {
 		return null;//new Event(id, na, t, sD, eD, l, n);
 	}
+
+	public static void removeEvent(int id)
+	{
+		EventDAOImp.deleteEvent(id);
+	}
 	
-	public static void setEvent(Event e) {
+	public static void setEvent(Event e)
+	{
 		
+	}
+
+	public static List<Event> getEventsForPlanner()
+	{
+		return EventDAOImp.getEvents();
 	}
 	
 	public static Object[][] getEventsForTable() {

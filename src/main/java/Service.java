@@ -13,8 +13,7 @@ public class Service
 				+ bookings + ", capacity=" + capacity + "]";
 	}
 
-	private static final SimpleDateFormat sdf =
-            new SimpleDateFormat("YYYY-MM-dd hh:mm:ss.SSS");
+	private static final SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd hh:mm:ss.SSS");
     private static final DecimalFormat df = new DecimalFormat("0.00");
     static int ID = 0;
     double price;

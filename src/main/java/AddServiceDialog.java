@@ -2,6 +2,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,33 +12,36 @@ import java.util.Vector;
 
 public class AddServiceDialog extends JFrame implements ActionListener
 {
-    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY hh:mm a");
+    SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss.SSS");
     private Vector<Object> adder = new Vector<>();
-    private List<Service> Services = new ArrayList<>();
-    private Event newE;
+    List<Service> finding = new ArrayList<>();
+    DefaultTableModel parent;
     private int index;
-    private JTextField txtName, txtBookings, txtSDate, txtEDate, txtPrice, txtCapacity;
+    private JTextField txtId, txtName, txtBookings, txtSDate, txtEDate, txtPrice, txtCapacity;
     private JButton btnOK, btnCancel, btnAddServ;
 
-    AddServiceDialog(int eventID)
+    AddServiceDialog( DefaultTableModel model, List<Service> updating)
     {
         super("Add Service");
         setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
-        index = eventID;
+        parent = model;
+        index = 0;
+        finding = updating;
 
         //Setting Input Fields' Initial Values
+        txtId = new JTextField("0");
         txtName = new JTextField(15);
         txtName.setText("Name");
         txtPrice = new JTextField(15);
-        txtPrice.setText("Price");
-        txtSDate = new JTextField(3);
-        txtSDate.setText(sdf.format(new Date()));
-        txtEDate = new JTextField(15);
-        txtEDate.setText(sdf.format(new Date()));
+        txtPrice.setText("0.00");
+        txtSDate = new JTextField(25);
+        txtSDate.setText(new Timestamp(new Date().getTime()).toString());
+        txtEDate = new JTextField(25);
+        txtEDate.setText(new Timestamp(new Date().getTime()).toString());
         txtBookings = new JTextField(15);
         txtBookings.setText("Bookings");
         txtCapacity = new JTextField(15);
-        txtCapacity.setText("Capacity");
+        txtCapacity.setText("10");
 
         //Setting Buttons
         btnOK = new JButton("Save");
@@ -47,10 +52,10 @@ public class AddServiceDialog extends JFrame implements ActionListener
         //Setting Label Names
         JPanel content = new JPanel(new SpringLayout());
         content.add(new JLabel("ID: "));
-        content.add(new JLabel(""));
+        content.add(new JLabel("" + 0));
         content.add(new JLabel("Name: "));
         content.add(txtName);
-        content.add(new JLabel("Type: "));
+        content.add(new JLabel("Price: "));
         content.add(txtPrice);
         content.add(new JLabel("Start Date: "));
         content.add(txtSDate);
@@ -67,15 +72,17 @@ public class AddServiceDialog extends JFrame implements ActionListener
         JPanel panelHolders = new JPanel();
         panelHolders.setLayout(new SpringLayout());
         panelHolders.add(content);
-        SpringUtilities.makeCompactGrid(panelHolders, 1, 2, 6, 6, 6, 6);
+        SpringUtilities.makeCompactGrid(panelHolders, 1, 1, 6, 6, 6, 6);
 
         setContentPane(panelHolders);
         pack();
+        setVisible(true);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     private void initAdder()
     {
+        adder.add(txtId.getText());
         adder.add(txtName.getText());
         adder.add(txtPrice.getText());
         adder.add(txtSDate.getText());
@@ -95,21 +102,32 @@ public class AddServiceDialog extends JFrame implements ActionListener
             try
             {
                 Double.parseDouble(txtPrice.getText());
+                initAdder();
+                Service temp = new Service(
+                        Integer.valueOf(txtId.getText()),
+                        txtName.getText(),
+                        Double.valueOf(txtPrice.getText()),
+                        AddEvent.convertStringToTimestamp(txtSDate.getText()),
+                        AddEvent.convertStringToTimestamp(txtEDate.getText()),
+                        Integer.valueOf(txtCapacity.getText()));
+                ServiceServ.addService( temp );
+                finding.add(temp);
+                parent.insertRow(index,adder);
             }
             catch(NumberFormatException nfe)
             {
                 JOptionPane.showMessageDialog(null,
-                        "Incorrect Value Given"
+                        "Incorrect Price Input: " + txtPrice.getText()
                         ,"Error"
                         ,JOptionPane.OK_OPTION);
-                parent.removeRow(index);
-                dispose();
-                return;
+                nfe.printStackTrace();
+            } catch (ParseException ex) {
+                JOptionPane.showMessageDialog(null,
+                        "Incorrect Time Format: Please Format as 'YYYY-MM-dd HH:mm:ss.SSS' from '1000-01-01' to '9999-12-31'"
+                        ,"Error"
+                        ,JOptionPane.OK_OPTION);
+                ex.printStackTrace();
             }
-            initAdder();
-
-            parent.removeRow(index);
-            parent.insertRow(index,adder);
             dispose();
             return;
         }

@@ -5,7 +5,8 @@ import java.util.List;
 public class ServiceServ {
 	private ServiceDAOImp servDao = new ServiceDAOImp();
 
-	public List<Service> getServiceList(String commaSeparatedIDs){
+	public List<Service> getServiceList(String commaSeparatedIDs)
+	{
 		List<Service> usedServices = new ArrayList<>();
 		String csid = commaSeparatedIDs;
 		String[] r = null;
@@ -20,16 +21,27 @@ public class ServiceServ {
 		}
 		return usedServices;
 	}
+
+	public static Object[][] getServicesForTable(int eid) {
+		java.util.List<Service> services = new ArrayList<>();
+		EventDAOImp.getEvent(eid).getUsedServices(services);
+		Object[][] data = new Object[services.size()][];
+		for(int i = 0; i < data.length; ++i) {
+			data[i] = services.get(i).toArray();
+		}
+		return data;
+	}
+
 	public void book(Service s) {
 		s.addBooking();
 	}
 	public void unbook(Service s) {
 		s.subBooking();
 	}
-	public void addService(Service s) {
-		
+	public static void addService(Service s) {
+		ServiceDAOImp.updateService(s);
 	}
-	public void removeService(Service s) {
-		
+	public static void removeService(Service s) {
+		ServiceDAOImp.deleteService(s);
 	}
 }

@@ -35,7 +35,7 @@ public class ServiceDAOImp {
 				Statement stmt = conn.createStatement();){
 			for(int i:list)
 			{
-				ResultSet rs = stmt.executeQuery("SELECT Name, price, Location, StartTime, EndTime, capacity FROM Services WHERE id="+i);
+				ResultSet rs = stmt.executeQuery("SELECT name, price, location, startTime, endTime, capacity FROM Services WHERE id="+i);
 				// Extract data from result set
 				while (rs.next()) {
 					// Retrieve by column name
@@ -68,7 +68,7 @@ public class ServiceDAOImp {
 	public static void updateService(Service e) {
 		try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
 		         Statement stmt = conn.createStatement();
-		         ResultSet rs = stmt.executeQuery("SELECT Name, price, StartTime, EndTime, capacity FROM Services WHERE id="+e.ID);) {
+		         ResultSet rs = stmt.executeQuery("SELECT name, price, startTime, endTime, capacity FROM Services WHERE id="+e.ID);) {
 		         // Extract data from result set
 		         if (rs.next()) {
 		            // Retrieve by column name
@@ -76,7 +76,7 @@ public class ServiceDAOImp {
 		         }
 		         else
 		         {
-		        	 stmt.executeUpdate("INSERT INTO Service (Name, StartTime, End, price, capacity) VALUES('"+e.getName()+"', '"+e.getStartDate()+"', '"+e.getEndDate()+"', "+e.getPrice()+", "+e.getCapacity()+")");
+		        	 stmt.executeUpdate("INSERT INTO Services (name, startTime, endTime, price, capacity) VALUES('"+e.getName()+"', '"+e.getStartDate()+"', '"+e.getEndDate()+"', "+e.getPrice()+", "+e.getCapacity()+")");
 		         }
 		      } catch (SQLException ex) {
 		         ex.printStackTrace();
@@ -84,10 +84,10 @@ public class ServiceDAOImp {
 
 	}
 
-	public void deleteService(Service e) {
+	public static void deleteService(Service e) {
 		try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
 		         Statement stmt = conn.createStatement();
-		         ResultSet rs = stmt.executeQuery("SELECT id, eventName, Start, End, Location, notes, usedServices, userid FROM Services WHERE id="+e.ID);) {
+		         ResultSet rs = stmt.executeQuery("SELECT name, price, startTime, endTime, capacity FROM Services WHERE id="+e.ID);) {
 		         // Extract data from result set
 		         if (rs.next()) {
 		            // Retrieve by column name

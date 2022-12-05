@@ -1,6 +1,7 @@
 import net.coderazzi.filters.gui.AutoChoices;
 import net.coderazzi.filters.gui.TableFilterHeader;
 
+import java.util.List;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -9,7 +10,9 @@ import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Planner extends JPanel {
@@ -17,6 +20,7 @@ public class Planner extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = -1829319321640316625L;
+    UserLoginService loggedInUser = new UserLoginService();
 	private static JTable table;
     private static JFrame frame;
     private JTextField filterText;
@@ -24,32 +28,36 @@ public class Planner extends JPanel {
     private JTextArea choiceLog = new JTextArea("");
     private JFileChooser fileChooser = new JFileChooser();
     private JPanel form = new JPanel(new SpringLayout());
+    private JComboBox combo;
     private TableRowSorter<DefaultTableModel> sorter;
-    public static int NOTES = 4;
-    public static int EDITCELL = 5;
-    public static int REMOVECELL = 6;
+    List<Event> events = EventDAOImp.getEvents();
+    public static int NOTES = 5;
+    public static int EDITCELL = 6;
+    public static int REMOVECELL = 7;
+    private final String[] options = { "          ", "Location", "Services", "Events" };
 
     //TODO: remove these debugging/testing variables
-    public SimpleDateFormat sdf =
-            new SimpleDateFormat("MM/dd/YYYY hh:mm a");
+    public SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss.SSS");
 
     private String[] columnNames = {
-            "Start Time", "End Time", "Location", "Name", "Note", "Edit", "Remove"
+            "ID","Start Time", "End Time", "Location", "Name", "Note", "Edit", "Remove"
     };
     private Object[][] data = {
             //TODO: Event loading function
-            { sdf.format(new Date()) , sdf.format(new Date()) ,"Waco, TX", "Tester" ,"This is a test value" , " . . . ", " X "}
+
+            { "0", sdf.format(new Date()) , sdf.format(new Date()) ,"Waco, TX", "Tester" ,"This is a test value" , " . . . ", " X "}
     };
 
-    public Planner() {
+    public Planner()
+    {
         super();
         setLayout(new SpringLayout());
 
         //Create a table with a sorter.
         final Class<?>[] columnClass = new Class[]{
-                String.class,String.class,String.class,String.class,String.class,String.class, String.class
+                String.class, String.class,String.class,String.class,String.class,String.class,String.class, String.class
         };
-        final DefaultTableModel model = new DefaultTableModel(EventsServ.getEventsForTable(), columnNames) {
+        final DefaultTableModel model = new DefaultTableModel(EventsServ.getEventsForTable() , columnNames) {
             /**
 			 * 
 			 */
@@ -92,14 +100,17 @@ public class Planner extends JPanel {
 
                 int modelRow = Integer.valueOf(e.getActionCommand());
                 int answer = JOptionPane.showConfirmDialog(null,
-                        "Do you want to remove " + model.getValueAt(modelRow, 2)
-                                + " " + model.getValueAt(modelRow,  1) + "?"
+                        "Do you want to remove Event" + model.getValueAt(modelRow, 0) + "?"
                         ,"Warning"
                         ,JOptionPane.YES_NO_OPTION);
                 if(answer == JOptionPane.YES_OPTION)
                 {
+                    System.out.println("" + model.getValueAt(modelRow, 0) );
+                    EventsServ.removeEvent(Integer.valueOf( "" + model.getValueAt(modelRow, 0)));
                     model.removeRow(modelRow);
+                    
                 }
+
             }
         };
         ButtonColumn colButRemover = new ButtonColumn(table, remove, REMOVECELL);
@@ -108,7 +119,22 @@ public class Planner extends JPanel {
         Action editor = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new EditDialog(table.getSelectedRow(),model).setVisible(true);
+                boolean exceptionFound;
+                do
+                {
+                    exceptionFound = false;
+                    try {
+                        new EditEventDialog(table.getSelectedRow(),model).setVisible(true);
+                    } catch (ParseException ex) {
+                        JOptionPane.showConfirmDialog(null,
+                                "Incorrect Time Format: Please Format as 'YYYY-MM-dd HH:mm:ss.SSS' from '1000-01-01' to '9999-12-31'"
+                                , "Error"
+                                , JOptionPane.OK_OPTION);
+                        exceptionFound = true;
+                        ex.printStackTrace();
+                    }
+                }while(exceptionFound);
+                events = EventsServ.getEventsForPlanner();
             }
         };
         ButtonColumn colButEditor = new ButtonColumn(table, editor, EDITCELL);
@@ -125,10 +151,7 @@ public class Planner extends JPanel {
                     @Override
                     public void run()
                     {
-                        setVisible(false);
-                        // TODO: make Settings
-                        //new SettingsDialog();
-                        setVisible(true);
+                        new SettingDialog();
                     }
                 });
             }
@@ -148,6 +171,8 @@ public class Planner extends JPanel {
                     {
                         AddEvent addEvent = new AddEvent(table);
                         addEvent.setVisible(true);
+                        events = EventsServ.getEventsForPlanner();
+
                     }
                 });
             }
@@ -173,7 +198,7 @@ public class Planner extends JPanel {
 
         // TODO: put ALL BUTTONS or ACTION LISTENERS in their own CLASSES
         //Dialog Button to add new Businesses
-        JButton businessButton = new JButton("Add Business");
+        JButton businessButton = new JButton("Business");
         businessButton.addActionListener(new ActionListener()
         {
             @Override
@@ -190,8 +215,10 @@ public class Planner extends JPanel {
                         //model.insertRow(0, temp.toArray());
                         //new AddLineDialog(0, model).setVisible(true);
                         //setVisible(true);
-                        AddBusiness addBus = new AddBusiness(table);
-                        addBus.setVisible(true);
+                        //AddBusiness addBus = new AddBusiness(table);
+                        //addBus.setVisible(true);
+                    	BusinessUI bui = new BusinessUI();
+                    	bui.setVisible(true);
                         //addBus.show();
                     }
                 });
@@ -263,13 +290,52 @@ public class Planner extends JPanel {
                     public void run()
                     {
                     	new FriendsManagerUI();
-                        
                     }
                 });
             }
         });
 
+        JButton Cart = new JButton("Cart");
+        Cart.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                SwingUtilities.invokeLater(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        new CartDialog();
+
+                    }
+                });
+            }
+        });
+
+        JButton search1 = new JButton("Search");
+        search1.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                SwingUtilities.invokeLater(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        new SearchDialog(combo.getSelectedItem());
+
+                    }
+                });
+            }
+        });
+        combo = new JComboBox(options);
+        combo.setEditable(true);
+
         // Buttons Setup
+        form.add(combo);
+        form.add(search1);
         form.add(settings);
         form.add(eventButton);
         form.add(manageButton);
@@ -277,7 +343,8 @@ public class Planner extends JPanel {
         form.add(pInvButton);
         form.add(eInvButton);
         form.add(friendsButton);
-        SpringUtilities.makeCompactGrid(form, 7, 1, 6, 6, 6, 6);
+        form.add(Cart);
+        SpringUtilities.makeCompactGrid(form, 5, 2, 6, 6, 6, 6);
 
         // Add Buttons to the Right of the Table
         add(form);
