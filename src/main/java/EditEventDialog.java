@@ -163,7 +163,7 @@ public class EditEventDialog extends JFrame implements ActionListener
     {
         Service adding = new Service();
         // TODO: make Add Service Dialog
-        new AddServiceDialog(0,parent);
+        new AddServiceDialog(0);
         Services.add(adding);
     }
 
