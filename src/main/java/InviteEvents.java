@@ -41,12 +41,6 @@ public class InviteEvents extends JDialog implements PropertyChangeListener{
 	public InviteEvents(JTable owner) {
 		super(javax.swing.SwingUtilities.windowForComponent(owner));
 		
-		//friendNames = fService.getFriendNames();
-		//data = new Object[friendNames.size()][2];
-		//for(int i = 0; i < friendNames.size(); i++) {
-			//data[i][0] = friendNames.get(i);
-			//data[i][1] = "temp";
-		//}
 		data = new Object[1][2];
 		data[0][0] = "Bob";
 		
@@ -65,44 +59,11 @@ public class InviteEvents extends JDialog implements PropertyChangeListener{
             }
         };
         
-        friendNames.add("Bob");
-        friendNames.add("Billy");
-        friendNames.add("Bill");
-        
-        /*Action invite = new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                boolean exceptionFound;
-                do
-                {
-                    exceptionFound = false;
-                    try {
-                        new EditEventDialog(table.getSelectedRow(),model).setVisible(true);
-                    	
-                    } catch (ParseException ex) {
-                        JOptionPane.showConfirmDialog(null,
-                                "Incorrect Time Format: Please Format as 'YYYY-MM-dd HH:mm:ss.SSS' from '1000-01-01' to '9999-12-31'"
-                                , "Error"
-                                , JOptionPane.OK_OPTION);
-                        exceptionFound = true;
-                        ex.printStackTrace();
-                    }
-                }while(exceptionFound);
-
-            }
-        };*/
+        friendNames = fService.getFriendNames();
         
         for(int i = 0; i < friendNames.size(); i++) {
         	JTable temp = new JTable();
-        	Object[][] events = new Object[3][2];
-        	
-        	events[0][0] = "school";
-        	events[1][0] = "trip";
-        	events[2][0] = "thing";
-        	
-        	events[0][1] = false;
-        	events[1][1] = false;
-        	events[2][1] = false;
+        	Object[][] events = new Object[friendNames.size()][2];
         	
         	
             final DefaultTableModel model2 = new DefaultTableModel(events, columnNames) {
@@ -125,8 +86,6 @@ public class InviteEvents extends JDialog implements PropertyChangeListener{
             temp.setPreferredScrollableViewportSize(new Dimension(600, getToolkit().getScreenResolution()));
             temp.setFillsViewportHeight(true);
             temp.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-            
-            //ButtonColumn colButEditor = new ButtonColumn(temp, invite, 1);
             
             tables.add(temp);
         }

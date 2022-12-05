@@ -28,6 +28,7 @@ public class Planner extends JPanel {
     private JTextArea choiceLog = new JTextArea("");
     private JFileChooser fileChooser = new JFileChooser();
     private JPanel form = new JPanel(new SpringLayout());
+    private JPanel form2 = new JPanel(new GridBagLayout());
     private JComboBox combo;
     private TableRowSorter<DefaultTableModel> sorter;
     List<Event> events = EventDAOImp.getEvents();
@@ -52,6 +53,9 @@ public class Planner extends JPanel {
     {
         super();
         setLayout(new SpringLayout());
+        
+    	JLabel appName = new JLabel("Moses Travel Guide");
+    	add(appName);
 
         //Create a table with a sorter.
         final Class<?>[] columnClass = new Class[]{
@@ -330,21 +334,22 @@ public class Planner extends JPanel {
         combo.setEditable(true);
 
         // Buttons Setup
-        form.add(combo);
-        form.add(search1);
-        form.add(settings);
-        form.add(eventButton);
-        form.add(manageButton);
-        form.add(businessButton);
-        form.add(pInvButton);
-        form.add(eInvButton);
-        form.add(friendsButton);
-        form.add(Cart);
-        SpringUtilities.makeCompactGrid(form, 5, 2, 6, 6, 6, 6);
+        form2.add(combo);
+        form2.add(search1);
+        form2.add(settings);
+        form2.add(eventButton);
+        form2.add(manageButton);
+        form2.add(businessButton);
+        form2.add(pInvButton);
+        form2.add(eInvButton);
+        form2.add(friendsButton);
+        form2.add(Cart);
+        //SpringUtilities.makeCompactGrid(form, 2, 5, 6, 6, 6, 6);
 
         // Add Buttons to the Right of the Table
-        add(form);
-        SpringUtilities.makeCompactGrid(this, 1,2,10,10,10,10);
+        add(form2);
+        //SpringUtilities.makeCompactGrid(this, 1,2,10,10,10,10);
+        SpringUtilities.makeCompactGrid(this, 3,1,10,10,10,10);
     }
 
     /**
