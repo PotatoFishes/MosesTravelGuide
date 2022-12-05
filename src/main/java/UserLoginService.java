@@ -15,9 +15,10 @@ public class UserLoginService {
 		System.out.println(u);
 		return u;
 	}
-	public static void updateUser() {
-		if(user != null) {
-			UserDAO.updateUser(user);
+	public static void updateUser(User u) {
+		if(u != null) {
+			UserDAO.updateUser(u);
+			user=u;
 		}
 	}
 	public static void deleteUser() {
