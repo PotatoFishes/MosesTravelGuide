@@ -143,4 +143,14 @@ public class UserDAO {
 		      } 
 		return out;
 	}
+	
+	public static void removeFollower(User u, int uid) {
+		try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+		         Statement stmt = conn.createStatement();
+		         ) {
+		         stmt.execute("DELETE FROM Follow WHERE user1="+u.id +" AND user2=" + uid);
+		      } catch (SQLException ex) {
+		         ex.printStackTrace();
+		      } 
+	}
 }

@@ -149,10 +149,7 @@ public class Planner extends JPanel {
                     @Override
                     public void run()
                     {
-                        setVisible(false);
-                        // TODO: make Settings
-                        //new SettingsDialog();
-                        setVisible(true);
+                        new SettingDialog();
                     }
                 });
             }
@@ -199,7 +196,7 @@ public class Planner extends JPanel {
 
         // TODO: put ALL BUTTONS or ACTION LISTENERS in their own CLASSES
         //Dialog Button to add new Businesses
-        JButton businessButton = new JButton("Add Business");
+        JButton businessButton = new JButton("Business");
         businessButton.addActionListener(new ActionListener()
         {
             @Override

@@ -33,6 +33,7 @@ public class FriendsManagerUI extends JFrame implements ActionListener{
 	private static final String[] incomeingColumnNames = {"Name", "Email", "Location", "ID"};
 	private static final String[] outGoingColumnNames = {"Name", "ID", " Remove "};
 	private static final int REMOVE = 2;
+	private static final int ID = 1;
 	
 	private static final String[][] inSample = {{"Bob", "Bob@bobhouse.net", "Moon", "1234"}};
 	private static final String[][] outSample ={ {"Bob", "1234", " X "}};
@@ -83,6 +84,8 @@ public class FriendsManagerUI extends JFrame implements ActionListener{
                         ,JOptionPane.YES_NO_OPTION);
                 if(answer == JOptionPane.YES_OPTION)
                 {
+                	Integer u = Integer.parseInt( (String) modelOutGoing.getValueAt(modelRow, ID));
+                	FriendsService.removePermission(u);
                 	modelOutGoing.removeRow(modelRow);
                 }
             }
@@ -130,7 +133,13 @@ public class FriendsManagerUI extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		try {
 			Integer id = Integer.parseInt(idEntry.getText());
-			if(UserDAO.checkExists(id)) {
+			if(id.equals(UserLoginService.getUser().id)) {
+				JOptionPane.showMessageDialog(null,
+	                    "You cannot be your own friend\nPlease Enter a valid User ID"
+	                    ,"Error"
+	                    ,JOptionPane.OK_OPTION);
+			}
+			else if(UserDAO.checkExists(id)) {
 				FriendsService.addPermission(id);
 				updateOutgoingView();
 			}
