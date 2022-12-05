@@ -24,7 +24,7 @@ public class ServiceServ {
 
 	public static Object[][] getServicesForTable(int eid) {
 		java.util.List<Service> services = new ArrayList<>();
-		EventDAOImp.getEvent(eid).getUsedServices(services);
+		services = EventDAOImp.getEvent(eid).getUsedServices(services);
 		Object[][] data = new Object[services.size()][];
 		for(int i = 0; i < data.length; ++i) {
 			data[i] = services.get(i).toArray();
