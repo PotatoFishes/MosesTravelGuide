@@ -15,6 +15,6 @@ public class FriendsService {
 		UserDAO.addFollow(UserLoginService.getUser(), u);
 	}
 	static public void removePermission(Integer u) {
-		
+		UserDAO.removeFollower(UserLoginService.getUser(), u);
 	}
 }

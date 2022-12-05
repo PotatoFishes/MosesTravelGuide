@@ -33,6 +33,7 @@ public class FriendsManagerUI extends JFrame implements ActionListener{
 	private static final String[] incomeingColumnNames = {"Name", "Email", "Location", "ID"};
 	private static final String[] outGoingColumnNames = {"Name", "ID", " Remove "};
 	private static final int REMOVE = 2;
+	private static final int ID = 1;
 	
 	private static final String[][] inSample = {{"Bob", "Bob@bobhouse.net", "Moon", "1234"}};
 	private static final String[][] outSample ={ {"Bob", "1234", " X "}};
@@ -83,6 +84,8 @@ public class FriendsManagerUI extends JFrame implements ActionListener{
                         ,JOptionPane.YES_NO_OPTION);
                 if(answer == JOptionPane.YES_OPTION)
                 {
+                	Integer u = Integer.parseInt( (String) modelOutGoing.getValueAt(modelRow, ID));
+                	FriendsService.removePermission(u);
                 	modelOutGoing.removeRow(modelRow);
                 }
             }
