@@ -29,7 +29,7 @@ import javax.swing.table.DefaultTableModel;
 public class AddEvent extends JDialog implements PropertyChangeListener{
 	JTable table;
 	private int ID = 0, Type = 0;
-	private String Name="", SDate="0000-00-00 00:00:00.000", EDate="0000-00-00 00:00:00.000", Loc="", Note="";
+	private String Name="", SDate="1000-01-01 00:00:00.000", EDate="1000-01-01 00:00:00.000", Loc="", Note="";
 	private JLabel IDlabel, Namelabel, Typelabel, SDatelabel, EDatelabel, Loclabel, Notelabel;
 	private static String IDcol="ID: ", Namecol="Name: ", Typecol="Type: ", SDatecol="Start Date: ", EDatecol="End Date: ", Loccol="Location: ", Notecol="Note: ";
 	private JFormattedTextField IDfield, Namefield, Typefield, SDatefield, EDatefield, Locfield, Notefield;
@@ -130,6 +130,7 @@ public class AddEvent extends JDialog implements PropertyChangeListener{
 					Event temp = new Event(ID, Name, timestamp, timestamp2, Loc, Note, "", 1);
 					EventDAOImp.updateEvent(temp);
 					((DefaultTableModel)table.getModel()).insertRow(0, temp.toArray());
+					EventsServ.createEvent(temp);
 					dispose();
 				} catch (NumberFormatException e1) {
 					// TODO Auto-generated catch block

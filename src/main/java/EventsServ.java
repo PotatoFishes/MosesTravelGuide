@@ -17,16 +17,23 @@ public class EventsServ {
 		return new ArrayList<Booking>(out);
 	}
 	
-	public static Event createEvent() {
-		return new Event();
+	public static void createEvent(Event e)
+	{
+		EventDAOImp.updateEvent(e);
 	}
 	
 	public static Event createEvent(int id, String na, int t, String sD, String eD, String l, String n) throws ParseException {
 		return null;//new Event(id, na, t, sD, eD, l, n);
 	}
 	
-	public static void setEvent(Event e) {
+	public static void setEvent(Event e)
+	{
 		
+	}
+
+	public static List<Event> getEventsForPlanner()
+	{
+		return EventDAOImp.getEvents();
 	}
 	
 	public static Object[][] getEventsForTable() {

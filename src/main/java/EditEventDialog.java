@@ -177,6 +177,7 @@ public class EditEventDialog extends JFrame implements ActionListener
 
     private void initAdder()
     {
+        adder.add(txtId.getText());
         adder.add(txtSDate.getText());
         adder.add(txtEDate.getText());
         adder.add(txtLoc.getText());

@@ -1,6 +1,7 @@
 import net.coderazzi.filters.gui.AutoChoices;
 import net.coderazzi.filters.gui.TableFilterHeader;
 
+import java.util.List;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -11,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Planner extends JPanel {
@@ -18,6 +20,7 @@ public class Planner extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = -1829319321640316625L;
+    UserLoginService loggedInUser = new UserLoginService();
 	private static JTable table;
     private static JFrame frame;
     private JTextField filterText;
@@ -26,19 +29,20 @@ public class Planner extends JPanel {
     private JFileChooser fileChooser = new JFileChooser();
     private JPanel form = new JPanel(new SpringLayout());
     private TableRowSorter<DefaultTableModel> sorter;
+    List<Event> events = EventDAOImp.getEvents();
     public static int NOTES = 5;
     public static int EDITCELL = 6;
     public static int REMOVECELL = 7;
 
     //TODO: remove these debugging/testing variables
-    public SimpleDateFormat sdf =
-            new SimpleDateFormat("MM/dd/YYYY hh:mm a");
+    public SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss.SSS");
 
     private String[] columnNames = {
             "ID","Start Time", "End Time", "Location", "Name", "Note", "Edit", "Remove"
     };
     private Object[][] data = {
             //TODO: Event loading function
+
             { "0", sdf.format(new Date()) , sdf.format(new Date()) ,"Waco, TX", "Tester" ,"This is a test value" , " . . . ", " X "}
     };
 
@@ -117,11 +121,11 @@ public class Planner extends JPanel {
                     try {
                         new EditEventDialog(table.getSelectedRow(),model).setVisible(true);
                     } catch (ParseException ex) {
-                        /*JOptionPane.showConfirmDialog(null,
+                        JOptionPane.showConfirmDialog(null,
                                 "Incorrect Time Format: Please Format as \"MM/dd/YYYY hh:mm: AM/PM\" "
                                 , "Error"
                                 , JOptionPane.OK_OPTION);
-                        exceptionFound = true;*/
+                        exceptionFound = true;
                         ex.printStackTrace();
                     }
                 }while(exceptionFound);
