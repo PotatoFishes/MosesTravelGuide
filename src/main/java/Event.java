@@ -10,7 +10,6 @@ import java.util.Vector;
 public class Event
 {
     SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss.SSS");
-    public static int EVENTCOUNT = 0;
     int ID = 0;
     String name;
     Date sDate;
@@ -22,13 +21,12 @@ public class Event
     
     Event()
     {
-        ID = EVENTCOUNT;
+        ID = 0;
         name = "Name";
         sDate = new Date();
         eDate = new Date();
         loc = "";
         note = "";
-        EVENTCOUNT++;
     }
 
     Event(String na, Timestamp timestamp, Timestamp timestamp2, String l, String n, String sl, int uid)
@@ -50,11 +48,6 @@ public class Event
             usedServices=ServiceDAOImp.getServices(arr);
         }
         userID=uid;
-        if(userID > EVENTCOUNT)
-        {
-            EVENTCOUNT = userID;
-        }
-        EVENTCOUNT ++;
     }
     //Parse needs to be fixed
     Event(int id, String na, Timestamp timestamp, Timestamp timestamp2, String l, String n, String sl, int uid)
@@ -83,11 +76,6 @@ public class Event
         	usedServices=ServiceDAOImp.getServices(data);
         }
         userID=uid;
-        if(userID > EVENTCOUNT)
-        {
-            EVENTCOUNT = userID;
-        }
-        EVENTCOUNT ++;
     }
 
     @Override
