@@ -29,6 +29,7 @@ public class EventDAOImp{
 		         // Extract data from result set
 		         while (rs.next()) {
 		            // Retrieve by column name
+					 System.out.println(rs.getString("Start"));
 		        	Event e=new Event(rs.getInt("id"),rs.getString("eventName"),rs.getTimestamp("Start"),rs.getTimestamp("End"),rs.getString("Location"),rs.getString("notes"),rs.getString("usedServices"), uid);
 		        	list.add(e);
 		         }
@@ -67,21 +68,20 @@ public class EventDAOImp{
 				System.out.println("Problem with user id while updating event");
 				return;
 			}
-		         if (rs.next()) {
-		            // Retrieve by column name
-		        	 System.out.println("Preforming Update on Event");
-		        	stmt.executeUpdate("UPDATE Events SET eventName='"+e.getName()+"', Start='"+e.getStartDate()+"', End='"+e.getEndDate()+"', location='"+e.getLocation()+"', notes='"+e.getNote()+"', usedServices='"+e.getUsedServices()+"', userid="+uid+" WHERE id="+e.getID());
-		         }
-		         else
-		         {
-		        	 
-		        	 System.out.println("Inserting new Event");
-		        	 stmt.executeUpdate("INSERT INTO Events (eventName, Start, End, Location, notes, usedServices, userid) VALUES('"+e.getName()+"', '"+e.getStartDate()+"', '"+e.getEndDate()+"', '"+e.getLocation()+"', '"+e.getNote()+"', '"+e.getUsedServices()+"', "+uid+")");
-		         }
-		      } catch (SQLException ex) {
-		         ex.printStackTrace();
-		      } 
-		
+			 if (rs.next()) {
+				// Retrieve by column name
+				 System.out.println("Preforming Update on Event");
+				stmt.executeUpdate("UPDATE Events SET eventName='"+e.getName()+"', Start='"+e.getStartDate()+"', End='"+e.getEndDate()+"', location='"+e.getLocation()+"', notes='"+e.getNote()+"', usedServices='"+e.getUsedServices()+"', userid="+uid+" WHERE id="+e.getID());
+			 }
+			 else
+			 {
+
+				 System.out.println("Inserting new Event");
+				 stmt.executeUpdate("INSERT INTO Events (eventName, Start, End, Location, notes, usedServices, userid) VALUES('"+e.getName()+"', '"+e.getStartDate()+"', '"+e.getEndDate()+"', '"+e.getLocation()+"', '"+e.getNote()+"', '"+e.getUsedServices()+"', "+uid+")");
+			 }
+		  } catch (SQLException ex) {
+			 ex.printStackTrace();
+		  }
 	}
 
 	public static void deleteEvent(Event e) {

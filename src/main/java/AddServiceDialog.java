@@ -10,7 +10,7 @@ import java.util.Vector;
 
 public class AddServiceDialog extends JFrame implements ActionListener
 {
-    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY hh:mm a");
+    SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss.SSS");
     private Vector<Object> adder = new Vector<>();
     private List<Service> Services = new ArrayList<>();
     DefaultTableModel parent;
@@ -68,7 +68,7 @@ public class AddServiceDialog extends JFrame implements ActionListener
         JPanel panelHolders = new JPanel();
         panelHolders.setLayout(new SpringLayout());
         panelHolders.add(content);
-        SpringUtilities.makeCompactGrid(panelHolders, 1, 2, 6, 6, 6, 6);
+        SpringUtilities.makeCompactGrid(panelHolders, 1, 1, 6, 6, 6, 6);
 
         setContentPane(panelHolders);
         pack();

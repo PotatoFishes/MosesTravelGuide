@@ -8,12 +8,7 @@ import java.beans.PropertyChangeListener;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.Date;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFormattedTextField;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 /*
@@ -23,7 +18,7 @@ public class AddEvent extends JDialog implements PropertyChangeListener{
 	private static final long serialVersionUID = 4143611827610300148L;
 	JTable table;
 	private int ID = 0, Type = 0;
-	private String Name="", SDate="0000-00-00 00:00:00.000", EDate="0000-00-00 00:00:00.000", Loc="", Note="";
+	private String Name="", SDate="1000-01-01 00:00:00.000", EDate="1000-01-01 00:00:00.000", Loc="", Note="";
 	private JLabel IDlabel, Namelabel, Typelabel, SDatelabel, EDatelabel, Loclabel, Notelabel;
 	private static String IDcol="ID: ", Namecol="Name: ", Typecol="Type: ", SDatecol="Start Date: ", EDatecol="End Date: ", Loccol="Location: ", Notecol="Note: ";
 	private JFormattedTextField Namefield, Typefield, SDatefield, EDatefield, Locfield, Notefield;
@@ -117,23 +112,38 @@ public class AddEvent extends JDialog implements PropertyChangeListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-
 					//List<Service> temp = new ArrayList<Service>();
 					Timestamp timestamp = convertStringToTimestamp(SDatefield.getText());
 					Timestamp timestamp2 = convertStringToTimestamp(EDatefield.getText());
+					timestamp.after(timestamp2);
 					
 					Event temp = new Event(ID, Name, timestamp, timestamp2, Loc, Note, "", 1);
 					EventDAOImp.updateEvent(temp);
-					((DefaultTableModel)table.getModel()).insertRow(0, temp.toArray());
-					dispose();
+					if(!EventsServ.checkTimesValid(temp))
+					{
+						JOptionPane.showConfirmDialog(null,
+								"Incorrect Time Format: " + SDatefield.getText() + " is equal to or after " + EDatefield.getText()
+								, "Error"
+								, JOptionPane.OK_CANCEL_OPTION);
+
+					}
+					else
+					{
+						EventsServ.createEvent(temp);
+						((DefaultTableModel)table.getModel()).insertRow(0, temp.toArray());
+						dispose();
+					}
 				} catch (NumberFormatException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (ParseException e1) {
 					// TODO: Display message that informs user that date was invalid
+					JOptionPane.showConfirmDialog(null,
+							"Incorrect Time Format: Please Format as 'YYYY-MM-dd HH:mm:ss.SSS' from '1000-01-01' to '9999-12-31'"
+							, "Error"
+							, JOptionPane.OK_CANCEL_OPTION);
 					e1.printStackTrace();
 				}
-				
 			}
 		}
 		);

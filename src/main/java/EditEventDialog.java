@@ -1,3 +1,4 @@
+import com.mysql.cj.util.StringUtils;
 import net.coderazzi.filters.gui.AutoChoices;
 import net.coderazzi.filters.gui.TableFilterHeader;
 
@@ -7,6 +8,7 @@ import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,10 +27,16 @@ public class EditEventDialog extends JFrame implements ActionListener
     private Vector<Object> adder = new Vector<>();
     private List<Service> Services = new ArrayList<>();
     private int index;
-    private JTextField txtId, txtName, txtType, txtSDate, txtEDate, txtLoc, txtNote;
+    private JTextField txtId, txtName, txtSDate, txtEDate, txtLoc, txtNote, txtServices;
     private JButton btnOK, btnCancel, btnAddServ;
-    private int EDITCELL = 7;
-    private int REMOVECELL = 8;
+    private int EIDCELL = 0;
+    private int ESDATECELL = 1;
+    private int EEDATECELL = 2;
+    private int ELOCCELL = 3;
+    private int ENAMECELL = 4;
+    private int ENOTECELL = 5;
+    private int SEDITCELL = 7;
+    private int SREMOVECELL = 8;
     private String[] columnNames = {
             "ID", "Price", "Name", "Start Time", "End Time", "Bookings", "Capacity", "Edit", "Remove"
     };
@@ -42,7 +50,7 @@ public class EditEventDialog extends JFrame implements ActionListener
         setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         parent = eventModel;
         index = ndx;
-        eventID = Integer.parseInt(((String)parent.getValueAt(ndx,0)).trim());
+        eventID = Integer.parseInt(((String)parent.getValueAt(ndx,EIDCELL)).trim());
 
         //Create a table with a sorter.
         final Class<?>[] columnClass = new Class[]{
@@ -51,7 +59,7 @@ public class EditEventDialog extends JFrame implements ActionListener
         final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
             @Override
             public boolean isCellEditable(int row, int col) {
-                if(col < EDITCELL) {
+                if(col < SEDITCELL) {
                     return false;
                 } else {
                     return true;
@@ -96,7 +104,7 @@ public class EditEventDialog extends JFrame implements ActionListener
                 }
             }
         };
-        ButtonColumn colButRemover = new ButtonColumn(table, remove, REMOVECELL);
+        ButtonColumn colButRemover = new ButtonColumn(table, remove, SREMOVECELL);
 
         // Edit Row button
         Action editor = new AbstractAction() {
@@ -105,21 +113,21 @@ public class EditEventDialog extends JFrame implements ActionListener
                 //new EditDialog(table.getSelectedRow(),model).setVisible(true);
             }
         };
-        ButtonColumn colButEditor = new ButtonColumn(table, editor, EDITCELL);
+        ButtonColumn colButEditor = new ButtonColumn(table, editor, SEDITCELL);
 
         //Setting Input Fields' Initial Values
         txtName = new JTextField(15);
         txtName.setText( "" + eventModel.getValueAt(ndx, 4) );
         txtSDate = new JTextField(15);
-        System.out.println("" + eventModel.getValueAt(ndx, 1));
-        txtSDate.setText(sdf.parse("" + eventModel.getValueAt(ndx, 1)).toString());
-        System.out.println("" + eventModel.getValueAt(ndx, 1));
+        System.out.println("" + eventModel.getValueAt(ndx, ESDATECELL));
+        txtSDate.setText(sdf.parse("" + eventModel.getValueAt(ndx, ESDATECELL)).toString());
+        System.out.println("" + eventModel.getValueAt(ndx, EEDATECELL));
         txtEDate = new JTextField(15);
-        txtEDate.setText(sdf.parse("" + eventModel.getValueAt(ndx, 1)).toString());
+        txtEDate.setText(sdf.parse("" + eventModel.getValueAt(ndx, EEDATECELL)).toString());
         txtLoc = new JTextField(15);
-        txtLoc.setText("" + eventModel.getValueAt(ndx, 3));
+        txtLoc.setText("" + eventModel.getValueAt(ndx, ELOCCELL));
         txtNote = new JTextField(15);
-        txtNote.setText("Note");
+        txtNote.setText("" + eventModel.getValueAt(ndx, ENOTECELL));
 
         //Setting Up Buttons
         btnOK = new JButton("Save");
@@ -177,12 +185,28 @@ public class EditEventDialog extends JFrame implements ActionListener
 
     private void initAdder()
     {
+        adder.add(txtId.getText());
         adder.add(txtSDate.getText());
         adder.add(txtEDate.getText());
         adder.add(txtLoc.getText());
         adder.add(txtNote.getText());
         adder.add(" . . . ");
         adder.add(" X ");
+        String temp = "";
+        for(Service s : Services)
+        {
+            temp += s.getID() + ",";
+        }
+        chop(temp);
+        txtServices.setText(temp);
+    }
+
+    public static void chop(String s)
+    {
+        if(s.length() > 0)
+        {
+            s = s.substring(0, s.length() - 2);
+        }
     }
 
     @Override
@@ -191,9 +215,26 @@ public class EditEventDialog extends JFrame implements ActionListener
         JButton clicked = (JButton) e.getSource();
         if(clicked == btnOK)
         {
+            initAdder();
             try
             {
                 Integer.parseInt(txtId.getText());
+                //List<Service> temp = new ArrayList<Service>();
+                Timestamp timestamp = AddEvent.convertStringToTimestamp(txtSDate.getText());
+                Timestamp timestamp2 = AddEvent.convertStringToTimestamp(txtEDate.getText());
+                timestamp.after(timestamp2);
+
+                Event temp = new Event(Integer.valueOf(txtId.getText()), txtName.getText(), timestamp, timestamp2,txtLoc.getText(), txtNote.getText(), txtServices.getText(), 1);
+                EventDAOImp.updateEvent(temp);
+                parent.insertRow(0, temp.toArray());
+                if(!EventsServ.checkTimesValid(temp))
+                {
+                    JOptionPane.showConfirmDialog(null,
+                            "Incorrect Time Format: Please Format as 'YYYY-MM-dd HH:mm:ss.SSS' from '1000-01-01' to '9999-12-31'"
+                            , "Error"
+                            , JOptionPane.OK_OPTION);
+                }
+                EventsServ.createEvent(temp);
             }
             catch(NumberFormatException nfe)
             {
@@ -201,13 +242,14 @@ public class EditEventDialog extends JFrame implements ActionListener
                         "Incorrect Value Given"
                         ,"Error"
                         ,JOptionPane.OK_OPTION);
-                this.parent.removeRow(index);
                 dispose();
                 return;
+            } catch (ParseException ex) {
+                ex.printStackTrace();
             }
-            initAdder();
             parent.removeRow(index);
             parent.insertRow(index,adder);
+            Event temp = new Event();
             dispose();
             return;
         }

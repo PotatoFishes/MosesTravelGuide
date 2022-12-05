@@ -49,6 +49,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.5.0-b01</version>
+        </dependency>
+        <dependency>
             <groupId>net.coderazzi</groupId>
             <artifactId>tablefilter-swing</artifactId>
             <version>5.3.1</version>
@@ -77,6 +82,7 @@
     		<artifactId>mysql-connector-java</artifactId>
     		<version>8.0.31</version>
 		</dependency>
+
     </dependencies>
 
 </project>
