@@ -13,7 +13,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Planner extends JPanel {
-    private static JTable table;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -1829319321640316625L;
+	private static JTable table;
     private static JFrame frame;
     private JTextField filterText;
     private JTextField statusText;
@@ -45,8 +49,12 @@ public class Planner extends JPanel {
         final Class<?>[] columnClass = new Class[]{
                 String.class,String.class,String.class,String.class,String.class,String.class, String.class
         };
-        final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-            @Override
+        final DefaultTableModel model = new DefaultTableModel(EventsServ.getEventsForTable(), columnNames) {
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = -4279510772803332762L;
+			@Override
             public boolean isCellEditable(int row, int col) {
                 if(col < NOTES) {
                     return false;
