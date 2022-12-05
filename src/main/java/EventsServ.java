@@ -67,7 +67,6 @@ public class EventsServ {
         Object[][] data = new Object[events.size()][];
         for(int i = 0; i < data.length; ++i) {
         	data[i] = events.get(i).toArray();
-			System.out.println("" + data[i]);
         }
         return data;
 	}
