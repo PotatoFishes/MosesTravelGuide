@@ -3,6 +3,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 public class Service
 {
@@ -94,5 +95,23 @@ public class Service
         Object[] ev = new Object[]{ name , bookings , capacity, " . . . ", " X "};
         return ev;
     }
+	@Override
+	public int hashCode() {
+		return Objects.hash(bookings, capacity, eDate, name, price, sDate);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Service other = (Service) obj;
+		return bookings == other.bookings && capacity == other.capacity && Objects.equals(eDate, other.eDate)
+				&& Objects.equals(name, other.name)
+				&& Double.doubleToLongBits(price) == Double.doubleToLongBits(other.price)
+				&& Objects.equals(sDate, other.sDate);
+	}
 
 }
