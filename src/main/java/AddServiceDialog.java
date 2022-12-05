@@ -13,15 +13,16 @@ public class AddServiceDialog extends JFrame implements ActionListener
     SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY hh:mm a");
     private Vector<Object> adder = new Vector<>();
     private List<Service> Services = new ArrayList<>();
-    private Event newE;
+    DefaultTableModel parent;
     private int index;
     private JTextField txtName, txtBookings, txtSDate, txtEDate, txtPrice, txtCapacity;
     private JButton btnOK, btnCancel, btnAddServ;
 
-    AddServiceDialog(int eventID)
+    AddServiceDialog(int eventID, DefaultTableModel model)
     {
         super("Add Service");
         setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
+        parent = model;
         index = eventID;
 
         //Setting Input Fields' Initial Values

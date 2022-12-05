@@ -7,6 +7,7 @@ import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,7 +16,7 @@ import java.util.Vector;
 
 public class EditEventDialog extends JFrame implements ActionListener
 {
-    public SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY hh:mm a");
+    public SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss.SSS");
     private static JTable table;
     private static JFrame frame;
     private TableRowSorter<DefaultTableModel> sorter;
@@ -26,16 +27,17 @@ public class EditEventDialog extends JFrame implements ActionListener
     private int index;
     private JTextField txtId, txtName, txtType, txtSDate, txtEDate, txtLoc, txtNote;
     private JButton btnOK, btnCancel, btnAddServ;
+    private int EDITCELL = 7;
+    private int REMOVECELL = 8;
     private String[] columnNames = {
-            "Start Time", "End Time", "Location", "Name", "Note", "Edit", "Remove"
+            "ID", "Price", "Name", "Start Time", "End Time", "Bookings", "Capacity", "Edit", "Remove"
     };
     private Object[][] data = {
             //TODO: Service loading functions
-            { sdf.format(new Date()) , sdf.format(new Date()) ,"Waco, TX", "Tester" ,"This is a test value" , " . . . ", " X "}
+            { "0", "0.00", "test", sdf.format(new Date()) , sdf.format(new Date()) ,"3", "5" , " . . . ", " X "}
     };
 
-    EditEventDialog(final int ndx, final DefaultTableModel eventModel)
-    {
+    EditEventDialog(final int ndx, final DefaultTableModel eventModel) throws ParseException {
         super("Edit Event");
         setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         parent = eventModel;
@@ -44,12 +46,16 @@ public class EditEventDialog extends JFrame implements ActionListener
 
         //Create a table with a sorter.
         final Class<?>[] columnClass = new Class[]{
-                String.class,String.class,String.class,String.class,String.class,String.class, String.class
+                String.class, String.class, String.class,String.class,String.class,String.class,String.class,String.class, String.class
         };
         final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
             @Override
             public boolean isCellEditable(int row, int col) {
-                return true;
+                if(col < EDITCELL) {
+                    return false;
+                } else {
+                    return true;
+                }
             }
             @Override
             public Class <?> getColumnClass(int col)
@@ -72,7 +78,7 @@ public class EditEventDialog extends JFrame implements ActionListener
         JScrollPane scrollPane = new JScrollPane(table);
 
         //Add the scroll pane to this panel.
-        add(scrollPane);
+
 
         // Remove Row button
         Action remove = new AbstractAction() {
@@ -90,7 +96,7 @@ public class EditEventDialog extends JFrame implements ActionListener
                 }
             }
         };
-        ButtonColumn colButRemover = new ButtonColumn(table, remove, Planner.REMOVECELL);
+        ButtonColumn colButRemover = new ButtonColumn(table, remove, REMOVECELL);
 
         // Edit Row button
         Action editor = new AbstractAction() {
@@ -99,17 +105,19 @@ public class EditEventDialog extends JFrame implements ActionListener
                 //new EditDialog(table.getSelectedRow(),model).setVisible(true);
             }
         };
-        ButtonColumn colButEditor = new ButtonColumn(table, editor, Planner.EDITCELL);
+        ButtonColumn colButEditor = new ButtonColumn(table, editor, EDITCELL);
 
         //Setting Input Fields' Initial Values
         txtName = new JTextField(15);
-        txtName.setText( "" + model.getValueAt(ndx, 4) );
+        txtName.setText( "" + eventModel.getValueAt(ndx, 4) );
         txtSDate = new JTextField(15);
-        txtSDate.setText("" + model.getValueAt(ndx, 1));
+        System.out.println("" + eventModel.getValueAt(ndx, 1));
+        txtSDate.setText(sdf.parse("" + eventModel.getValueAt(ndx, 1)).toString());
+        System.out.println("" + eventModel.getValueAt(ndx, 1));
         txtEDate = new JTextField(15);
-        txtEDate.setText("" + model.getValueAt(ndx, 2));
+        txtEDate.setText(sdf.parse("" + eventModel.getValueAt(ndx, 1)).toString());
         txtLoc = new JTextField(15);
-        txtLoc.setText("" + model.getValueAt(ndx, 3));
+        txtLoc.setText("" + eventModel.getValueAt(ndx, 3));
         txtNote = new JTextField(15);
         txtNote.setText("Note");
 
@@ -139,7 +147,7 @@ public class EditEventDialog extends JFrame implements ActionListener
         //Setting Event Content Buttons
         content.add(btnOK);
         content.add(btnCancel);
-        SpringUtilities.makeCompactGrid(content, 8, 2, 6, 6, 6, 6);
+        SpringUtilities.makeCompactGrid(content, 7, 2, 6, 6, 6, 6);
 
         //Setting Service Content Buttons
         JPanel servicer = new JPanel();
@@ -163,7 +171,7 @@ public class EditEventDialog extends JFrame implements ActionListener
     {
         Service adding = new Service();
         // TODO: make Add Service Dialog
-        new AddServiceDialog(0);
+        new AddServiceDialog(0, (DefaultTableModel) table.getModel());
         Services.add(adding);
     }
 

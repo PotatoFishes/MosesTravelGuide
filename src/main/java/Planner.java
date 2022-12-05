@@ -9,6 +9,7 @@ import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -25,31 +26,32 @@ public class Planner extends JPanel {
     private JFileChooser fileChooser = new JFileChooser();
     private JPanel form = new JPanel(new SpringLayout());
     private TableRowSorter<DefaultTableModel> sorter;
-    public static int NOTES = 4;
-    public static int EDITCELL = 5;
-    public static int REMOVECELL = 6;
+    public static int NOTES = 5;
+    public static int EDITCELL = 6;
+    public static int REMOVECELL = 7;
 
     //TODO: remove these debugging/testing variables
     public SimpleDateFormat sdf =
             new SimpleDateFormat("MM/dd/YYYY hh:mm a");
 
     private String[] columnNames = {
-            "Start Time", "End Time", "Location", "Name", "Note", "Edit", "Remove"
+            "ID","Start Time", "End Time", "Location", "Name", "Note", "Edit", "Remove"
     };
     private Object[][] data = {
             //TODO: Event loading function
-            { sdf.format(new Date()) , sdf.format(new Date()) ,"Waco, TX", "Tester" ,"This is a test value" , " . . . ", " X "}
+            { "0", sdf.format(new Date()) , sdf.format(new Date()) ,"Waco, TX", "Tester" ,"This is a test value" , " . . . ", " X "}
     };
 
-    public Planner() {
+    public Planner()
+    {
         super();
         setLayout(new SpringLayout());
 
         //Create a table with a sorter.
         final Class<?>[] columnClass = new Class[]{
-                String.class,String.class,String.class,String.class,String.class,String.class, String.class
+                String.class, String.class,String.class,String.class,String.class,String.class,String.class, String.class
         };
-        final DefaultTableModel model = new DefaultTableModel(EventsServ.getEventsForTable(), columnNames) {
+        final DefaultTableModel model = new DefaultTableModel(EventsServ.getEventsForTable() , columnNames) {
             /**
 			 * 
 			 */
@@ -108,7 +110,22 @@ public class Planner extends JPanel {
         Action editor = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new EditDialog(table.getSelectedRow(),model).setVisible(true);
+                boolean exceptionFound;
+                do
+                {
+                    exceptionFound = false;
+                    try {
+                        new EditEventDialog(table.getSelectedRow(),model).setVisible(true);
+                    } catch (ParseException ex) {
+                        /*JOptionPane.showConfirmDialog(null,
+                                "Incorrect Time Format: Please Format as \"MM/dd/YYYY hh:mm: AM/PM\" "
+                                , "Error"
+                                , JOptionPane.OK_OPTION);
+                        exceptionFound = true;*/
+                        ex.printStackTrace();
+                    }
+                }while(exceptionFound);
+
             }
         };
         ButtonColumn colButEditor = new ButtonColumn(table, editor, EDITCELL);
