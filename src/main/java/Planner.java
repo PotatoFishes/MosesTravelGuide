@@ -147,10 +147,7 @@ public class Planner extends JPanel {
                     @Override
                     public void run()
                     {
-                        setVisible(false);
-                        // TODO: make Settings
-                        //new SettingsDialog();
-                        setVisible(true);
+                        new SettingDialog();
                     }
                 });
             }
