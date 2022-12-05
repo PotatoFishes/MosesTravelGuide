@@ -47,7 +47,7 @@ public class FriendsManagerUI extends JFrame implements ActionListener{
 		this.setContentPane(content);
 		
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        modelIncoming = new DefaultTableModel(inSample, incomeingColumnNames) {
+        modelIncoming = new DefaultTableModel(null, incomeingColumnNames) {
             @Override
             public boolean isCellEditable(int row, int col) {
                 return false;
@@ -127,6 +127,7 @@ public class FriendsManagerUI extends JFrame implements ActionListener{
         this.setVisible(true);
         
         updateOutgoingView();
+        updateIncomingView();
 	}
 	
 	@Override
@@ -169,6 +170,20 @@ public class FriendsManagerUI extends JFrame implements ActionListener{
 				cols.add(out[r][c]);
 			}
 			modelOutGoing.addRow(cols);
+		}
+	}
+	
+	private void updateIncomingView() {
+		Set<String[]> strs = FriendsService.accessFriends();
+		String[][] out = strs.toArray(new String[strs.size()][]);
+		
+		modelIncoming.setRowCount(0);
+		for(int r = 0; r < out.length; r++) {
+			Vector<Object> cols = new Vector<Object>();
+			for(int c = 0; c < 4; c++) {
+				cols.add(out[r][c]);
+			}
+			modelIncoming.addRow(cols);
 		}
 	}
 }

@@ -178,5 +178,48 @@ public class UserDAO {
 			ex.printStackTrace();
 		}
 	}
+	
+	public static Set<UserInfo> getFollowed(User u){
+		Set<Integer> ids = new HashSet<Integer>();
+		Set<UserInfo> uis = new HashSet<UserInfo>();
+		try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+				Statement stmt = conn.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT user1 FROM Follow WHERE user2=" + u.id);) {
+			// Extract data from result set
+			while (rs.next()) {
+				int i = rs.getInt(1);
+				ids.add(i);
+			}
+			rs.close();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		for(Integer i: ids) {
+			UserInfo f = new UserInfo();
+			f.setId(i);
+			try (Connection nameConn = DriverManager.getConnection(DB_URL, USER, PASS);
+					Statement nameStmt = nameConn.createStatement();
+					ResultSet nameRs = nameStmt.executeQuery("SELECT username, location, email FROM Users WHERE id=" + i);) {
+				if (nameRs.next()) {
+					f.setName(nameRs.getString(1));
+					f.setLocation(nameRs.getString(2));
+					f.setEmail(nameRs.getString(3));
+				} else {
+					f.setName("");
+					f.setLocation("");
+					f.setEmail("");
+				}
+				nameRs.close();
+			} catch (SQLException ex) {
+				f.setName("");
+				f.setLocation("");
+				f.setEmail("");
+				ex.printStackTrace();
+			}
+			System.out.println(f.toString());
+			uis.add(f);
+		}
+		return uis;
+	}
 
 }
