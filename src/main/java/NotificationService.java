@@ -2,7 +2,7 @@ import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
 public class NotificationService {
-    public static void main(String [] args) {
+    public static void notify(User u) {
         String username = "deeznuffs@hotmail.com";
         String password = "deeznuts69";
 
@@ -34,7 +34,7 @@ public class NotificationService {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress("deeznuffs@hotmail.com"));
             message.setRecipients(
-                    Message.RecipientType.TO, InternetAddress.parse("yutai_xue1@baylor.edu"));
+                    Message.RecipientType.TO, InternetAddress.parse(u.getEmail()));
             message.setSubject("Check Calender");
 
             String msg = "Event Ended";
