@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Vector;
 
 public class Event
 {
@@ -61,11 +62,18 @@ public class Event
         if(!sl.equals(""))
         {
         	r=sl.split(",");
-        	int[] arr=new int[r.length];
+        	
+        	Vector<Integer> arr = new Vector<Integer>();
         	for (int i = 0; i<r.length; i++) {
-        		arr[i] = Integer.valueOf(r[i]);
+        		try {
+        			arr.add( Integer.valueOf(r[i]));
+        		}
+        		catch(NumberFormatException nfe) {
+        		}
         	}
-        	usedServices=ServiceDAOImp.getServices(arr);
+        	int[] data = arr.stream().mapToInt(a->a).toArray();
+        	
+        	usedServices=ServiceDAOImp.getServices(data);
         }
         userID=uid;
     }
