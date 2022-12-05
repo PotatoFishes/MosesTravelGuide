@@ -9,7 +9,7 @@ import java.util.Vector;
 
 public class Event
 {
-    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY hh:mm a");
+    SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss.SSS");
     static int ID = 0;
     String name;
     Date sDate;

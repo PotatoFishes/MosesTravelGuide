@@ -16,7 +16,7 @@ import java.util.Vector;
 
 public class EditEventDialog extends JFrame implements ActionListener
 {
-    public SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY hh:mm a");
+    public SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss.SSS");
     private static JTable table;
     private static JFrame frame;
     private TableRowSorter<DefaultTableModel> sorter;
@@ -96,7 +96,7 @@ public class EditEventDialog extends JFrame implements ActionListener
                 }
             }
         };
-        ButtonColumn colButRemover = new ButtonColumn(table, remove, Planner.REMOVECELL);
+        ButtonColumn colButRemover = new ButtonColumn(table, remove, REMOVECELL);
 
         // Edit Row button
         Action editor = new AbstractAction() {
@@ -105,7 +105,7 @@ public class EditEventDialog extends JFrame implements ActionListener
                 //new EditDialog(table.getSelectedRow(),model).setVisible(true);
             }
         };
-        ButtonColumn colButEditor = new ButtonColumn(table, editor, Planner.EDITCELL);
+        ButtonColumn colButEditor = new ButtonColumn(table, editor, EDITCELL);
 
         //Setting Input Fields' Initial Values
         txtName = new JTextField(15);
@@ -147,7 +147,7 @@ public class EditEventDialog extends JFrame implements ActionListener
         //Setting Event Content Buttons
         content.add(btnOK);
         content.add(btnCancel);
-        SpringUtilities.makeCompactGrid(content, 8, 2, 6, 6, 6, 6);
+        SpringUtilities.makeCompactGrid(content, 7, 2, 6, 6, 6, 6);
 
         //Setting Service Content Buttons
         JPanel servicer = new JPanel();
