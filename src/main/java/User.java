@@ -1,10 +1,29 @@
+import java.util.List;
+
 public class User
 {
-	static int id;
+	int id;
 	private String username = "", password = "", email = "", location = "";
+	List<Integer> friends;
 	
 	public User() {
 		
+	}
+	
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", email=" + email
+				+ ", location=" + location + ", friends=" + friends + "]";
+	}
+
+	public User(int id,String un,String pw,String em,String l, List<Integer> f) {
+		this.id=id;
+		username=un;
+		password=pw;
+		email=em;
+		location=l;
+		String[] r = null;
+		friends=f;
 	}
 
 	public String getUsername() {
@@ -17,6 +36,14 @@ public class User
 
 	public String getPassword() {
 		return password;
+	}
+
+	public List<Integer> getFriends() {
+		return friends;
+	}
+
+	public void setFriends(List<Integer> friends) {
+		this.friends = friends;
 	}
 
 	public void setPassword(String password) {

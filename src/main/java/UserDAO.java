@@ -3,6 +3,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAO {
@@ -16,18 +17,18 @@ public class UserDAO {
 		User u=null;
 		try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
 				Statement stmt = conn.createStatement();){
-				ResultSet rs = stmt.executeQuery("SELECT password, location, email FROM Users WHERE username='"+un+'"');
+				ResultSet rs = stmt.executeQuery("SELECT ID, username, password, location, email FROM Users WHERE username='"+un+"'");
 				// Extract data from result set
 				if (rs.next()) {
 					// Retrieve by column name
 					if(rs.getString("password").equals(pass))
 					{
-						u=new User();
-						User.id=rs.getInt("ID");
-						u.setUsername(rs.getString("username"));
-						u.setPassword(rs.getString("password"));
-						u.setLocation(rs.getString("location"));
-						u.setEmail(rs.getString("email"));
+						List<Integer> follow=new ArrayList<Integer>();
+						u=new User(rs.getInt("ID"),rs.getString("username"),rs.getString("password"),rs.getString("location"),rs.getString("email"),follow);
+						ResultSet rs2 = stmt.executeQuery("SELECT user2 FROM Follow WHERE user1="+rs.getInt("ID")+"");
+						while(rs2.next())
+							follow.add(rs2.getInt("user2"));
+						u.setFriends(follow);
 						return u;
 					}
 				}
@@ -63,7 +64,22 @@ public class UserDAO {
 		         // Extract data from result set
 		         if (rs.next()) {
 		            // Retrieve by column name
-		        	stmt.executeUpdate("DELETE from Event WHERE username="+e.getUsername());
+		        	stmt.executeUpdate("DELETE from Users WHERE username="+e.getUsername());
+		         }
+		      } catch (SQLException ex) {
+		         ex.printStackTrace();
+		      } 
+		
+	}
+	
+	public static void addFollow(User e,int uid) {
+		try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+		         Statement stmt = conn.createStatement();
+		         ResultSet rs = stmt.executeQuery("SELECT user2 FROM Follow WHERE user1="+e.id);) {
+		         // Extract data from result set
+		         if (!rs.next()) {
+		            // Retrieve by column name
+		        	 stmt.executeUpdate("INSERT INFO Follow (user1, user2) VALUES("+e.id+","+uid+")");
 		         }
 		      } catch (SQLException ex) {
 		         ex.printStackTrace();

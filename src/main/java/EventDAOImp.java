@@ -25,7 +25,7 @@ public class EventDAOImp{
 		
 		try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
 		         Statement stmt = conn.createStatement();
-		         ResultSet rs = stmt.executeQuery("SELECT id, eventName, Start, End, Location, notes, usedServices FROM Events WHERE uid="+uid);) {
+		         ResultSet rs = stmt.executeQuery("SELECT id, eventName, Start, End, Location, notes, usedServices FROM Events WHERE userid="+uid);) {
 		         // Extract data from result set
 		         while (rs.next()) {
 		            // Retrieve by column name
@@ -44,7 +44,7 @@ public class EventDAOImp{
 		         Statement stmt = conn.createStatement();
 		         ResultSet rs = stmt.executeQuery("SELECT id, eventName, Start, End, Location, notes, usedServices, userid FROM Events WHERE id="+id);) {
 		         // Extract data from result set
-		         while (rs.next()) {
+		         if (rs.next()) {
 		            // Retrieve by column name
 		        	e=new Event(id,rs.getString("eventName"),rs.getTimestamp("Start"),rs.getTimestamp("End"),rs.getString("Location"),rs.getString("notes"),rs.getString("usedServices"), rs.getInt("userid"));
 		         }
