@@ -119,9 +119,9 @@ public class EditEventDialog extends JFrame implements ActionListener
         txtName = new JTextField(15);
         txtName.setText( "" + eventModel.getValueAt(ndx, 4) );
         txtSDate = new JTextField(25);
-        txtSDate.setText(sdf.parse("" + eventModel.getValueAt(ndx, ESDATECELL)).toString());
+        txtSDate.setText("" + eventModel.getValueAt(ndx, ESDATECELL));
         txtEDate = new JTextField(25);
-        txtEDate.setText(sdf.parse("" + eventModel.getValueAt(ndx, EEDATECELL)).toString());
+        txtEDate.setText("" + eventModel.getValueAt(ndx, EEDATECELL));
         txtLoc = new JTextField(15);
         txtLoc.setText("" + eventModel.getValueAt(ndx, ELOCCELL));
         txtNote = new JTextField(15);

@@ -76,7 +76,6 @@ public class EventDAOImp{
 			 }
 			 else
 			 {
-
 				 System.out.println("Inserting new Event");
 				 stmt.executeUpdate("INSERT INTO Events (eventName, Start, End, Location, notes, usedServices, userid) VALUES('"+e.getName()+"', '"+e.getStartDate()+"', '"+e.getEndDate()+"', '"+e.getLocation()+"', '"+e.getNote()+"', '"+e.getUsedServices()+"', "+uid+")");
 			 }

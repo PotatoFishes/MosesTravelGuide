@@ -133,7 +133,6 @@ public class Planner extends JPanel {
                     }
                 }while(exceptionFound);
                 events = EventsServ.getEventsForPlanner();
-
             }
         };
         ButtonColumn colButEditor = new ButtonColumn(table, editor, EDITCELL);
