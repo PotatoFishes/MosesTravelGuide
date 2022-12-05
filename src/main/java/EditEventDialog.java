@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
-public class EventEditDialog extends JFrame implements ActionListener
+public class EditEventDialog extends JFrame implements ActionListener
 {
     public SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY hh:mm a");
     private static JTable table;
@@ -33,12 +33,12 @@ public class EventEditDialog extends JFrame implements ActionListener
             { sdf.format(new Date()) , sdf.format(new Date()) ,"Waco, TX", "Tester" ,"This is a test value" , " . . . ", " X "}
     };
 
-    EventEditDialog(final int ndx, final DefaultTableModel eventModel)
+    EditEventDialog(final int ndx, final DefaultTableModel eventModel, Event e)
     {
         super("Edit Event");
         setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         parent = eventModel;
-        index = 0;
+        index = ndx;
 
         //Create a table with a sorter.
         final Class<?>[] columnClass = new Class[]{
@@ -113,6 +113,14 @@ public class EventEditDialog extends JFrame implements ActionListener
         txtNote = new JTextField(15);
         txtNote.setText("Note");
 
+        //Setting Up Buttons
+        btnOK = new JButton("Save");
+        btnOK.addActionListener(this);
+        btnCancel = new JButton("Cancel");
+        btnCancel.addActionListener(this);
+        btnAddServ = new JButton("Add Service");
+        btnAddServ.addActionListener(this);
+
         //Setting Label Names
         JPanel content = new JPanel(new SpringLayout());
         content.add(new JLabel("ID:"));
@@ -128,24 +136,12 @@ public class EventEditDialog extends JFrame implements ActionListener
         content.add(new JLabel("Note:"));
         content.add(txtNote);
 
-        btnOK = new JButton("Yes");
-        btnOK.addActionListener(this);
-        btnCancel = new JButton("Cancel");
-        btnCancel.addActionListener(this);
-        btnAddServ = new JButton("Add Service");
-        btnAddServ.addActionListener(this);
-
-        //Setting Buttons
-        btnOK = new JButton("Save");
-        btnOK.addActionListener(this);
-        btnCancel = new JButton("Cancel");
-        btnCancel.addActionListener(this);
-        btnAddServ = new JButton("Add Service");
-        btnAddServ.addActionListener(this);
+        //Setting Event Content Buttons
         content.add(btnOK);
         content.add(btnCancel);
         SpringUtilities.makeCompactGrid(content, 8, 2, 6, 6, 6, 6);
 
+        //Setting Service Content Buttons
         JPanel servicer = new JPanel();
         servicer.setLayout(new SpringLayout());
         servicer.add(btnAddServ);
@@ -167,6 +163,7 @@ public class EventEditDialog extends JFrame implements ActionListener
     {
         Service adding = new Service();
         // TODO: make Add Service Dialog
+        new AddServiceDialog(0,parent);
         Services.add(adding);
     }
 
