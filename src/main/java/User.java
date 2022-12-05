@@ -9,11 +9,15 @@ public class User
 	public User() {
 		
 	}
+	
 	@Override
 	public String toString() {
-		return "User [username=" + username + ", password=" + password + ", email=" + email + ", location=" + location + "]";
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", email=" + email
+				+ ", location=" + location + ", friends=" + friends + "]";
 	}
+
 	public User(int id,String un,String pw,String em,String l, List<Integer> f) {
+		this.id=id;
 		username=un;
 		password=pw;
 		email=em;
