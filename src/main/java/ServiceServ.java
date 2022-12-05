@@ -24,7 +24,7 @@ public class ServiceServ {
 
 	public static Object[][] getServicesForTable(int eid) {
 		java.util.List<Service> services = new ArrayList<>();
-		EventDAOImp.getEvent(eid).getUsedServices(services);
+		services = EventDAOImp.getEvent(eid).getUsedServices(services);
 		Object[][] data = new Object[services.size()][];
 		for(int i = 0; i < data.length; ++i) {
 			data[i] = services.get(i).toArray();
@@ -38,10 +38,10 @@ public class ServiceServ {
 	public void unbook(Service s) {
 		s.subBooking();
 	}
-	public void addService(Service s) {
-		
+	public static void addService(Service s) {
+		ServiceDAOImp.updateService(s);
 	}
-	public void removeService(Service s) {
-		
+	public static void removeService(Service s) {
+		ServiceDAOImp.deleteService(s);
 	}
 }
