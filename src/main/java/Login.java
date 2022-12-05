@@ -84,7 +84,6 @@ public class Login extends JPanel implements PropertyChangeListener{
 		newButton.addActionListener(new ActionListener() {
 	     	@Override
         	public void actionPerformed(ActionEvent e) {
-	     		mainFrame.dispose();
         		javax.swing.SwingUtilities.invokeLater(new Runnable() {
         			@Override
         			public void run() {

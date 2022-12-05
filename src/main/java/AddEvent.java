@@ -18,7 +18,7 @@ public class AddEvent extends JDialog implements PropertyChangeListener{
 	private static final long serialVersionUID = 4143611827610300148L;
 	JTable table;
 	private int ID = 0, Type = 0;
-	private String Name="", SDate="1000-01-01 00:00:00.000", EDate="1000-01-01 00:00:00.000", Loc="", Note="";
+	private String Name="", SDate="1000-01-01 00:00:00.000", EDate="1000-01-01 00:00:00.001", Loc="", Note="";
 	private JLabel IDlabel, Namelabel, Typelabel, SDatelabel, EDatelabel, Loclabel, Notelabel;
 	private static String IDcol="ID: ", Namecol="Name: ", Typecol="Type: ", SDatecol="Start Date: ", EDatecol="End Date: ", Loccol="Location: ", Notecol="Note: ";
 	private JFormattedTextField Namefield, Typefield, SDatefield, EDatefield, Locfield, Notefield;
@@ -118,17 +118,17 @@ public class AddEvent extends JDialog implements PropertyChangeListener{
 					timestamp.after(timestamp2);
 					
 					Event temp = new Event(ID, Name, timestamp, timestamp2, Loc, Note, "", 1);
-					EventDAOImp.updateEvent(temp);
 					if(!EventsServ.checkTimesValid(temp))
 					{
 						JOptionPane.showConfirmDialog(null,
 								"Incorrect Time Format: " + SDatefield.getText() + " is equal to or after " + EDatefield.getText()
 								, "Error"
 								, JOptionPane.OK_CANCEL_OPTION);
-
+						System.out.println("Can't Insert event " + temp.toString());
 					}
 					else
 					{
+						System.out.println("Can Insert event " + temp.toString());
 						EventsServ.createEvent(temp);
 						((DefaultTableModel)table.getModel()).insertRow(0, temp.toArray());
 						dispose();
@@ -139,7 +139,7 @@ public class AddEvent extends JDialog implements PropertyChangeListener{
 				} catch (ParseException e1) {
 					// TODO: Display message that informs user that date was invalid
 					JOptionPane.showConfirmDialog(null,
-							"Incorrect Time Format: Please Format as 'YYYY-MM-dd HH:mm:ss.SSS' from '1000-01-01' to '9999-12-31'"
+							"Incorrect Time Format: Please Format as 'YYYY-MM-dd HH:mm:ss.SSS'\n from '1000-01-01 00:00:00.000' to '9999-12-31 00:00:00.000'"
 							, "Error"
 							, JOptionPane.OK_CANCEL_OPTION);
 					e1.printStackTrace();

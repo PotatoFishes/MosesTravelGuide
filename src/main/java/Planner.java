@@ -98,14 +98,16 @@ public class Planner extends JPanel {
 
                 int modelRow = Integer.valueOf(e.getActionCommand());
                 int answer = JOptionPane.showConfirmDialog(null,
-                        "Do you want to remove " + model.getValueAt(modelRow, 2)
-                                + " " + model.getValueAt(modelRow,  1) + "?"
+                        "Do you want to remove Event" + model.getValueAt(modelRow, 0) + "?"
                         ,"Warning"
                         ,JOptionPane.YES_NO_OPTION);
                 if(answer == JOptionPane.YES_OPTION)
                 {
+                    System.out.println("" +model.getValueAt(modelRow, 0) );
+                    EventsServ.removeEvent(Integer.valueOf( "" + model.getValueAt(modelRow, 0)));
                     model.removeRow(modelRow);
                 }
+
             }
         };
         ButtonColumn colButRemover = new ButtonColumn(table, remove, REMOVECELL);
@@ -171,6 +173,7 @@ public class Planner extends JPanel {
                         AddEvent addEvent = new AddEvent(table);
                         addEvent.setVisible(true);
                         events = EventsServ.getEventsForPlanner();
+
                     }
                 });
             }

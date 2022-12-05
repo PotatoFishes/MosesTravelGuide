@@ -39,7 +39,7 @@ public class NewAccount extends JPanel implements PropertyChangeListener{
 	
 	public NewAccount() {
 		super();
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         
         this.setOpaque(true);
         mainFrame.setContentPane(this);
