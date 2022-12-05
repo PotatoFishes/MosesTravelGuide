@@ -117,11 +117,11 @@ public class Planner extends JPanel {
                     try {
                         new EditEventDialog(table.getSelectedRow(),model).setVisible(true);
                     } catch (ParseException ex) {
-                        /*JOptionPane.showConfirmDialog(null,
+                        JOptionPane.showConfirmDialog(null,
                                 "Incorrect Time Format: Please Format as \"MM/dd/YYYY hh:mm: AM/PM\" "
                                 , "Error"
                                 , JOptionPane.OK_OPTION);
-                        exceptionFound = true;*/
+                        exceptionFound = true;
                         ex.printStackTrace();
                     }
                 }while(exceptionFound);

@@ -6,27 +6,21 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.SpringLayout;
 import javax.swing.table.DefaultTableModel;
 
 /*
  * The AddEvent class allows the user to create a new event.
  */
 public class AddEvent extends JDialog implements PropertyChangeListener{
+	private static final long serialVersionUID = 4143611827610300148L;
 	JTable table;
 	private int ID = 0, Type = 0;
 	private String Name="", SDate="0000-00-00 00:00:00.000", EDate="0000-00-00 00:00:00.000", Loc="", Note="";
