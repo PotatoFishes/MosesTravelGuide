@@ -32,13 +32,13 @@ public class AddEvent extends JDialog implements PropertyChangeListener{
 	private String Name="", SDate="", EDate="", Loc="", Note="";
 	private JLabel IDlabel, Namelabel, Typelabel, SDatelabel, EDatelabel, Loclabel, Notelabel;
 	private static String IDcol="ID: ", Namecol="Name: ", Typecol="Type: ", SDatecol="Start Date: ", EDatecol="End Date: ", Loccol="Location: ", Notecol="Note: ";
-	private JFormattedTextField IDfield, Namefield, Typefield, SDatefield, EDatefield, Locfield, Notefield;
+	private JFormattedTextField Namefield, Typefield, SDatefield, EDatefield, Locfield, Notefield;
 	
 	public AddEvent(JTable owner) {
 		super(javax.swing.SwingUtilities.windowForComponent(owner));
 		table = owner;
 		
-		IDlabel = new JLabel(IDcol);
+		//IDlabel = new JLabel(IDcol);
 		Namelabel = new JLabel(Namecol);
 		Typelabel = new JLabel(Typecol);
 		SDatelabel = new JLabel(SDatecol);
@@ -46,11 +46,12 @@ public class AddEvent extends JDialog implements PropertyChangeListener{
 		Loclabel = new JLabel(Loccol);
 		Notelabel = new JLabel(Notecol);
 		
+		/*
 		IDfield = new JFormattedTextField();
 		IDfield.setValue(new Integer(ID));
 		IDfield.setColumns(20);
 		IDfield.addPropertyChangeListener("value", this);
-		
+		*/
 		Namefield = new JFormattedTextField();
 		Namefield.setValue(new String(Name));
 		Namefield.setColumns(20);
@@ -81,7 +82,7 @@ public class AddEvent extends JDialog implements PropertyChangeListener{
 		Notefield.setColumns(20);
 		Notefield.addPropertyChangeListener("value", this);
 		
-		IDlabel.setLabelFor(IDfield);
+		//IDlabel.setLabelFor(IDfield);
 		Namelabel.setLabelFor(Namefield);
 		Typelabel.setLabelFor(Typefield);
 		SDatelabel.setLabelFor(SDatefield);
@@ -109,7 +110,7 @@ public class AddEvent extends JDialog implements PropertyChangeListener{
 		setTitle(getClass().getSimpleName());
 		
 		JPanel labelPane = new JPanel(new GridLayout(0,1));
-		labelPane.add(IDlabel);
+		//labelPane.add(IDlabel);
 		labelPane.add(Namelabel);
 		labelPane.add(Typelabel);
 		labelPane.add(SDatelabel);
@@ -145,7 +146,7 @@ public class AddEvent extends JDialog implements PropertyChangeListener{
 		labelPane.add(saveButton);
 		
 		JPanel fieldPane = new JPanel(new GridLayout(0,1));
-		fieldPane.add(IDfield);
+		//fieldPane.add(IDfield);
 		fieldPane.add(Namefield);
 		fieldPane.add(Typefield);
 		fieldPane.add(SDatefield);
@@ -180,10 +181,12 @@ public class AddEvent extends JDialog implements PropertyChangeListener{
 	public void propertyChange(PropertyChangeEvent e) {
 		Object source = e.getSource();
 		
-		if(source == IDfield) {
+		/*if(source == IDfield) {
 			ID = Integer.parseInt(IDfield.getValue().toString());
 		}
-		else if(source == Namefield) {
+		else 
+		*/
+		if(source == Namefield) {
 			Name = Namefield.getValue().toString();
 		}
 		else if(source == Typefield) {
