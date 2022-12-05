@@ -16,4 +16,7 @@ public class ServicesServ {
 	public void removeService(Service s) {
 		
 	}
+	public Service createService() {
+		return null;
+	}
 }

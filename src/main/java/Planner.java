@@ -13,7 +13,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Planner extends JPanel {
-    private static JTable table;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -1829319321640316625L;
+	private static JTable table;
     private static JFrame frame;
     private JTextField filterText;
     private JTextField statusText;
@@ -45,8 +49,12 @@ public class Planner extends JPanel {
         final Class<?>[] columnClass = new Class[]{
                 String.class,String.class,String.class,String.class,String.class,String.class, String.class
         };
-        final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-            @Override
+        final DefaultTableModel model = new DefaultTableModel(EventsServ.getEventsForTable(), columnNames) {
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = -4279510772803332762L;
+			@Override
             public boolean isCellEditable(int row, int col) {
                 if(col < NOTES) {
                     return false;
@@ -138,14 +146,26 @@ public class Planner extends JPanel {
                     @Override
                     public void run()
                     {
-                        //setVisible(false);
-                        // TODO: fix the code for AddLineDialog
-                        //Event temp = new Event();
-                        //model.insertRow(0, temp.toArray());
-                        //new AddLineDialog(0, model).setVisible(true);
-                        //setVisible(true);
                         AddEvent addEvent = new AddEvent(table);
-                        addEvent.show();
+                        addEvent.setVisible(true);
+                    }
+                });
+            }
+        });
+        
+        JButton manageButton = new JButton("Manage Events");
+        manageButton.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                SwingUtilities.invokeLater(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        ManageEvents manageEvent = new ManageEvents(table);
+                        manageEvent.show();
                     }
                 });
             }
@@ -171,7 +191,8 @@ public class Planner extends JPanel {
                         //new AddLineDialog(0, model).setVisible(true);
                         //setVisible(true);
                         AddBusiness addBus = new AddBusiness(table);
-                        addBus.show();
+                        addBus.setVisible(true);
+                        //addBus.show();
                     }
                 });
             }
@@ -241,12 +262,8 @@ public class Planner extends JPanel {
                     @Override
                     public void run()
                     {
-                        setVisible(false);
-                        // TODO: make Friends List w/ Add Friends Dialog
-                        Event temp = new Event();
-                        model.insertRow(0, temp.toArray());
-                        new AddLineDialog(0, model).setVisible(true);
-                        setVisible(true);
+                    	new FriendsManagerUI();
+                        
                     }
                 });
             }
@@ -255,11 +272,12 @@ public class Planner extends JPanel {
         // Buttons Setup
         form.add(settings);
         form.add(eventButton);
+        form.add(manageButton);
         form.add(businessButton);
         form.add(pInvButton);
         form.add(eInvButton);
         form.add(friendsButton);
-        SpringUtilities.makeCompactGrid(form, 6, 1, 6, 6, 6, 6);
+        SpringUtilities.makeCompactGrid(form, 7, 1, 6, 6, 6, 6);
 
         // Add Buttons to the Right of the Table
         add(form);

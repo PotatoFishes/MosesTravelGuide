@@ -12,8 +12,17 @@ public class EventDAOImp{
 	static final String USER = "admin";
 	static final String PASS = "HelloWorld";
 	
-	public static List<Event> getEvents(int uid) {
+	public static List<Event> getEvents() {
+		int uid;
 		List<Event> list=new ArrayList<Event>();
+		if(UserLoginService.getUser() != null) {
+			uid = UserLoginService.getUser().id;
+		}
+		else {
+			System.out.println("Problem with user id while loading events");
+			return list;
+		}
+		
 		try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
 		         Statement stmt = conn.createStatement();
 		         ResultSet rs = stmt.executeQuery("SELECT id, eventName, Start, End, Location, notes, usedServices FROM Events WHERE uid="+uid);) {
@@ -50,13 +59,24 @@ public class EventDAOImp{
 		         Statement stmt = conn.createStatement();
 		         ResultSet rs = stmt.executeQuery("SELECT id, eventName, Start, End, Location, notes, usedServices, userid FROM Events WHERE id="+e.ID);) {
 		         // Extract data from result set
+			int uid;
+			if(UserLoginService.getUser() != null) {
+				uid = UserLoginService.getUser().id;
+			}
+			else {
+				System.out.println("Problem with user id while updating event");
+				return;
+			}
 		         if (rs.next()) {
 		            // Retrieve by column name
-		        	stmt.executeUpdate("UPDATE Events SET eventName='"+e.getName()+"', Start='"+e.getStartDate()+"', End='"+e.getEndDate()+"', location='"+e.getLocation()+"', notes='"+e.getNote()+"', usedServices='"+e.getUsedServices()+"', userid="+e.getUserID()+" WHERE id="+e.getID());
+		        	 System.out.println("Preforming Update on Event");
+		        	stmt.executeUpdate("UPDATE Events SET eventName='"+e.getName()+"', Start='"+e.getStartDate()+"', End='"+e.getEndDate()+"', location='"+e.getLocation()+"', notes='"+e.getNote()+"', usedServices='"+e.getUsedServices()+"', userid="+uid+" WHERE id="+e.getID());
 		         }
 		         else
 		         {
-		        	 stmt.executeUpdate("INSERT INTO Events (eventName, Start, End, Location, notes, usedServices, userid) VALUES('"+e.getName()+"', '"+e.getStartDate()+"', '"+e.getEndDate()+"', '"+e.getLocation()+"', '"+e.getNote()+"', '"+e.getUsedServices()+"', "+e.getUserID()+")");
+		        	 
+		        	 System.out.println("Inserting new Event");
+		        	 stmt.executeUpdate("INSERT INTO Events (eventName, Start, End, Location, notes, usedServices, userid) VALUES('"+e.getName()+"', '"+e.getStartDate()+"', '"+e.getEndDate()+"', '"+e.getLocation()+"', '"+e.getNote()+"', '"+e.getUsedServices()+"', "+uid+")");
 		         }
 		      } catch (SQLException ex) {
 		         ex.printStackTrace();

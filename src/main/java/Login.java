@@ -9,7 +9,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.*;
 
 public class Login extends JPanel implements PropertyChangeListener{
-    private UserDAO userDAO = new UserDAO();
+    private UserLoginService userService = new UserLoginService();
 	
     private JPanel loginForm;
     private JLabel Label;
@@ -60,8 +60,7 @@ public class Login extends JPanel implements PropertyChangeListener{
 	     	@Override
         	public void actionPerformed(ActionEvent e) {
 	     		//check if username and password are valid
-	     		if(userDAO.nameExists(userName.toLowerCase()) && userDAO.passwordExists(password)) {
-		     		
+		     	if(userService.validateUser(userName, password) != null) {
 		     		mainFrame.dispose();
 	        		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 	        			@Override

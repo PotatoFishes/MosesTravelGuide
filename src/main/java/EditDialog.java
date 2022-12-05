@@ -16,7 +16,7 @@ public class EditDialog extends JFrame implements ActionListener
     private int index;
     private JTextField txtId, txtName, txtType, txtSDate, txtEDate, txtLoc, txtNote;
     private JButton btnOK, btnCancel, btnAddServ;
-    private SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY hh:mm a");
+    public static final SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY hh:mm a");
     private String[] columnNames = {
             "Start Time", "End Time", "Location", "Name", "Note", "Edit", "Remove"
     };
@@ -26,7 +26,8 @@ public class EditDialog extends JFrame implements ActionListener
     };
     EditDialog(final int ndx, final DefaultTableModel model)
     {
-        super("Edit Event");
+        super("Edit an Event");
+
         setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         parent = model;
         index = ndx;
@@ -37,6 +38,7 @@ public class EditDialog extends JFrame implements ActionListener
         txtName = new JTextField(15);
         txtName.setText( "" + model.getValueAt(ndx, 3) );
         txtType = new JTextField(15);
+
         txtType.setText("Type");
         txtSDate = new JTextField(15);
         txtSDate.setText("" + model.getValueAt(ndx, 0));
@@ -46,6 +48,7 @@ public class EditDialog extends JFrame implements ActionListener
         txtLoc.setText("" + model.getValueAt(ndx, 2));
         txtNote = new JTextField(15);
         txtNote.setText("Note");
+
 
         //Setting Label Names
         JPanel content = new JPanel(new SpringLayout());
