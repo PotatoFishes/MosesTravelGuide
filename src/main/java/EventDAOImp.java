@@ -53,6 +53,40 @@ public class EventDAOImp{
 		      } 
 		return e;
 	}
+	
+	public static String getEventNames() {
+		List<String> li=new ArrayList<String>();
+		try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+		         Statement stmt = conn.createStatement();
+		         ResultSet rs = stmt.executeQuery("SELECT DISTINCT eventName FROM Events");) {
+		         // Extract data from result set
+		        	while (rs.next()) {
+		 					// Retrieve by column name
+		        		li.add(rs.getString("eventName"));
+		 			}
+		      } catch (SQLException ex) {
+		         ex.printStackTrace();
+		      } 
+		String s=String.join(",",li);
+		return s;
+	}
+	
+	public static String getEventLocations() {
+		List<String> li=new ArrayList<String>();
+		try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+		         Statement stmt = conn.createStatement();
+		         ResultSet rs = stmt.executeQuery("SELECT DISTINCT Location FROM Events");) {
+		         // Extract data from result set
+		        	while (rs.next()) {
+		 					// Retrieve by column name
+		        		li.add(rs.getString("Location"));
+		 			}
+		      } catch (SQLException ex) {
+		         ex.printStackTrace();
+		      } 
+		String s=String.join(",",li);
+		return s;
+	}
 
 	public static void updateEvent(Event e) {
 		try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);

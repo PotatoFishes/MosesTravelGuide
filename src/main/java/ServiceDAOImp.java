@@ -11,6 +11,23 @@ public class ServiceDAOImp {
 	static final String DB_URL = "jdbc:mysql://mosestravel.cljarowffwyg.us-east-2.rds.amazonaws.com:3306/MosesTravel";
 	static final String USER = "admin";
 	static final String PASS = "HelloWorld";
+	
+	public static String getServicesNames() {
+		List<String> li=new ArrayList<String>();
+		try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+				Statement stmt = conn.createStatement();){
+				ResultSet rs = stmt.executeQuery("SELECT DISTINCT Name FROM Services");
+				// Extract data from result set
+				while (rs.next()) {
+					// Retrieve by column name
+					li.add(rs.getString("Name"));
+				}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		String s=String.join(",",li);
+		return s;
+	}
 
 	public static List<Service> getServices(int[] list) {
 		List<Service> li=new ArrayList<Service>();
