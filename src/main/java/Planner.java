@@ -193,7 +193,7 @@ public class Planner extends JPanel {
 
         // TODO: put ALL BUTTONS or ACTION LISTENERS in their own CLASSES
         //Dialog Button to add new Businesses
-        JButton businessButton = new JButton("Add Business");
+        JButton businessButton = new JButton("Business");
         businessButton.addActionListener(new ActionListener()
         {
             @Override
