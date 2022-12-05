@@ -18,7 +18,7 @@ public class ServiceDAOImp {
 				Statement stmt = conn.createStatement();){
 			for(int i:list)
 			{
-				ResultSet rs = stmt.executeQuery("SELECT name, price, location, startTime, endTime, capacity FROM Services WHERE id="+i);
+				ResultSet rs = stmt.executeQuery("SELECT name, price, startTime, endTime, capacity FROM Services WHERE id="+i);
 				// Extract data from result set
 				while (rs.next()) {
 					// Retrieve by column name
