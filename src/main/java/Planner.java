@@ -264,12 +264,8 @@ public class Planner extends JPanel {
                     @Override
                     public void run()
                     {
-                        setVisible(false);
-                        // TODO: make Invite to Event Dialog
-                        Event temp = new Event();
-                        model.insertRow(0, temp.toArray());
-                        new AddLineDialog(0, model).setVisible(true);
-                        setVisible(true);
+                        InviteEvents iEvent = new InviteEvents(table);
+                        iEvent.show();
                     }
                 });
             }
