@@ -28,11 +28,13 @@ public class Planner extends JPanel {
     private JTextArea choiceLog = new JTextArea("");
     private JFileChooser fileChooser = new JFileChooser();
     private JPanel form = new JPanel(new SpringLayout());
+    private JComboBox combo;
     private TableRowSorter<DefaultTableModel> sorter;
     List<Event> events = EventDAOImp.getEvents();
     public static int NOTES = 5;
     public static int EDITCELL = 6;
     public static int REMOVECELL = 7;
+    private final String[] options = { "          ", "Location", "Services", "Events" };
 
     //TODO: remove these debugging/testing variables
     public SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss.SSS");
@@ -312,7 +314,29 @@ public class Planner extends JPanel {
             }
         });
 
+        JButton search1 = new JButton("Search");
+        search1.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                SwingUtilities.invokeLater(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        new SearchDialog(combo.getSelectedItem());
+
+                    }
+                });
+            }
+        });
+        combo = new JComboBox(options);
+        combo.setEditable(true);
+
         // Buttons Setup
+        form.add(combo);
+        form.add(search1);
         form.add(settings);
         form.add(eventButton);
         form.add(manageButton);
@@ -321,7 +345,7 @@ public class Planner extends JPanel {
         form.add(eInvButton);
         form.add(friendsButton);
         form.add(Cart);
-        SpringUtilities.makeCompactGrid(form, 8, 1, 6, 6, 6, 6);
+        SpringUtilities.makeCompactGrid(form, 5, 2, 6, 6, 6, 6);
 
         // Add Buttons to the Right of the Table
         add(form);

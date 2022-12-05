@@ -23,7 +23,7 @@ public class SettingDialog extends JFrame implements ItemListener {
         f.setLayout(new FlowLayout());
 
         // create checkbox
-        c1 = new JCheckBox("Setting Option 1");
+        c1 = new JCheckBox("Be Notified of Events?");
         c2 = new JCheckBox("Setting Option 2");
         //TODO set the settings options
 
