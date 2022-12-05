@@ -1,6 +1,8 @@
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Set;
+import java.util.Vector;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -35,6 +37,8 @@ public class FriendsManagerUI extends JFrame implements ActionListener{
 	private static final String[][] inSample = {{"Bob", "Bob@bobhouse.net", "Moon", "1234"}};
 	private static final String[][] outSample ={ {"Bob", "1234", " X "}};
 	private JTextField idEntry;
+	final DefaultTableModel modelIncoming;
+	final DefaultTableModel modelOutGoing;
 	
 	FriendsManagerUI(){
 		super("Manage Friends");
@@ -42,7 +46,7 @@ public class FriendsManagerUI extends JFrame implements ActionListener{
 		this.setContentPane(content);
 		
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        final DefaultTableModel modelIncoming = new DefaultTableModel(inSample, incomeingColumnNames) {
+        modelIncoming = new DefaultTableModel(inSample, incomeingColumnNames) {
             @Override
             public boolean isCellEditable(int row, int col) {
                 return false;
@@ -53,7 +57,7 @@ public class FriendsManagerUI extends JFrame implements ActionListener{
                 return incomingColumnClass[col];
             }
         };
-        final DefaultTableModel modelOutGoing = new DefaultTableModel(outSample, outGoingColumnNames) {
+        modelOutGoing = new DefaultTableModel(null, outGoingColumnNames) {
             @Override
             public boolean isCellEditable(int row, int col) {
                 if(col < REMOVE) {
@@ -118,12 +122,16 @@ public class FriendsManagerUI extends JFrame implements ActionListener{
         
         pack();
         this.setVisible(true);
+        
+        updateOutgoingView();
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		try {
 			Integer id = Integer.parseInt(idEntry.getText());
+			FriendsService.addPermission(id);
+			updateOutgoingView();
 		}
 		catch(NumberFormatException nfe) {
 			JOptionPane.showMessageDialog(null,
@@ -133,4 +141,17 @@ public class FriendsManagerUI extends JFrame implements ActionListener{
 		}
 	}
 	
+	private void updateOutgoingView() {
+		Set<String[]> strs = FriendsService.getFriendsAccess();
+		String[][] out = strs.toArray(new String[strs.size()][]);
+		
+		modelOutGoing.setRowCount(0);
+		for(int r = 0; r < out.length; r++) {
+			Vector<Object> cols = new Vector<Object>();
+			for(int c = 0; c < 3; c++) {
+				cols.add(out[r][c]);
+			}
+			modelOutGoing.addRow(cols);
+		}
+	}
 }

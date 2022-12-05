@@ -5,7 +5,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class UserDAO {
 
@@ -99,15 +101,30 @@ public class UserDAO {
 	public static void addFollow(User e,int uid) {
 		try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
 		         Statement stmt = conn.createStatement();
-		         ResultSet rs = stmt.executeQuery("SELECT user2 FROM Follow WHERE user1="+e.id);) {
+		         ResultSet rs = stmt.executeQuery("SELECT user2 FROM Follow WHERE user1="+e.id + " AND user2="+ uid);) {
 		         // Extract data from result set
 		         if (!rs.next()) {
 		            // Retrieve by column name
-		        	 stmt.executeUpdate("INSERT INFO Follow (user1, user2) VALUES("+e.id+","+uid+")");
+		        	 stmt.executeUpdate("INSERT INTO Follow (user1, user2) VALUES("+e.id+","+uid+")");
 		         }
 		      } catch (SQLException ex) {
 		         ex.printStackTrace();
 		      } 
 		
+	}
+	
+	public static Set<Integer> getFollowers(User u){
+		Set<Integer> out = new HashSet<Integer>();
+		try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+		         Statement stmt = conn.createStatement();
+		         ResultSet rs = stmt.executeQuery("SELECT user2 FROM Follow WHERE user1="+u.id);) {
+		         // Extract data from result set
+		         while(rs.next()) {
+		        	 out.add(rs.getInt(1));
+		         }
+		      } catch (SQLException ex) {
+		         ex.printStackTrace();
+		      } 
+		return out;
 	}
 }
