@@ -174,10 +174,8 @@ public class EditEventDialog extends JFrame implements ActionListener
 
     private void addService()
     {
-        Service adding = new Service();
         // TODO: make Add Service Dialog
-        new AddServiceDialog((DefaultTableModel) table.getModel(), eventID);
-        Services.add(adding);
+        new AddServiceDialog((DefaultTableModel) table.getModel(), Services);
     }
 
     private void initAdder()
@@ -220,6 +218,7 @@ public class EditEventDialog extends JFrame implements ActionListener
                 chop(tempS);
                 txtServices.setText(tempS + "");
 
+                System.out.println(tempS + " " + txtServices);
                 Event temp = new Event(eventID, txtName.getText(), timestamp, timestamp2,txtLoc.getText(), txtNote.getText(), txtServices.getText(), 1);
                 if(!EventsServ.checkTimesValid(temp))
                 {
