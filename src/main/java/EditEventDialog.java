@@ -246,7 +246,9 @@ public class EditEventDialog extends JFrame implements ActionListener
                         ,JOptionPane.OK_OPTION);
                 dispose();
                 return;
-            } catch (ParseException ex) {
+            }
+            catch (ParseException ex)
+            {
                 ex.printStackTrace();
             }
 
