@@ -38,10 +38,10 @@ public class ServiceServ {
 	public void unbook(Service s) {
 		s.subBooking();
 	}
-	public void addService(Service s) {
-		
+	public static void addService(Service s) {
+		ServiceDAOImp.updateService(s);
 	}
-	public void removeService(Service s) {
-		
+	public static void removeService(Service s) {
+		ServiceDAOImp.deleteService(s);
 	}
 }
