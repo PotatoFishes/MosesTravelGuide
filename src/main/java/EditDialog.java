@@ -16,7 +16,7 @@ public class EditDialog extends JFrame implements ActionListener
     private int index;
     private JTextField txtId, txtName, txtType, txtSDate, txtEDate, txtLoc, txtNote;
     private JButton btnOK, btnCancel, btnAddServ;
-    private SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY hh:mm a");
+    public static final SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY hh:mm a");
     private String[] columnNames = {
             "Start Time", "End Time", "Location", "Name", "Note", "Edit", "Remove"
     };

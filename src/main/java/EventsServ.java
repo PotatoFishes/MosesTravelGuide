@@ -12,7 +12,7 @@ public class EventsServ {
 	}
 	
 	public Event createEvent(int id, String na, int t, String sD, String eD, String l, String n) throws ParseException {
-		return new Event(id, na, t, sD, eD, l, n);
+		return null;//new Event(id, na, t, sD, eD, l, n);
 	}
 	
 	public void setEvent(Event e) {

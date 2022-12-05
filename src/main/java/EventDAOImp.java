@@ -52,10 +52,12 @@ public class EventDAOImp{
 		         // Extract data from result set
 		         if (rs.next()) {
 		            // Retrieve by column name
+		        	 System.out.println("Preforming Update on Event");
 		        	stmt.executeUpdate("UPDATE Events SET eventName='"+e.getName()+"', Start='"+e.getStartDate()+"', End='"+e.getEndDate()+"', location='"+e.getLocation()+"', notes='"+e.getNote()+"', usedServices='"+e.getUsedServices()+"', userid="+e.getUserID()+" WHERE id="+e.getID());
 		         }
 		         else
 		         {
+		        	 System.out.println("Inserting new Event");
 		        	 stmt.executeUpdate("INSERT INTO Events (eventName, Start, End, Location, notes, usedServices, userid) VALUES('"+e.getName()+"', '"+e.getStartDate()+"', '"+e.getEndDate()+"', '"+e.getLocation()+"', '"+e.getNote()+"', '"+e.getUsedServices()+"', "+e.getUserID()+")");
 		         }
 		      } catch (SQLException ex) {
