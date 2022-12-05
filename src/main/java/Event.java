@@ -9,7 +9,7 @@ import java.util.Vector;
 
 public class Event
 {
-    SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd hh:mm:ss.SSS");
+    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY hh:mm a");
     static int ID = 0;
     String name;
     Date sDate;
@@ -178,7 +178,7 @@ public class Event
 	}
 	public Object[] toArray()
     {
-        Object[] ev = new Object[]{sDate.toString(), eDate.toString(), loc, name , note," . . . ", " X "};
+        Object[] ev = new Object[]{"" + ID, sdf.format(sDate), sdf.format(eDate), loc, name , note," . . . ", " X "};
         return ev;
     }
     public void addService(Service s) {

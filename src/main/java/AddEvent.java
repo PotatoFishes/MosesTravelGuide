@@ -29,7 +29,7 @@ import javax.swing.table.DefaultTableModel;
 public class AddEvent extends JDialog implements PropertyChangeListener{
 	JTable table;
 	private int ID = 0, Type = 0;
-	private String Name="", SDate="", EDate="", Loc="", Note="";
+	private String Name="", SDate="00/00/0000 00:00 AM", EDate="00/00/0000 00:00 AM", Loc="", Note="";
 	private JLabel IDlabel, Namelabel, Typelabel, SDatelabel, EDatelabel, Loclabel, Notelabel;
 	private static String IDcol="ID: ", Namecol="Name: ", Typecol="Type: ", SDatecol="Start Date: ", EDatecol="End Date: ", Loccol="Location: ", Notecol="Note: ";
 	private JFormattedTextField IDfield, Namefield, Typefield, SDatefield, EDatefield, Locfield, Notefield;
@@ -60,12 +60,12 @@ public class AddEvent extends JDialog implements PropertyChangeListener{
 		Typefield.setValue(new Integer(Type));
 		Typefield.setColumns(20);
 		Typefield.addPropertyChangeListener("value", this);
-		
+
 		SDatefield = new JFormattedTextField();
 		SDatefield.setValue(new String(SDate));
 		SDatefield.setColumns(20);
 		SDatefield.addPropertyChangeListener("value", this);
-		
+
 		EDatefield = new JFormattedTextField();
 		EDatefield.setValue(new String(EDate));
 		EDatefield.setColumns(20);
