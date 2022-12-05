@@ -118,11 +118,9 @@ public class EditEventDialog extends JFrame implements ActionListener
         //Setting Input Fields' Initial Values
         txtName = new JTextField(15);
         txtName.setText( "" + eventModel.getValueAt(ndx, 4) );
-        txtSDate = new JTextField(15);
-        System.out.println("" + eventModel.getValueAt(ndx, ESDATECELL));
+        txtSDate = new JTextField(25);
         txtSDate.setText(sdf.parse("" + eventModel.getValueAt(ndx, ESDATECELL)).toString());
-        System.out.println("" + eventModel.getValueAt(ndx, EEDATECELL));
-        txtEDate = new JTextField(15);
+        txtEDate = new JTextField(25);
         txtEDate.setText(sdf.parse("" + eventModel.getValueAt(ndx, EEDATECELL)).toString());
         txtLoc = new JTextField(15);
         txtLoc.setText("" + eventModel.getValueAt(ndx, ELOCCELL));

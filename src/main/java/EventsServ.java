@@ -24,13 +24,32 @@ public class EventsServ {
 	}
 
 	public static boolean checkTimesValid(Event e) throws ParseException {
+		boolean valid = true;
 		Timestamp timestamp = AddEvent.convertStringToTimestamp(e.getStartDate());
 		Timestamp timestamp2 = AddEvent.convertStringToTimestamp(e.getEndDate());
-		return timestamp.before(timestamp2);
+
+		valid = timestamp.before(timestamp2);
+		
+		for(Event ev: EventDAOImp.getEvents())
+		{
+			if(!valid)
+			{
+				break;
+			}
+			valid = AddEvent.convertStringToTimestamp(ev.getStartDate()).before(timestamp2)
+					|| AddEvent.convertStringToTimestamp(ev.getEndDate()).after(timestamp);
+			
+		}
+		return valid;
 	}
 	
 	public static Event createEvent(int id, String na, int t, String sD, String eD, String l, String n) throws ParseException {
 		return null;//new Event(id, na, t, sD, eD, l, n);
+	}
+
+	public static void removeEvent(int id)
+	{
+		EventDAOImp.deleteEvent(id);
 	}
 	
 	public static void setEvent(Event e)
@@ -48,6 +67,7 @@ public class EventsServ {
         Object[][] data = new Object[events.size()][];
         for(int i = 0; i < data.length; ++i) {
         	data[i] = events.get(i).toArray();
+			System.out.println("" + data[i]);
         }
         return data;
 	}
