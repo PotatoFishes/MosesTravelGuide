@@ -41,11 +41,13 @@ public class UserDAO {
 	
 	public static void updateUser(User e) {
 		try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
 				PreparedStatement stmt = conn.prepareStatement("SELECT username, password, location, email FROM Users WHERE username=?");
 				PreparedStatement updateStatement = conn.prepareStatement("UPDATE Users SET userame=?, password=?, location=?, email=? WHERE id=?");
 				PreparedStatement insertStatement = conn.prepareStatement("INSERT INTO Users (username, password, location, email) VALUES(?, ?, ?, ?)",Statement.RETURN_GENERATED_KEYS)) {
 			stmt.setString(1, e.getUsername());
 			ResultSet rs = stmt.executeQuery();
+
 		         // Extract data from result set
 		         if (rs.next()) {
 		        	 updateStatement.setString(1, e.getUsername());
@@ -82,7 +84,7 @@ public class UserDAO {
 	public static void deleteUser(User e) {
 		try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
 		         Statement stmt = conn.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT username, password, location, email FROM Users WHERE username="+e.getUsername());) {
+				ResultSet rs = stmt.executeQuery("SELECT username, password, location, email FROM Users WHERE username='"+e.getUsername()+"'");) {
 		         // Extract data from result set
 		         if (rs.next()) {
 		            // Retrieve by column name
