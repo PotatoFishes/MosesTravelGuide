@@ -23,13 +23,7 @@ public class UserDAO {
 			ResultSet rs = stmt.executeQuery("SELECT ID, username, password, location, email FROM Users WHERE ID="+userID);
 			// Extract data from result set
 			if (rs.next()) {
-				// Retrieve by column name
-				if(rs.getString("ID").equals(userID))
-				{
-					List<Integer> follow=new ArrayList<Integer>();
-					u=new User(rs.getInt("ID"),rs.getString("username"),rs.getString("password"),rs.getString("location"),rs.getString("email"),follow);
-					return true;
-				}
+				return true;
 			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();

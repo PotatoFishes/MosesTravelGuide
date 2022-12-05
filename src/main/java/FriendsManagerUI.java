@@ -130,8 +130,16 @@ public class FriendsManagerUI extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		try {
 			Integer id = Integer.parseInt(idEntry.getText());
-			FriendsService.addPermission(id);
-			updateOutgoingView();
+			if(UserDAO.checkExists(id)) {
+				FriendsService.addPermission(id);
+				updateOutgoingView();
+			}
+			else {
+				JOptionPane.showMessageDialog(null,
+	                    "User " + id + " does not exist\nPlease Enter a valid User ID"
+	                    ,"Error"
+	                    ,JOptionPane.OK_OPTION);
+			}
 		}
 		catch(NumberFormatException nfe) {
 			JOptionPane.showMessageDialog(null,
