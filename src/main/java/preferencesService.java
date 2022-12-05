@@ -1,10 +1,10 @@
 
-public class preferences {
+public class preferencesService {
 	int uid;
 	boolean noti,priv;
 	String gender;
 	
-	public preferences(int uid, boolean noti, boolean priv, String gender) {
+	public preferencesService(int uid, boolean noti, boolean priv, String gender) {
 		super();
 		this.uid = uid;
 		this.noti = noti;
