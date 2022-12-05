@@ -129,9 +129,9 @@ public class AddEvent extends JDialog implements PropertyChangeListener{
 					}
 					else
 					{
-						EventsServ.createEvent(temp);
+						/*EventsServ.createEvent(temp);
 						((DefaultTableModel)table.getModel()).insertRow(0, temp.toArray());
-						dispose();
+						dispose();*/
 					}
 				} catch (NumberFormatException e1) {
 					// TODO Auto-generated catch block

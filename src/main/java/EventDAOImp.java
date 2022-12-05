@@ -29,7 +29,7 @@ public class EventDAOImp{
 		         // Extract data from result set
 		         while (rs.next()) {
 		            // Retrieve by column name
-					 System.out.println(rs.getString("Start"));
+					 //System.out.println(rs.getString("Start"));
 		        	Event e=new Event(rs.getInt("id"),rs.getString("eventName"),rs.getTimestamp("Start"),rs.getTimestamp("End"),rs.getString("Location"),rs.getString("notes"),rs.getString("usedServices"), uid);
 		        	list.add(e);
 		         }

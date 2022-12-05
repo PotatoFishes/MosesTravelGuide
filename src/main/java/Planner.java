@@ -105,6 +105,7 @@ public class Planner extends JPanel {
                 if(answer == JOptionPane.YES_OPTION)
                 {
                     model.removeRow(modelRow);
+                    
                 }
             }
         };
@@ -210,8 +211,10 @@ public class Planner extends JPanel {
                         //model.insertRow(0, temp.toArray());
                         //new AddLineDialog(0, model).setVisible(true);
                         //setVisible(true);
-                        AddBusiness addBus = new AddBusiness(table);
-                        addBus.setVisible(true);
+                        //AddBusiness addBus = new AddBusiness(table);
+                        //addBus.setVisible(true);
+                    	BusinessUI bui = new BusinessUI();
+                    	bui.setVisible(true);
                         //addBus.show();
                     }
                 });
