@@ -1,3 +1,4 @@
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -20,6 +21,12 @@ public class EventsServ {
 	public static void createEvent(Event e)
 	{
 		EventDAOImp.updateEvent(e);
+	}
+
+	public static boolean checkTimesValid(Event e) throws ParseException {
+		Timestamp timestamp = AddEvent.convertStringToTimestamp(e.getStartDate());
+		Timestamp timestamp2 = AddEvent.convertStringToTimestamp(e.getEndDate());
+		return timestamp.before(timestamp2);
 	}
 	
 	public static Event createEvent(int id, String na, int t, String sD, String eD, String l, String n) throws ParseException {

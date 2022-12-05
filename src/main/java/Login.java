@@ -70,6 +70,13 @@ public class Login extends JPanel implements PropertyChangeListener{
 	        			}
 	        		});
 	     		}
+			 	else
+				{
+					JOptionPane.showConfirmDialog(null,
+							"Incorrect Username or Password"
+							, "Error"
+							, JOptionPane.OK_CANCEL_OPTION);
+				}
 	     	}
 		});
 		

@@ -122,13 +122,14 @@ public class Planner extends JPanel {
                         new EditEventDialog(table.getSelectedRow(),model).setVisible(true);
                     } catch (ParseException ex) {
                         JOptionPane.showConfirmDialog(null,
-                                "Incorrect Time Format: Please Format as \"MM/dd/YYYY hh:mm: AM/PM\" "
+                                "Incorrect Time Format: Please Format as 'YYYY-MM-dd HH:mm:ss.SSS' from '1000-01-01' to '9999-12-31'"
                                 , "Error"
                                 , JOptionPane.OK_OPTION);
                         exceptionFound = true;
                         ex.printStackTrace();
                     }
                 }while(exceptionFound);
+                events = EventsServ.getEventsForPlanner();
 
             }
         };
@@ -169,6 +170,7 @@ public class Planner extends JPanel {
                     {
                         AddEvent addEvent = new AddEvent(table);
                         addEvent.setVisible(true);
+                        events = EventsServ.getEventsForPlanner();
                     }
                 });
             }
