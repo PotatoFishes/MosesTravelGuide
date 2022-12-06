@@ -7,8 +7,8 @@ public class FriendsService {
 	static public Set<String[]> getFriendsAccess(){
 		User u = UserLoginService.getUser();
 		Set<String[]> out = new HashSet<String[]>();
-		Set<Follower> uids = UserDAO.getFollowers(u);
-		for(Follower i: uids) {
+		Set<Friend> uids = UserDAO.getFollowers(u);
+		for(Friend i: uids) {
 			out.add(new String[] {i.getName(), i.getId().toString(), " X "});
 		}
 		return out;

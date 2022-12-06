@@ -1,4 +1,3 @@
-import com.mysql.cj.util.StringUtils;
 import net.coderazzi.filters.gui.AutoChoices;
 import net.coderazzi.filters.gui.TableFilterHeader;
 
@@ -230,8 +229,8 @@ public class EditEventDialog extends JFrame implements ActionListener
             try
             {
                 //List<Service> temp = new ArrayList<Service>();
-                Timestamp timestamp = AddEvent.convertStringToTimestamp(txtSDate.getText());
-                Timestamp timestamp2 = AddEvent.convertStringToTimestamp(txtEDate.getText());
+                Timestamp timestamp = CreateEvent.convertStringToTimestamp(txtSDate.getText());
+                Timestamp timestamp2 = CreateEvent.convertStringToTimestamp(txtEDate.getText());
                 timestamp.after(timestamp2);
 
                 String tempS = "";
