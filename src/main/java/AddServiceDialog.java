@@ -108,8 +108,8 @@ public class AddServiceDialog extends JFrame implements ActionListener
                         Integer.valueOf(txtId.getText()),
                         txtName.getText(),
                         Double.valueOf(txtPrice.getText()),
-                        AddEvent.convertStringToTimestamp(txtSDate.getText()),
-                        AddEvent.convertStringToTimestamp(txtEDate.getText()),
+                        CreateEvent.convertStringToTimestamp(txtSDate.getText()),
+                        CreateEvent.convertStringToTimestamp(txtEDate.getText()),
                         Integer.valueOf(txtCapacity.getText()));
                 ServiceServ.addService( temp );
                 finding.add(temp);

@@ -14,7 +14,7 @@ import javax.swing.table.DefaultTableModel;
 /*
  * The AddEvent class allows the user to create a new event.
  */
-public class AddEvent extends JDialog implements PropertyChangeListener{
+public class CreateEvent extends JDialog implements PropertyChangeListener{
 	private static final long serialVersionUID = 4143611827610300148L;
 	JTable table;
 	private int ID = 0, Type = 0;
@@ -22,8 +22,9 @@ public class AddEvent extends JDialog implements PropertyChangeListener{
 	private JLabel IDlabel, Namelabel, Typelabel, SDatelabel, EDatelabel, Loclabel, Notelabel;
 	private static String IDcol="ID: ", Namecol="Name: ", Typecol="Type: ", SDatecol="Start Date: ", EDatecol="End Date: ", Loccol="Location: ", Notecol="Note: ";
 	private JFormattedTextField Namefield, Typefield, SDatefield, EDatefield, Locfield, Notefield;
+	private JComboBox search;
 	
-	public AddEvent(JTable owner) {
+	public CreateEvent(JTable owner) {
 		super(javax.swing.SwingUtilities.windowForComponent(owner));
 		table = owner;
 		

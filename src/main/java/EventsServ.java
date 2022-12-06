@@ -25,8 +25,8 @@ public class EventsServ {
 
 	public static boolean checkTimesValid(Event e) throws ParseException {
 		boolean valid = true;
-		Timestamp timestamp = AddEvent.convertStringToTimestamp(e.getStartDate());
-		Timestamp timestamp2 = AddEvent.convertStringToTimestamp(e.getEndDate());
+		Timestamp timestamp = CreateEvent.convertStringToTimestamp(e.getStartDate());
+		Timestamp timestamp2 = CreateEvent.convertStringToTimestamp(e.getEndDate());
 
 		valid = timestamp.before(timestamp2);
 		
@@ -36,8 +36,8 @@ public class EventsServ {
 			{
 				break;
 			}
-			valid = AddEvent.convertStringToTimestamp(ev.getStartDate()).before(timestamp2)
-					|| AddEvent.convertStringToTimestamp(ev.getEndDate()).after(timestamp);
+			valid = CreateEvent.convertStringToTimestamp(ev.getStartDate()).before(timestamp2)
+					|| CreateEvent.convertStringToTimestamp(ev.getEndDate()).after(timestamp);
 			
 		}
 		return valid;
