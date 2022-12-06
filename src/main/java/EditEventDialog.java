@@ -177,7 +177,6 @@ public class EditEventDialog extends JFrame implements ActionListener
 
     private void addService()
     {
-        // TODO: make Add Service Dialog
         AddServiceDialog a=new AddServiceDialog((DefaultTableModel) table.getModel(), evt);
         evt=a.e;
         System.out.println(evt.getUsedServices());
