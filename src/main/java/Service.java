@@ -39,6 +39,13 @@ public class Service
         eDate = new Date(eD.getTime());
         capacity = cap;
     }
+    Service(String na, double p, Timestamp sD, Timestamp eD, int cap) {
+        name = na;
+        price = p;
+        sDate = new Date(sD.getTime());
+        eDate = new Date(eD.getTime());
+        capacity = cap;
+    }
 
     public int getID() {
         return ID;

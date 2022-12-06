@@ -3,7 +3,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ServiceServ {
-	private ServiceDAOImp servDao = new ServiceDAOImp();
 
 	public List<Service> getServiceList(String commaSeparatedIDs)
 	{
@@ -22,9 +21,9 @@ public class ServiceServ {
 		return usedServices;
 	}
 
-	public static Object[][] getServicesForTable(int eid) {
+	public static Object[][] getServicesForTable(Event e) {
 		java.util.List<Service> services = new ArrayList<>();
-		services = EventDAOImp.getEvent(eid).getUsedServices(services);
+		services = e.getUsedServices(services);
 		Object[][] data = new Object[services.size()][];
 		for(int i = 0; i < data.length; ++i) {
 			data[i] = services.get(i).toArray();
@@ -38,8 +37,9 @@ public class ServiceServ {
 	public void unbook(Service s) {
 		s.subBooking();
 	}
-	public static void addService(Service s) {
-		ServiceDAOImp.updateService(s);
+	public static Service addService(Service s) {
+		Service se=ServiceDAOImp.addNewService(s);
+		return se;
 	}
 	public static void removeService(Service s) {
 		ServiceDAOImp.deleteService(s);
