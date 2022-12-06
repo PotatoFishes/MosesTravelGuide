@@ -1,37 +1,41 @@
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Vector;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SpringLayout;
+import javax.swing.table.DefaultTableModel;
 
 public class AddServiceDialog extends JFrame implements ActionListener
 {
     SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss.SSS");
     private Vector<Object> adder = new Vector<>();
-    List<Service> finding = new ArrayList<>();
     DefaultTableModel parent;
-    static int ids = 0;
+    Event e;
     private int index;
     private JTextField txtId, txtName, txtBookings, txtSDate, txtEDate, txtPrice, txtCapacity;
     private JButton btnOK, btnCancel, btnAddServ;
 
-    AddServiceDialog( DefaultTableModel model, List<Service> updating)
+    AddServiceDialog( DefaultTableModel model, Event e)
     {
         super("Add Service");
         setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         parent = model;
         index = 0;
-        finding = updating;
+        this.e=e;
 
         //Setting Input Fields' Initial Values
-        txtId = new JTextField("" + ids);
-        txtName = new JTextField(15);
+        txtName = new JTextField(30);
         txtName.setText("Name");
         txtPrice = new JTextField(15);
         txtPrice.setText("0.00");
@@ -52,8 +56,6 @@ public class AddServiceDialog extends JFrame implements ActionListener
 
         //Setting Label Names
         JPanel content = new JPanel(new SpringLayout());
-        content.add(new JLabel("ID: "));
-        content.add(new JLabel("" + ids));
         content.add(new JLabel("Name: "));
         content.add(txtName);
         content.add(new JLabel("Price: "));
@@ -68,7 +70,7 @@ public class AddServiceDialog extends JFrame implements ActionListener
         content.add(txtCapacity);
         content.add(btnOK);
         content.add(btnCancel);
-        SpringUtilities.makeCompactGrid(content, 8, 2, 6, 6, 6, 6);
+        SpringUtilities.makeCompactGrid(content, 7, 2, 6, 6, 6, 6);
 
         JPanel panelHolders = new JPanel();
         panelHolders.setLayout(new SpringLayout());
@@ -83,7 +85,6 @@ public class AddServiceDialog extends JFrame implements ActionListener
 
     private void initAdder()
     {
-        adder.add(txtId.getText());
         adder.add(txtName.getText());
         adder.add(txtPrice.getText());
         adder.add(txtSDate.getText());
@@ -105,16 +106,16 @@ public class AddServiceDialog extends JFrame implements ActionListener
                 Double.parseDouble(txtPrice.getText());
                 initAdder();
                 Service temp = new Service(
-                        Integer.valueOf(txtId.getText()),
                         txtName.getText(),
                         Double.valueOf(txtPrice.getText()),
-                        AddEvent.convertStringToTimestamp(txtSDate.getText()),
-                        AddEvent.convertStringToTimestamp(txtEDate.getText()),
+                        Timestamp.valueOf(txtSDate.getText()),
+                        Timestamp.valueOf(txtEDate.getText()),
                         Integer.valueOf(txtCapacity.getText()));
-                ServiceServ.addService( temp );
-                finding.add(temp);
-                ids ++;
-                parent.insertRow(index,adder);
+                
+                System.out.println(temp.getStartDate());
+                temp=ServiceServ.addService( temp );
+                this.e.addService(temp);
+                System.out.println(this.e.getUsedServices());
             }
             catch(NumberFormatException nfe)
             {
@@ -123,12 +124,6 @@ public class AddServiceDialog extends JFrame implements ActionListener
                         ,"Error"
                         ,JOptionPane.OK_OPTION);
                 nfe.printStackTrace();
-            } catch (ParseException ex) {
-                JOptionPane.showMessageDialog(null,
-                        "Incorrect Time Format: Please Format as 'YYYY-MM-dd HH:mm:ss.SSS' from '1000-01-01' to '9999-12-31'"
-                        ,"Error"
-                        ,JOptionPane.OK_OPTION);
-                ex.printStackTrace();
             }
             dispose();
             return;

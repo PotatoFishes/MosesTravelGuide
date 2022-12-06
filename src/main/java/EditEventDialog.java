@@ -24,8 +24,8 @@ public class EditEventDialog extends JFrame implements ActionListener
     private TableRowSorter<DefaultTableModel> sorter;
     private final DefaultTableModel parent;
     int eventID;
+    Event evt;
     private Vector<Object> adder = new Vector<>();
-    private List<Service> Services = new ArrayList<>();
     private int index;
     private JTextField txtId, txtName, txtSDate, txtEDate, txtLoc, txtNote, txtServices = new JTextField(15);
     private JButton btnOK, btnCancel, btnAddServ;
@@ -37,8 +37,12 @@ public class EditEventDialog extends JFrame implements ActionListener
     private int ENOTECELL = 5;
     private int SEDITCELL = 7;
     private int SREMOVECELL = 8;
+    private DefaultTableModel model;
     private String[] columnNames = {
             "ID", "Price", "Name", "Start Time", "End Time", "Bookings", "Capacity", "Edit", "Remove"
+    };
+    final Class<?>[] columnClass = new Class[]{
+            String.class, String.class, String.class,String.class,String.class,String.class,String.class,String.class, String.class
     };
     private Object[][] data = {
             //TODO: Service loading functions
@@ -51,11 +55,11 @@ public class EditEventDialog extends JFrame implements ActionListener
         parent = eventModel;
         index = ndx;
         eventID = Integer.parseInt(((String)parent.getValueAt(ndx,EIDCELL)).trim());
+        evt=EventDAOImp.getEvent(eventID);
+        
         //Create a table with a sorter.
-        final Class<?>[] columnClass = new Class[]{
-                String.class, String.class, String.class,String.class,String.class,String.class,String.class,String.class, String.class
-        };
-        final DefaultTableModel model = new DefaultTableModel(ServiceServ.getServicesForTable(eventID), columnNames) {
+        
+         model = new DefaultTableModel(ServiceServ.getServicesForTable(evt), columnNames) {
             @Override
             public boolean isCellEditable(int row, int col) {
                 if(col < SEDITCELL) {
@@ -175,7 +179,26 @@ public class EditEventDialog extends JFrame implements ActionListener
     private void addService()
     {
         // TODO: make Add Service Dialog
-        new AddServiceDialog((DefaultTableModel) table.getModel(), Services);
+        AddServiceDialog a=new AddServiceDialog((DefaultTableModel) table.getModel(), evt);
+        evt=a.e;
+        System.out.println(evt.getUsedServices());
+        model = new DefaultTableModel(ServiceServ.getServicesForTable(evt), columnNames) {
+            @Override
+            public boolean isCellEditable(int row, int col) {
+                if(col < SEDITCELL) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+            @Override
+            public Class <?> getColumnClass(int col)
+            {
+                return columnClass[col];
+            }
+        };
+        table.setModel(model);
+        table.repaint();
     }
 
     private void initAdder()
@@ -212,31 +235,19 @@ public class EditEventDialog extends JFrame implements ActionListener
                 timestamp.after(timestamp2);
 
                 String tempS = "";
-                for(Service s : Services)
+                for(Service s : evt.usedServices)
                 {
                     tempS += s.getID() + ",";
                 }
                 tempS = chop(tempS);
                 txtServices.setText(tempS + "");
 
-                System.out.println(Services.get(Services.size() - 1).toString());
                 System.out.println(tempS );
-                Event temp = new Event(eventID, txtName.getText(), timestamp, timestamp2,txtLoc.getText(), txtNote.getText(), txtServices.getText(), 1);
+                Event temp = evt;
                 System.out.println(temp.getUsedServices());
-                if(!EventsServ.checkTimesValid(temp))
-                {
-                    JOptionPane.showConfirmDialog(null,
-                            "Incorrect Time Format: Please Format as 'YYYY-MM-dd HH:mm:ss.SSS' from '1000-01-01' to '9999-12-31'"
-                            , "Error"
-                            , JOptionPane.OK_OPTION);
-                    dispose();
-                }
-                else
-                {
-                    parent.removeRow(index);
-                    parent.insertRow(index,temp.toArray());
-                    EventsServ.createEvent(temp);
-                }
+                parent.removeRow(index);
+                parent.insertRow(index,temp.toArray());
+                EventsServ.createEvent(temp);
             }
             catch(NumberFormatException nfe)
             {

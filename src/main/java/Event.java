@@ -156,13 +156,14 @@ public class Event
 
     public String getUsedServices() {
     	List<String> l=new ArrayList<String>();
-    	String us=null;
+    	String us="";
     	if(!usedServices.isEmpty())
     	{
     		for(Service s:usedServices)
     			l.add(""+s.getID());
     		us=String.join(",", l);
     	}
+    	System.out.print(usedServices.size());
 		return us;
 	}
     public List<Service> getUsedServices(List<Service> serv){
