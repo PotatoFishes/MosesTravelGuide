@@ -3,14 +3,15 @@ public class SearchService {
     private static String s;
     public static String getData(Object o) {
         s = "Stuff, One, Two, Three, four, five, six, seven, eight, nine, ten, eleven, twelve";
+
         if (o == "Location") {
-            // return all locations
+            s=EventDAOImp.getEventLocations();
         } else if (o == "Services") {
-            // return all services
+            s=ServiceDAOImp.getServicesNames();
         } else if (o == "Events") {
-            // return all events
+            s=EventDAOImp.getEventNames();
         } else {
-            // Return events by name
+            s=EventDAOImp.getEventByNames((String)o);
         }
 
         return s;

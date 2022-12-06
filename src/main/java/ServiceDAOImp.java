@@ -22,6 +22,7 @@ public class ServiceDAOImp {
 					// Retrieve by column name
 					li.add(rs.getString("Name"));
 				}
+				stmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -35,14 +36,16 @@ public class ServiceDAOImp {
 				Statement stmt = conn.createStatement();){
 			for(int i:list)
 			{
-				ResultSet rs = stmt.executeQuery("SELECT name, price, location, startTime, endTime, capacity FROM Services WHERE id="+i);
+				ResultSet rs = stmt.executeQuery("SELECT name, price, startTime, endTime, capacity FROM Services WHERE id="+i);
 				// Extract data from result set
 				while (rs.next()) {
 					// Retrieve by column name
 					Service e=new Service(i,rs.getString("Name"),rs.getDouble("Price"),rs.getTimestamp("StartTIme"),rs.getTimestamp("EndTime"),rs.getInt("capacity"));
 					li.add(e);
 				}
+
 			}
+			stmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} 
@@ -78,6 +81,7 @@ public class ServiceDAOImp {
 		         {
 		        	 stmt.executeUpdate("INSERT INTO Services (name, startTime, endTime, price, capacity) VALUES('"+e.getName()+"', '"+e.getStartDate()+"', '"+e.getEndDate()+"', "+e.getPrice()+", "+e.getCapacity()+")");
 		         }
+				 stmt.close();
 		      } catch (SQLException ex) {
 		         ex.printStackTrace();
 		      } 
@@ -93,6 +97,7 @@ public class ServiceDAOImp {
 		            // Retrieve by column name
 		        	stmt.executeUpdate("DELETE from Services WHERE id="+e.getID());
 		         }
+				 stmt.close();
 		      } catch (SQLException ex) {
 		         ex.printStackTrace();
 		      } 

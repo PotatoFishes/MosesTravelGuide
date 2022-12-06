@@ -1,4 +1,3 @@
-import com.mysql.cj.util.StringUtils;
 import net.coderazzi.filters.gui.AutoChoices;
 import net.coderazzi.filters.gui.TableFilterHeader;
 
@@ -188,12 +187,13 @@ public class EditEventDialog extends JFrame implements ActionListener
         adder.add(" X ");
     }
 
-    public static void chop(String s)
+    public static String chop(String s)
     {
         if(s.length() > 0)
         {
-            s = s.substring(0, s.length() - 2);
+            s = s.substring(0, s.length() - 1);
         }
+        return s;
     }
 
     @Override
@@ -206,8 +206,8 @@ public class EditEventDialog extends JFrame implements ActionListener
             try
             {
                 //List<Service> temp = new ArrayList<Service>();
-                Timestamp timestamp = AddEvent.convertStringToTimestamp(txtSDate.getText());
-                Timestamp timestamp2 = AddEvent.convertStringToTimestamp(txtEDate.getText());
+                Timestamp timestamp = CreateEvent.convertStringToTimestamp(txtSDate.getText());
+                Timestamp timestamp2 = CreateEvent.convertStringToTimestamp(txtEDate.getText());
                 timestamp.after(timestamp2);
 
                 String tempS = "";
@@ -215,11 +215,13 @@ public class EditEventDialog extends JFrame implements ActionListener
                 {
                     tempS += s.getID() + ",";
                 }
-                chop(tempS);
+                tempS = chop(tempS);
                 txtServices.setText(tempS + "");
 
-                System.out.println(tempS + " " + txtServices);
+                System.out.println(Services.get(Services.size() - 1).toString());
+                System.out.println(tempS );
                 Event temp = new Event(eventID, txtName.getText(), timestamp, timestamp2,txtLoc.getText(), txtNote.getText(), txtServices.getText(), 1);
+                System.out.println(temp.getUsedServices());
                 if(!EventsServ.checkTimesValid(temp))
                 {
                     JOptionPane.showConfirmDialog(null,
@@ -243,7 +245,9 @@ public class EditEventDialog extends JFrame implements ActionListener
                         ,JOptionPane.OK_OPTION);
                 dispose();
                 return;
-            } catch (ParseException ex) {
+            }
+            catch (ParseException ex)
+            {
                 ex.printStackTrace();
             }
 

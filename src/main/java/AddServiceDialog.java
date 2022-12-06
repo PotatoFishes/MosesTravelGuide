@@ -16,6 +16,7 @@ public class AddServiceDialog extends JFrame implements ActionListener
     private Vector<Object> adder = new Vector<>();
     List<Service> finding = new ArrayList<>();
     DefaultTableModel parent;
+    static int ids = 0;
     private int index;
     private JTextField txtId, txtName, txtBookings, txtSDate, txtEDate, txtPrice, txtCapacity;
     private JButton btnOK, btnCancel, btnAddServ;
@@ -29,7 +30,7 @@ public class AddServiceDialog extends JFrame implements ActionListener
         finding = updating;
 
         //Setting Input Fields' Initial Values
-        txtId = new JTextField("0");
+        txtId = new JTextField("" + ids);
         txtName = new JTextField(15);
         txtName.setText("Name");
         txtPrice = new JTextField(15);
@@ -52,7 +53,7 @@ public class AddServiceDialog extends JFrame implements ActionListener
         //Setting Label Names
         JPanel content = new JPanel(new SpringLayout());
         content.add(new JLabel("ID: "));
-        content.add(new JLabel("" + 0));
+        content.add(new JLabel("" + ids));
         content.add(new JLabel("Name: "));
         content.add(txtName);
         content.add(new JLabel("Price: "));
@@ -61,7 +62,7 @@ public class AddServiceDialog extends JFrame implements ActionListener
         content.add(txtSDate);
         content.add(new JLabel("End Date: "));
         content.add(txtEDate);
-        content.add(new JLabel("Location: "));
+        content.add(new JLabel("Bookings: "));
         content.add(txtBookings);
         content.add(new JLabel("Note: "));
         content.add(txtCapacity);
@@ -107,11 +108,12 @@ public class AddServiceDialog extends JFrame implements ActionListener
                         Integer.valueOf(txtId.getText()),
                         txtName.getText(),
                         Double.valueOf(txtPrice.getText()),
-                        AddEvent.convertStringToTimestamp(txtSDate.getText()),
-                        AddEvent.convertStringToTimestamp(txtEDate.getText()),
+                        CreateEvent.convertStringToTimestamp(txtSDate.getText()),
+                        CreateEvent.convertStringToTimestamp(txtEDate.getText()),
                         Integer.valueOf(txtCapacity.getText()));
                 ServiceServ.addService( temp );
                 finding.add(temp);
+                ids ++;
                 parent.insertRow(index,adder);
             }
             catch(NumberFormatException nfe)

@@ -3,6 +3,8 @@ import net.coderazzi.filters.gui.TableFilterHeader;
 
 import java.util.List;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -28,13 +30,14 @@ public class Planner extends JPanel {
     private JTextArea choiceLog = new JTextArea("");
     private JFileChooser fileChooser = new JFileChooser();
     private JPanel form = new JPanel(new SpringLayout());
+    private JPanel form2 = new JPanel(new GridBagLayout());
     private JComboBox combo;
     private TableRowSorter<DefaultTableModel> sorter;
     List<Event> events = EventDAOImp.getEvents();
     public static int NOTES = 5;
     public static int EDITCELL = 6;
     public static int REMOVECELL = 7;
-    private final String[] options = { "          ", "Location", "Services", "Events" };
+    private final String[] options = { "", "Location", "Services", "Events" };
 
     //TODO: remove these debugging/testing variables
     public SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss.SSS");
@@ -52,15 +55,16 @@ public class Planner extends JPanel {
     {
         super();
         setLayout(new SpringLayout());
+        
+    	JLabel appName = new JLabel("Moses Travel Guide");
+    	add(appName);
 
         //Create a table with a sorter.
         final Class<?>[] columnClass = new Class[]{
                 String.class, String.class,String.class,String.class,String.class,String.class,String.class, String.class
         };
         final DefaultTableModel model = new DefaultTableModel(EventsServ.getEventsForTable() , columnNames) {
-            /**
-			 * 
-			 */
+
 			private static final long serialVersionUID = -4279510772803332762L;
 			@Override
             public boolean isCellEditable(int row, int col) {
@@ -74,8 +78,7 @@ public class Planner extends JPanel {
             public Class <?> getColumnClass(int col)
             {
                 return columnClass[col];
-            }
-        };
+            }};
 
         // Set table dimensions
         sorter = new TableRowSorter<DefaultTableModel>(model);
@@ -139,6 +142,26 @@ public class Planner extends JPanel {
         };
         ButtonColumn colButEditor = new ButtonColumn(table, editor, EDITCELL);
 
+        JLabel l1 = new JLabel("Filter Text:", SwingConstants.TRAILING);
+        combo = new JComboBox(options);
+        combo.setEditable(true);
+        ((JTextField)combo.getEditor().getEditorComponent()).getDocument().addDocumentListener(
+                new DocumentListener() {
+                    public void changedUpdate(DocumentEvent e) {
+                        newFilter();
+                    }
+
+                    public void insertUpdate(DocumentEvent e) {
+                        newFilter();
+                    }
+
+                    public void removeUpdate(DocumentEvent e) {
+                        newFilter();
+                    }
+                });
+        l1.setLabelFor(combo.getEditor().getEditorComponent());
+        new AutoFill(combo);
+
         // Settings (for notifications and stuff)
         JButton settings = new JButton("Settings");
         settings.addActionListener(new ActionListener()
@@ -151,7 +174,7 @@ public class Planner extends JPanel {
                     @Override
                     public void run()
                     {
-                        new SettingDialog();
+                        new SettingDialog(UserLoginService.getUser());
                     }
                 });
             }
@@ -169,28 +192,8 @@ public class Planner extends JPanel {
                     @Override
                     public void run()
                     {
-                        AddEvent addEvent = new AddEvent(table);
-                        addEvent.setVisible(true);
-                        events = EventsServ.getEventsForPlanner();
+                        //TODO Add Event
 
-                    }
-                });
-            }
-        });
-        
-        JButton manageButton = new JButton("Manage Events");
-        manageButton.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                SwingUtilities.invokeLater(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        ManageEvents manageEvent = new ManageEvents(table);
-                        manageEvent.show();
                     }
                 });
             }
@@ -266,12 +269,8 @@ public class Planner extends JPanel {
                     @Override
                     public void run()
                     {
-                        setVisible(false);
-                        // TODO: make Invite to Event Dialog
-                        Event temp = new Event();
-                        model.insertRow(0, temp.toArray());
-                        new AddLineDialog(0, model).setVisible(true);
-                        setVisible(true);
+                        InviteEvents iEvent = new InviteEvents(table);
+                        iEvent.show();
                     }
                 });
             }
@@ -313,7 +312,7 @@ public class Planner extends JPanel {
             }
         });
 
-        JButton search1 = new JButton("Search");
+        JButton search1 = new JButton("Get Ideas");
         search1.addActionListener(new ActionListener()
         {
             @Override
@@ -330,25 +329,24 @@ public class Planner extends JPanel {
                 });
             }
         });
-        combo = new JComboBox(options);
-        combo.setEditable(true);
 
+        search1.setToolTipText("Choose Location, Service, or Event to get some inspiration!");
         // Buttons Setup
-        form.add(combo);
-        form.add(search1);
-        form.add(settings);
-        form.add(eventButton);
-        form.add(manageButton);
-        form.add(businessButton);
-        form.add(pInvButton);
-        form.add(eInvButton);
-        form.add(friendsButton);
-        form.add(Cart);
-        SpringUtilities.makeCompactGrid(form, 5, 2, 6, 6, 6, 6);
+        form2.add(combo);
+        form2.add(search1);
+        form2.add(settings);
+        form2.add(eventButton);
+        form2.add(businessButton);
+        form2.add(pInvButton);
+        form2.add(eInvButton);
+        form2.add(friendsButton);
+        form2.add(Cart);
+        //SpringUtilities.makeCompactGrid(form, 2, 5, 6, 6, 6, 6);
 
         // Add Buttons to the Right of the Table
-        add(form);
-        SpringUtilities.makeCompactGrid(this, 1,2,10,10,10,10);
+        add(form2);
+        //SpringUtilities.makeCompactGrid(this, 1,2,10,10,10,10);
+        SpringUtilities.makeCompactGrid(this, 3,1,10,10,10,10);
     }
 
     /**
@@ -361,7 +359,7 @@ public class Planner extends JPanel {
         //If current expression doesn't parse, don't update.
         try
         {
-            rf = RowFilter.regexFilter(filterText.getText(), 0, 1, 2);
+            rf = RowFilter.regexFilter(combo.getEditor().getItem().toString(), 0, 1, 2, 3, 4, 5);
         }
         catch (java.util.regex.PatternSyntaxException e)
         {
@@ -377,8 +375,6 @@ public class Planner extends JPanel {
      */
     private static void createAndShowGUI()
     {
-
-
         //Create and set up the window.
         frame = new JFrame("Planner");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -391,11 +387,6 @@ public class Planner extends JPanel {
         //Display the window.
         frame.pack();
         frame.setVisible(true);
-    }
-
-    public void showGUI()
-    {
-        createAndShowGUI();
     }
 
     public static void main(String[] args)
