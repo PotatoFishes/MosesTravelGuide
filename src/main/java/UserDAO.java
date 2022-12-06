@@ -135,9 +135,9 @@ public class UserDAO {
 
 	}
 
-	public static Set<Follower> getFollowers(User u) {
+	public static Set<Friend> getFollowers(User u) {
 		Set<Integer> out = new HashSet<Integer>();
-		Set<Follower> followers = new HashSet<Follower>();
+		Set<Friend> friend = new HashSet<Friend>();
 		try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
 				Statement stmt = conn.createStatement();
 				ResultSet rs = stmt.executeQuery("SELECT user2 FROM Follow WHERE user1=" + u.id);) {
@@ -151,7 +151,7 @@ public class UserDAO {
 			ex.printStackTrace();
 		}
 		for (Integer i : out) {
-			Follower f = new Follower();
+			Friend f = new Friend();
 			f.setId(i);
 			try (Connection nameConn = DriverManager.getConnection(DB_URL, USER, PASS);
 					Statement nameStmt = nameConn.createStatement();
@@ -165,9 +165,9 @@ public class UserDAO {
 			} catch (SQLException ex) {
 				f.setName("");
 			}
-			followers.add(f);
+			friend.add(f);
 		}
-		return followers;
+		return friend;
 	}
 
 	public static void removeFollower(User u, int uid) {

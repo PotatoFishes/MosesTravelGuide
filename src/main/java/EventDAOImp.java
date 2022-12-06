@@ -160,5 +160,23 @@ public class EventDAOImp{
 			ex.printStackTrace();
 		}
 	}
-	
+	public static List<Event> getAllEvent() {
+		List<Event> li=new ArrayList<>();
+		try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT id, eventName, Start, End, Location, notes, usedServices, userid FROM Events");) {
+			// Extract data from result set
+			if (rs.next()) {
+				// Retrieve by column name
+				while (rs.next()) {
+					li.add(new Event(Integer.parseInt(rs.getString("id")), rs.getString("eventName"), rs.getTimestamp("Start"),
+							rs.getTimestamp("End"), rs.getString("Location"), rs.getString("notes"),
+							rs.getString("usedServices"), rs.getInt("userid")));
+				}
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return li;
+	}
 }
