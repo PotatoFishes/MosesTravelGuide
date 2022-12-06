@@ -117,7 +117,7 @@ public class AddEvent extends JDialog implements PropertyChangeListener{
 					Timestamp timestamp2 = convertStringToTimestamp(EDatefield.getText());
 					timestamp.after(timestamp2);
 					
-					Event temp = new Event(ID, Name, timestamp, timestamp2, Loc, Note, "", 1);
+					Event temp = new Event(ID, Name, timestamp, timestamp2, Loc, Note, "", );
 					if(!EventsServ.checkTimesValid(temp))
 					{
 						JOptionPane.showConfirmDialog(null,
