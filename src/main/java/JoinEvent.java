@@ -10,7 +10,7 @@ import javax.swing.table.DefaultTableModel;
 
 import net.coderazzi.filters.gui.TableFilterHeader;
 
-public class AddEvent extends JFrame implements ActionListener, ItemListener{
+public class JoinEvent extends JFrame implements ActionListener, ItemListener{
     private static final long serialVersionUID = 924430730575961493L;
     final Class<?>[] columnClass = new Class[]{
             String.class, String.class,String.class,String.class,String.class,String.class,String.class, String.class
@@ -21,7 +21,7 @@ public class AddEvent extends JFrame implements ActionListener, ItemListener{
     String s1[];
     final DefaultTableModel model;
 
-    public AddEvent(User u) {
+    public JoinEvent(User u) {
         super("Add Event");
         JPanel content = new JPanel(new SpringLayout());
         this.setContentPane(content);

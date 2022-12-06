@@ -5,8 +5,6 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
@@ -14,7 +12,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class Planner extends JPanel {
@@ -192,7 +189,7 @@ public class Planner extends JPanel {
                     @Override
                     public void run()
                     {
-                        new AddEvent(UserLoginService.getUser());
+                        new JoinEvent(UserLoginService.getUser());
                     }
                 });
             }
@@ -222,54 +219,6 @@ public class Planner extends JPanel {
                     	BusinessUI bui = new BusinessUI();
                     	bui.setVisible(true);
                         //addBus.show();
-                    }
-                });
-            }
-        });
-
-        // Invite Friends to your Planner
-        JButton pInvButton = new JButton("Invite To Planner");
-        pInvButton.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                SwingUtilities.invokeLater(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        frame.setVisible(false);
-                        // TODO: make Invite to Planner dialog
-                        SwingUtilities.invokeLater(new Runnable()
-                        {
-                            public void run()
-                            {
-                                Event temp = new Event();
-                                model.insertRow(0, temp.toArray());
-                                new AddLineDialog(0, model).setVisible(true);
-                            }
-                        });
-                        frame.setVisible(true);
-                    }
-                });
-            }
-        });
-
-        // Invite friends to your Event
-        JButton eInvButton = new JButton("Invite To Event");
-        eInvButton.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                SwingUtilities.invokeLater(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        InviteEvents iEvent = new InviteEvents(table);
-                        iEvent.show();
                     }
                 });
             }
@@ -336,8 +285,6 @@ public class Planner extends JPanel {
         form2.add(settings);
         form2.add(eventButton);
         form2.add(businessButton);
-        form2.add(pInvButton);
-        form2.add(eInvButton);
         form2.add(friendsButton);
         form2.add(Cart);
         //SpringUtilities.makeCompactGrid(form, 2, 5, 6, 6, 6, 6);
