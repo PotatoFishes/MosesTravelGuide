@@ -43,12 +43,8 @@ public class FriendsManagerUI extends JFrame implements ActionListener, ItemList
 	private static final String[][] inSample = {{"Bob", "Bob@bobhouse.net", "Moon", "1234"}};
 	private static final String[][] outSample ={ {"Bob", "1234", " X "}};
 	private JTextField idEntry;
-	private JTextField nameEntry;
 	final DefaultTableModel modelIncoming;
 	final DefaultTableModel modelOutGoing;
-	
-	private static JComboBox dropD;
-	private SortedSet<String> users = new TreeSet<String>();
 	
 	FriendsManagerUI(){
 		super("Manage Friends");
@@ -111,27 +107,15 @@ public class FriendsManagerUI extends JFrame implements ActionListener, ItemList
         JButton addFriend = new JButton("add");
         addFriend.addActionListener(this);
         idEntry = new JTextField(15);
-        nameEntry = new JTextField(15);
         
         
         JPanel tables = new JPanel();
         tables.add(inSP);
         tables.add(outSP);
         
-		String s1[] = { "--", "--", "--"};
-		if(users.size() > 0) {
-	        dropD = new JComboBox(users.toArray());
-		}
-		else {
-	        dropD = new JComboBox(s1);
-		}
-        
-        //ReportDialog s = new ReportDialog(table);
-        dropD.addItemListener(this);
-        
         JPanel controlls = new JPanel();
         controlls.setLayout(new GridLayout(0,2));
-        controlls.add(new JLabel("Enter username"));
+        controlls.add(new JLabel("Enter Id"));
         controlls.add(idEntry);
         controlls.add(new JLabel(""));
         controlls.add(addFriend);
@@ -139,7 +123,6 @@ public class FriendsManagerUI extends JFrame implements ActionListener, ItemList
         controlls.setMaximumSize(controlls.getPreferredSize());
         
         JPanel panelHolders = new JPanel();
-        panelHolders.add(dropD);
         panelHolders.add(controlls);
         panelHolders.add(tables);
         
