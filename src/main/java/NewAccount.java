@@ -118,6 +118,22 @@ public class NewAccount extends JPanel implements PropertyChangeListener{
 	     	}
 		});
 		
+		JButton cancelButton = new JButton("Cancel");
+		cancelButton.addActionListener(new ActionListener() {
+	     	@Override
+        	public void actionPerformed(ActionEvent e) {
+	     		
+		     				
+	     		mainFrame.dispose();
+			    javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			    	@Override
+			        public void run() {
+			        		Login login = new Login();
+			    	}
+			    });
+	     	}
+		});
+		
 		JPanel mainPane = new JPanel(new SpringLayout());
 		mainPane.add(emailLabel);
 		mainPane.add(emailField);
@@ -130,8 +146,9 @@ public class NewAccount extends JPanel implements PropertyChangeListener{
 		mainPane.add(passwordLabelR);
 		mainPane.add(passwordFieldR);
 		mainPane.add(submitButton);
+		mainPane.add(cancelButton);
 		
-        SpringUtilities.makeCompactGrid(mainPane, 11,1,10,10,10,10);
+        SpringUtilities.makeCompactGrid(mainPane, 12,1,10,10,10,10);
 		
         mainFrame.add(mainPane);
 		
