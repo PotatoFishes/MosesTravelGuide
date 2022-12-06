@@ -84,6 +84,7 @@ public class Login extends JPanel implements PropertyChangeListener{
 		newButton.addActionListener(new ActionListener() {
 	     	@Override
         	public void actionPerformed(ActionEvent e) {
+	     		mainFrame.dispose();
         		javax.swing.SwingUtilities.invokeLater(new Runnable() {
         			@Override
         			public void run() {
@@ -94,7 +95,7 @@ public class Login extends JPanel implements PropertyChangeListener{
 		});
 		
 		JButton forButton = new JButton("Forgot Password");
-		newButton.addActionListener(new ActionListener() {
+		forButton.addActionListener(new ActionListener() {
 	     	@Override
         	public void actionPerformed(ActionEvent e) {
         		javax.swing.SwingUtilities.invokeLater(new Runnable() {
@@ -106,44 +107,28 @@ public class Login extends JPanel implements PropertyChangeListener{
 	     	}
 		});
 		
-		JPanel buttonPane = new JPanel(new GridLayout(0,1));
+		JPanel buttonPane = new JPanel(new SpringLayout());
 		buttonPane.add(loginButton);
 		buttonPane.add(newButton);
 		
-		JPanel labelPane = new JPanel(new GridLayout(0,1));
-		labelPane.add(userNameLabel);
-		labelPane.add(passwordLabel);
+	    SpringUtilities.makeCompactGrid(buttonPane, 1,2,10,10,10,10);
 		
-		JPanel fieldPane = new JPanel(new GridLayout(0,1));
-		fieldPane.add(userNameField);
-		fieldPane.add(passwordField);
+		JPanel mainPane = new JPanel(new SpringLayout());
+		mainPane.add(userNameLabel);
+		mainPane.add(userNameField);
+		mainPane.add(passwordLabel);
+		mainPane.add(passwordField);
+		mainPane.add(buttonPane);
 		
-		//add(labelPane, BorderLayout.CENTER);
-		//add(fieldPane, BorderLayout.LINE_END);
-		//add(buttonPane, BorderLayout.PAGE_END);
+        SpringUtilities.makeCompactGrid(mainPane, 5,1,10,10,10,10);
 		
-		mainFrame.add(labelPane);
-		mainFrame.add(fieldPane);
-		mainFrame.add(buttonPane);
+		mainFrame.add(mainPane);
 		
         mainFrame.pack();
         mainFrame.setVisible(true);
     }
 
     private static void createUIComponents() {
-        //JFrame frame = new JFrame("Login");
-        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        /*Login home = new Login();
-        home.setOpaque(true);
-        frame.setContentPane(home);
-        
-        frame.pack();
-        frame.setVisible(true);*/
-    	
-        //JFrame mainFrame = new JFrame("Login");
-        //mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
         Login home = new Login();
     }
     
