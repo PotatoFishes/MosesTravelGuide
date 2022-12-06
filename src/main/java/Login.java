@@ -93,6 +93,19 @@ public class Login extends JPanel implements PropertyChangeListener{
 	     	}
 		});
 		
+		JButton forButton = new JButton("Forgot Password");
+		newButton.addActionListener(new ActionListener() {
+	     	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+        			@Override
+        			public void run() {
+        				NewAccount account = new NewAccount();
+        			}
+        		});
+	     	}
+		});
+		
 		JPanel buttonPane = new JPanel(new GridLayout(0,1));
 		buttonPane.add(loginButton);
 		buttonPane.add(newButton);
