@@ -18,9 +18,10 @@ public class EventsServ {
 		return new ArrayList<Booking>(out);
 	}
 	
-	public static void createEvent(Event e)
+	public static Event createEvent(Event e)
 	{
-		EventDAOImp.updateEvent(e);
+		e=EventDAOImp.AddEvent(e);
+		return e;
 	}
 
 	public static boolean checkTimesValid(Event e) throws ParseException {

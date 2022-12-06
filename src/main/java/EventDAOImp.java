@@ -149,7 +149,10 @@ public class EventDAOImp{
 			stmt.executeUpdate("INSERT INTO Events (eventName, Start, End, Location, notes, usedServices, userid, createdBy) VALUES('"+e.getName()+"', '"+e.getStartDate()+"', '"+e.getEndDate()+"', '"+e.getLocation()+"', '"+e.getNote()+"', '"+e.getUsedServices()+"', "+e.userID+", "+e.userID+")");
 			ResultSet rs = stmt.executeQuery("SELECT MAX(ID) FROM Services");
 			if(rs.next())
-	       	 	e.seid=rs.getInt(1);
+			{
+				stmt.executeUpdate("UPDATE Events SET seid="+rs.getInt(1));
+				e.seid=rs.getInt(1);
+			}
 			 stmt.close();
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
@@ -186,17 +189,24 @@ public class EventDAOImp{
 		}
 	}
 	public static List<Event> getAllEvent() {
-		List<Event> li=new ArrayList<>();
+		List<Event> li=new ArrayList<Event>();
+		List<Integer> l=new ArrayList<Integer>();
 		try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
 			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT id, eventName, Start, End, Location, notes, usedServices, userid FROM Events");) {
+			) {
+			ResultSet rs = stmt.executeQuery("SELECT DISTINCT seid FROM Events");
 			// Extract data from result set
-			if (rs.next()) {
+			while (rs.next()) {
 				// Retrieve by column name
+				l.add(rs.getInt("seid"));
+			}
+			for(int i:l)
+			{
+				rs = stmt.executeQuery("SELECT id, eventName, Start, End, Location, notes, usedServices, userid, createdBy FROM Events where seid="+i);
 				while (rs.next()) {
 					li.add(new Event(Integer.parseInt(rs.getString("id")), rs.getString("eventName"), rs.getTimestamp("Start"),
-							rs.getTimestamp("End"), rs.getString("Location"), rs.getString("notes"),
-							rs.getString("usedServices"), rs.getInt("userid"), rs.getInt("created"), rs.getInt("seid")));
+					rs.getTimestamp("End"), rs.getString("Location"), rs.getString("notes"),
+					rs.getString("usedServices"), rs.getInt("userid"), rs.getInt("createdBy"), i));
 				}
 			}
 		} catch (SQLException ex) {
