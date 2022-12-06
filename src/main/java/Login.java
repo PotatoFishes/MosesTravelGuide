@@ -84,6 +84,7 @@ public class Login extends JPanel implements PropertyChangeListener{
 		newButton.addActionListener(new ActionListener() {
 	     	@Override
         	public void actionPerformed(ActionEvent e) {
+	     		mainFrame.dispose();
         		javax.swing.SwingUtilities.invokeLater(new Runnable() {
         			@Override
         			public void run() {
@@ -94,7 +95,7 @@ public class Login extends JPanel implements PropertyChangeListener{
 		});
 		
 		JButton forButton = new JButton("Forgot Password");
-		newButton.addActionListener(new ActionListener() {
+		forButton.addActionListener(new ActionListener() {
 	     	@Override
         	public void actionPerformed(ActionEvent e) {
         		javax.swing.SwingUtilities.invokeLater(new Runnable() {
@@ -118,10 +119,6 @@ public class Login extends JPanel implements PropertyChangeListener{
 		fieldPane.add(userNameField);
 		fieldPane.add(passwordField);
 		
-		//add(labelPane, BorderLayout.CENTER);
-		//add(fieldPane, BorderLayout.LINE_END);
-		//add(buttonPane, BorderLayout.PAGE_END);
-		
 		mainFrame.add(labelPane);
 		mainFrame.add(fieldPane);
 		mainFrame.add(buttonPane);
@@ -131,19 +128,6 @@ public class Login extends JPanel implements PropertyChangeListener{
     }
 
     private static void createUIComponents() {
-        //JFrame frame = new JFrame("Login");
-        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        /*Login home = new Login();
-        home.setOpaque(true);
-        frame.setContentPane(home);
-        
-        frame.pack();
-        frame.setVisible(true);*/
-    	
-        //JFrame mainFrame = new JFrame("Login");
-        //mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
         Login home = new Login();
     }
     
