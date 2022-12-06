@@ -3,6 +3,8 @@ import net.coderazzi.filters.gui.TableFilterHeader;
 
 import java.util.List;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -35,7 +37,7 @@ public class Planner extends JPanel {
     public static int NOTES = 5;
     public static int EDITCELL = 6;
     public static int REMOVECELL = 7;
-    private final String[] options = { "          ", "Location", "Services", "Events" };
+    private final String[] options = { "", "Location", "Services", "Events" };
 
     //TODO: remove these debugging/testing variables
     public SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss.SSS");
@@ -62,9 +64,7 @@ public class Planner extends JPanel {
                 String.class, String.class,String.class,String.class,String.class,String.class,String.class, String.class
         };
         final DefaultTableModel model = new DefaultTableModel(EventsServ.getEventsForTable() , columnNames) {
-            /**
-			 * 
-			 */
+
 			private static final long serialVersionUID = -4279510772803332762L;
 			@Override
             public boolean isCellEditable(int row, int col) {
@@ -78,8 +78,7 @@ public class Planner extends JPanel {
             public Class <?> getColumnClass(int col)
             {
                 return columnClass[col];
-            }
-        };
+            }};
 
         // Set table dimensions
         sorter = new TableRowSorter<DefaultTableModel>(model);
@@ -142,6 +141,25 @@ public class Planner extends JPanel {
             }
         };
         ButtonColumn colButEditor = new ButtonColumn(table, editor, EDITCELL);
+
+        JLabel l1 = new JLabel("Filter Text:", SwingConstants.TRAILING);
+        combo = new JComboBox(options);
+        combo.setEditable(true);
+        ((JTextField)combo.getEditor().getEditorComponent()).getDocument().addDocumentListener(
+                new DocumentListener() {
+                    public void changedUpdate(DocumentEvent e) {
+                        newFilter();
+                    }
+
+                    public void insertUpdate(DocumentEvent e) {
+                        newFilter();
+                    }
+
+                    public void removeUpdate(DocumentEvent e) {
+                        newFilter();
+                    }
+                });
+        l1.setLabelFor(combo.getEditor().getEditorComponent());
 
         // Settings (for notifications and stuff)
         JButton settings = new JButton("Settings");
@@ -330,8 +348,6 @@ public class Planner extends JPanel {
                 });
             }
         });
-        combo = new JComboBox(options);
-        combo.setEditable(true);
 
         // Buttons Setup
         form2.add(combo);
@@ -362,7 +378,7 @@ public class Planner extends JPanel {
         //If current expression doesn't parse, don't update.
         try
         {
-            rf = RowFilter.regexFilter(filterText.getText(), 0, 1, 2);
+            rf = RowFilter.regexFilter(combo.getEditor().getItem().toString(), 0, 1, 2, 3, 4, 5);
         }
         catch (java.util.regex.PatternSyntaxException e)
         {

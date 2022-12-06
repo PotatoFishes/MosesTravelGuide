@@ -51,11 +51,6 @@ public class EventsServ {
 	{
 		EventDAOImp.deleteEvent(id);
 	}
-	
-	public static void setEvent(Event e)
-	{
-		
-	}
 
 	public static List<Event> getEventsForPlanner()
 	{
