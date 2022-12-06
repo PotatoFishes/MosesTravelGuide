@@ -25,13 +25,13 @@ public class EventDAOImp{
 		
 		try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
 		         Statement stmt = conn.createStatement();
-		         ResultSet rs = stmt.executeQuery("SELECT id, eventName, Start, End, Location, notes, usedServices FROM Events WHERE userid="+uid);) {
+		         ResultSet rs = stmt.executeQuery("SELECT id, eventName, Start, End, Location, notes, usedServices, createdBy, seid FROM Events WHERE userid="+uid);) {
 		         // Extract data from result set
 		         while (rs.next()) {
 		            // Retrieve by column name
 
 					 //System.out.println(rs.getString("Start"));
-		        	Event e=new Event(rs.getInt("id"),rs.getString("eventName"),rs.getTimestamp("Start"),rs.getTimestamp("End"),rs.getString("Location"),rs.getString("notes"),rs.getString("usedServices"), uid);
+		        	Event e=new Event(rs.getInt("id"),rs.getString("eventName"),rs.getTimestamp("Start"),rs.getTimestamp("End"),rs.getString("Location"),rs.getString("notes"),rs.getString("usedServices"), uid, rs.getInt("createdBy"), rs.getInt("seid"));
 		        	list.add(e);
 		         }
 		      } catch (SQLException e) {
@@ -44,11 +44,11 @@ public class EventDAOImp{
 		Event e=null;
 		try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
 		         Statement stmt = conn.createStatement();
-		         ResultSet rs = stmt.executeQuery("SELECT id, eventName, Start, End, Location, notes, usedServices, userid FROM Events WHERE id="+id);) {
+		         ResultSet rs = stmt.executeQuery("SELECT id, eventName, Start, End, Location, notes, usedServices, userid, createdBy, seid FROM Events WHERE id="+id);) {
 		         // Extract data from result set
 		         if (rs.next()) {
 		            // Retrieve by column name
-		        	e=new Event(id,rs.getString("eventName"),rs.getTimestamp("Start"),rs.getTimestamp("End"),rs.getString("Location"),rs.getString("notes"),rs.getString("usedServices"), rs.getInt("userid"));
+		        	e=new Event(id,rs.getString("eventName"),rs.getTimestamp("Start"),rs.getTimestamp("End"),rs.getString("Location"),rs.getString("notes"),rs.getString("usedServices"), rs.getInt("userid"), rs.getInt("createdBy"), rs.getInt("seid"));
 		         }
 		      } catch (SQLException ex) {
 		         ex.printStackTrace();
@@ -123,20 +123,45 @@ public class EventDAOImp{
 				 System.out.println("Preforming Update on Event");
 				stmt.executeUpdate("UPDATE Events SET eventName='"+e.getName()+"', Start='"+e.getStartDate()+"', End='"+e.getEndDate()+"', location='"+e.getLocation()+"', notes='"+e.getNote()+"', usedServices='"+e.getUsedServices()+"', userid="+uid+" WHERE id="+e.getID());
 			 }
-			 else
-			 {
-				 System.out.println("Inserting new Event");
-				 stmt.executeUpdate("INSERT INTO Events (eventName, Start, End, Location, notes, usedServices, userid) VALUES('"+e.getName()+"', '"+e.getStartDate()+"', '"+e.getEndDate()+"', '"+e.getLocation()+"', '"+e.getNote()+"', '"+e.getUsedServices()+"', "+uid+")");
-			 }
 		  } catch (SQLException ex) {
 			 ex.printStackTrace();
 		  }
 	}
-
+	
+	public static Event joinEvent(Event e) {
+		try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+		         Statement stmt = conn.createStatement();) {
+		         // Extract data from result set
+			System.out.println("Inserting new Event");
+			stmt.executeUpdate("INSERT INTO Events (eventName, Start, End, Location, notes, usedServices, userid, createdBy, seid) VALUES('"+e.getName()+"', '"+e.getStartDate()+"', '"+e.getEndDate()+"', '"+e.getLocation()+"', '"+e.getNote()+"', '"+e.getUsedServices()+"', "+e.userID+", "+e.createdBy+", "+e.seid+")");
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return e;
+	}
+	
+	public static Event AddEvent(Event e) {
+		try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+		         Statement stmt = conn.createStatement();) {
+		         // Extract data from result set
+			System.out.println("Inserting new Event");
+			stmt.executeUpdate("INSERT INTO Events (eventName, Start, End, Location, notes, usedServices, userid, createdBy) VALUES('"+e.getName()+"', '"+e.getStartDate()+"', '"+e.getEndDate()+"', '"+e.getLocation()+"', '"+e.getNote()+"', '"+e.getUsedServices()+"', "+e.userID+", "+e.userID+")");
+			ResultSet rs = stmt.executeQuery("SELECT MAX(ID) FROM Services");
+			if(rs.next())
+	       	 	e.seid=rs.getInt(1);
+			 stmt.close();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return e;
+	}
+	
 	public static void deleteEvent(Event e) {
 		try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
 		         Statement stmt = conn.createStatement();
-		         ResultSet rs = stmt.executeQuery("SELECT id, eventName, Start, End, Location, notes, usedServices, userid FROM Events WHERE id="+e.ID);) {
+		         ResultSet rs = stmt.executeQuery("SELECT id FROM Events WHERE id="+e.ID);) {
 		         // Extract data from result set
 		         if (rs.next()) {
 		            // Retrieve by column name
@@ -150,7 +175,7 @@ public class EventDAOImp{
 	public static void deleteEvent(int id) {
 		try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
 			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT id, eventName, Start, End, Location, notes, usedServices, userid FROM Events WHERE id="+id);) {
+			ResultSet rs = stmt.executeQuery("SELECT id FROM Events WHERE id="+id);) {
 			// Extract data from result set
 			if (rs.next()) {
 				// Retrieve by column name
@@ -171,7 +196,7 @@ public class EventDAOImp{
 				while (rs.next()) {
 					li.add(new Event(Integer.parseInt(rs.getString("id")), rs.getString("eventName"), rs.getTimestamp("Start"),
 							rs.getTimestamp("End"), rs.getString("Location"), rs.getString("notes"),
-							rs.getString("usedServices"), rs.getInt("userid")));
+							rs.getString("usedServices"), rs.getInt("userid"), rs.getInt("created"), rs.getInt("seid")));
 				}
 			}
 		} catch (SQLException ex) {
