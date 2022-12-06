@@ -108,13 +108,15 @@ public class AddServiceDialog extends JFrame implements ActionListener
                 Service temp = new Service(
                         txtName.getText(),
                         Double.valueOf(txtPrice.getText()),
-<<<<<<< HEAD
                         Timestamp.valueOf(txtSDate.getText()),
                         Timestamp.valueOf(txtEDate.getText()),
+<<<<<<< HEAD
 =======
                         CreateEvent.convertStringToTimestamp(txtSDate.getText()),
                         CreateEvent.convertStringToTimestamp(txtEDate.getText()),
 >>>>>>> origin/source
+=======
+>>>>>>> refs/remotes/origin/source
                         Integer.valueOf(txtCapacity.getText()));
                 
                 System.out.println(temp.getStartDate());
