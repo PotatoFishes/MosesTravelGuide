@@ -98,9 +98,9 @@ public class SettingDialog extends JFrame implements ItemListener {
                         options[0] //default button
                 );
                 if(result == JOptionPane.YES_OPTION){
-                    label.setText("GoodBye");
-                    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                     UserLoginService.deleteUser();
+                    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    f.dispose();
                 }else if (result == JOptionPane.NO_OPTION){
                     f.dispose();
                 }
