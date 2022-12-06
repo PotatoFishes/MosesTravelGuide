@@ -134,7 +134,7 @@ public class EditEventDialog extends JFrame implements ActionListener
         btnOK.addActionListener(this);
         btnCancel = new JButton("Cancel");
         btnCancel.addActionListener(this);
-        btnAddServ = new JButton("Add Service");
+        btnAddServ = new JButton("Create Service");
         btnAddServ.addActionListener(this);
 
         //Setting Label Names
@@ -272,6 +272,7 @@ public class EditEventDialog extends JFrame implements ActionListener
         else if(clicked == btnAddServ)
         {
             addService();
+            table.repaint();
         }
     }
 }
