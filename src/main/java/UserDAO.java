@@ -63,7 +63,7 @@ public class UserDAO {
 				PreparedStatement stmt = conn
 						.prepareStatement("SELECT username, password, location, email FROM Users WHERE username=?");
 				PreparedStatement updateStatement = conn
-						.prepareStatement("UPDATE Users SET userame=?, password=?, location=?, email=? WHERE id=?");
+						.prepareStatement("UPDATE Users SET username=?, password=?, location=?, email=? WHERE id=?");
 				PreparedStatement insertStatement = conn.prepareStatement(
 						"INSERT INTO Users (username, password, location, email) VALUES(?, ?, ?, ?)",
 						Statement.RETURN_GENERATED_KEYS)) {
@@ -79,7 +79,7 @@ public class UserDAO {
 				updateStatement.setInt(5, e.id);
 				updateStatement.executeUpdate();
 				// Retrieve by column name
-				// stmt.executeUpdate("UPDATE Users SET userame='"+e.getUsername()+"',
+				// stmt.executeUpdate("UPDATE Users SET username='"+e.getUsername()+"',
 				// password='"+e.getPassword()+"', location='"+e.getLocation()+"',
 				// location='"+e.getLocation()+"', email='"+e.getEmail()+" WHERE id="+e.id);
 			} else {
@@ -104,19 +104,12 @@ public class UserDAO {
 
 	public static void deleteUser(User e) {
 		try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-				Statement stmt = conn.createStatement();
-				ResultSet rs = stmt
-						.executeQuery("SELECT username, password, location, email FROM Users WHERE username='"
-								+ e.getUsername() + "'");) {
+				Statement stmt = conn.createStatement();) {
 			// Extract data from result set
-			if (rs.next()) {
-				// Retrieve by column name
-				stmt.executeUpdate("DELETE from Users WHERE username=" + e.getUsername());
-			}
+				stmt.executeUpdate("DELETE from Users WHERE id =" + e.id);
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
-
 	}
 
 	public static void addFollow(User e, int uid) {
@@ -135,9 +128,9 @@ public class UserDAO {
 
 	}
 
-	public static Set<Follower> getFollowers(User u) {
+	public static Set<Friend> getFollowers(User u) {
 		Set<Integer> out = new HashSet<Integer>();
-		Set<Follower> followers = new HashSet<Follower>();
+		Set<Friend> friend = new HashSet<Friend>();
 		try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
 				Statement stmt = conn.createStatement();
 				ResultSet rs = stmt.executeQuery("SELECT user2 FROM Follow WHERE user1=" + u.id);) {
@@ -151,7 +144,7 @@ public class UserDAO {
 			ex.printStackTrace();
 		}
 		for (Integer i : out) {
-			Follower f = new Follower();
+			Friend f = new Friend();
 			f.setId(i);
 			try (Connection nameConn = DriverManager.getConnection(DB_URL, USER, PASS);
 					Statement nameStmt = nameConn.createStatement();
@@ -165,9 +158,9 @@ public class UserDAO {
 			} catch (SQLException ex) {
 				f.setName("");
 			}
-			followers.add(f);
+			friend.add(f);
 		}
-		return followers;
+		return friend;
 	}
 
 	public static void removeFollower(User u, int uid) {

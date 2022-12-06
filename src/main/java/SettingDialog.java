@@ -10,9 +10,9 @@ public class SettingDialog extends JFrame implements ItemListener {
     JCheckBox c1, c2;
     JComboBox c3;
     String s[] = { "hidden", "male", "female", "others" };
-    JPanel p, p2;
-    JButton btnOK, btnCancel;
-    JLabel l;
+    JPanel p, p2, p4;
+    JButton btnOK, btnCancel, del;
+    JLabel l, label;
     preferences p3;
     int num = 0;
 
@@ -56,6 +56,7 @@ public class SettingDialog extends JFrame implements ItemListener {
         // create a new panel
         p = new JPanel();
         p2 = new JPanel();
+        p4 = new JPanel();
 
         // add checkbox to panel
         p.add(c1);
@@ -81,12 +82,43 @@ public class SettingDialog extends JFrame implements ItemListener {
             }
         });
 
+        del = new JButton("Delete Account");
+        del.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String[] options = {"Yes! Please.", "No!"};
+                int result = JOptionPane.showOptionDialog(
+                        f,
+                        "You sure want to delete your account?",
+                        "Confirm Deletion",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,     //no custom icon
+                        options,  //button titles
+                        options[0] //default button
+                );
+                if(result == JOptionPane.YES_OPTION){
+                    UserLoginService.deleteUser();
+                    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    f.dispose();
+                }else if (result == JOptionPane.NO_OPTION){
+                    f.dispose();
+                }
+            }
+        });
+
+        del.setBackground(Color.RED);
+        del.setOpaque(true);
+        del.setBorderPainted(false);
+
         p2.add(btnOK);
         p2.add(btnCancel);
+        p4.add(del);
 
         // add panel to frame
-        f.add(p);
-        f.add(p2,BorderLayout.SOUTH);
+        f.add(p, BorderLayout.NORTH);
+        f.add(p2,BorderLayout.CENTER);
+        f.add(p4,BorderLayout.SOUTH);
 
         // set the size of frame
         f.setSize(500, 200);

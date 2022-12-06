@@ -10,6 +10,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SpringLayout;
 import javax.swing.SwingUtilities;
 
 public class NewAccount extends JPanel implements PropertyChangeListener{
@@ -83,18 +84,12 @@ public class NewAccount extends JPanel implements PropertyChangeListener{
 		emailLabel.setLabelFor(emailField);
 		locationLabel.setLabelFor(locationField);
 		
-		User user = new User();
-		user.setUsername("Bob");
-		user.setPassword("1234");
-		//userDAO.addUser(user);
-		
 		JButton submitButton = new JButton("Submit");
 		submitButton.addActionListener(new ActionListener() {
 	     	@Override
         	public void actionPerformed(ActionEvent e) {
 	     		if(!userName.equals("") && !password.equals("") && !email.equals("") && !location.equals("")) {
 	     			if(password.equals(passwordR)) {
-	     				//if(!userDAO.nameExists(userName.toLowerCase())) {
 	     				if(UserLoginService.validateUser(userName, password) == null) {
 		     				//create user here
 		     				User user = new User();
@@ -114,32 +109,48 @@ public class NewAccount extends JPanel implements PropertyChangeListener{
 			        			}
 			        		});
 	     				}
-	     				//else {
-	     					//userName = "";
-	     			    	//userNameField.setValue(new String(userName));
-	     				//}
+	     				else {
+	     					userName = "";
+	     			    	userNameField.setValue(new String(userName));
+	     				}
 	     			}
 	     		}
 	     	}
 		});
 		
-		JPanel labelPane = new JPanel(new GridLayout(0,1));
-		labelPane.add(emailLabel);
-		labelPane.add(locationLabel);
-		labelPane.add(userNameLabel);
-		labelPane.add(passwordLabel);
-		labelPane.add(passwordLabelR);
+		JButton cancelButton = new JButton("Cancel");
+		cancelButton.addActionListener(new ActionListener() {
+	     	@Override
+        	public void actionPerformed(ActionEvent e) {
+	     		
+		     				
+	     		mainFrame.dispose();
+			    javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			    	@Override
+			        public void run() {
+			        		Login login = new Login();
+			    	}
+			    });
+	     	}
+		});
 		
-		JPanel fieldPane = new JPanel(new GridLayout(0,1));
-		fieldPane.add(emailField);
-		fieldPane.add(locationField);
-		fieldPane.add(userNameField);
-		fieldPane.add(passwordField);
-		fieldPane.add(passwordFieldR);
+		JPanel mainPane = new JPanel(new SpringLayout());
+		mainPane.add(emailLabel);
+		mainPane.add(emailField);
+		mainPane.add(locationLabel);
+		mainPane.add(locationField);
+		mainPane.add(userNameLabel);
+		mainPane.add(userNameField);
+		mainPane.add(passwordLabel);
+		mainPane.add(passwordField);
+		mainPane.add(passwordLabelR);
+		mainPane.add(passwordFieldR);
+		mainPane.add(submitButton);
+		mainPane.add(cancelButton);
 		
-		mainFrame.add(labelPane);
-		mainFrame.add(fieldPane);
-		mainFrame.add(submitButton);
+        SpringUtilities.makeCompactGrid(mainPane, 12,1,10,10,10,10);
+		
+        mainFrame.add(mainPane);
 		
         mainFrame.pack();
         mainFrame.setVisible(true);

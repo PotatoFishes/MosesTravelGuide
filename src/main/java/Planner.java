@@ -160,6 +160,7 @@ public class Planner extends JPanel {
                     }
                 });
         l1.setLabelFor(combo.getEditor().getEditorComponent());
+        new AutoFill(combo);
 
         // Settings (for notifications and stuff)
         JButton settings = new JButton("Settings");
@@ -191,28 +192,7 @@ public class Planner extends JPanel {
                     @Override
                     public void run()
                     {
-                        AddEvent addEvent = new AddEvent(table);
-                        addEvent.setVisible(true);
-                        events = EventsServ.getEventsForPlanner();
-
-                    }
-                });
-            }
-        });
-        
-        JButton manageButton = new JButton("Manage Events");
-        manageButton.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                SwingUtilities.invokeLater(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        ManageEvents manageEvent = new ManageEvents(table);
-                        manageEvent.show();
+                        new AddEvent(UserLoginService.getUser());
                     }
                 });
             }
@@ -331,7 +311,7 @@ public class Planner extends JPanel {
             }
         });
 
-        JButton search1 = new JButton("Search");
+        JButton search1 = new JButton("Get Ideas");
         search1.addActionListener(new ActionListener()
         {
             @Override
@@ -349,12 +329,12 @@ public class Planner extends JPanel {
             }
         });
 
+        search1.setToolTipText("Choose Location, Service, or Event to get some inspiration!");
         // Buttons Setup
         form2.add(combo);
         form2.add(search1);
         form2.add(settings);
         form2.add(eventButton);
-        form2.add(manageButton);
         form2.add(businessButton);
         form2.add(pInvButton);
         form2.add(eInvButton);
@@ -394,8 +374,6 @@ public class Planner extends JPanel {
      */
     private static void createAndShowGUI()
     {
-
-
         //Create and set up the window.
         frame = new JFrame("Planner");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -408,11 +386,6 @@ public class Planner extends JPanel {
         //Display the window.
         frame.pack();
         frame.setVisible(true);
-    }
-
-    public void showGUI()
-    {
-        createAndShowGUI();
     }
 
     public static void main(String[] args)
