@@ -1,9 +1,9 @@
 import java.util.Objects;
 
-public class Follower {
+public class Friend {
 	String name;
 	Integer id;
-	public Follower() {
+	public Friend() {
 		name = null;
 		id = null;
 	}
@@ -31,7 +31,7 @@ public class Follower {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Follower other = (Follower) obj;
+		Friend other = (Friend) obj;
 		return Objects.equals(id, other.id) && Objects.equals(name, other.name);
 	}
 	

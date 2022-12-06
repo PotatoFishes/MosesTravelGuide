@@ -192,8 +192,7 @@ public class Planner extends JPanel {
                     @Override
                     public void run()
                     {
-                        //TODO Add Event
-
+                        new AddEvent(UserLoginService.getUser());
                     }
                 });
             }
