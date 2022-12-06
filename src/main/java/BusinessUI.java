@@ -23,7 +23,7 @@ public class BusinessUI extends JFrame implements ActionListener{
 	
 	private JTable table;
 	//private JTable incomingFriends;
-	private static final Class<?>[] incomingColumnClass = new Class[]{
+	private static final Class<?>[] columnClass = new Class[]{
             String.class, String.class, String.class, String.class, String.class, String.class
     };
 	/*private static final Class<?>[] outGoingColumnClass = new Class[]{
@@ -54,7 +54,7 @@ public class BusinessUI extends JFrame implements ActionListener{
             @Override
             public Class <?> getColumnClass(int col)
             {
-                return incomingColumnClass[col];
+                return columnClass[col];
             }
         };
         Action remove = new AbstractAction() {
@@ -143,5 +143,6 @@ public class BusinessUI extends JFrame implements ActionListener{
 	
 	private void updateServices() {
 		model.setColumnCount(0);
+		
 	}
 }
