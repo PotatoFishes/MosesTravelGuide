@@ -16,6 +16,8 @@ public class Event
     Date eDate;
     String loc;
     String note;
+    int createdBy;
+    int seid;
     List<Service> usedServices = new ArrayList<Service>();
     int userID;
     
@@ -29,7 +31,7 @@ public class Event
         note = "";
     }
 
-    Event(String na, Timestamp timestamp, Timestamp timestamp2, String l, String n, String sl, int uid)
+    Event(String na, Timestamp timestamp, Timestamp timestamp2, String l, String n, String sl, int uid, int c, int s)
     {
         name = na;
         sDate = new Date(timestamp.getTime());
@@ -48,9 +50,11 @@ public class Event
             usedServices=ServiceDAOImp.getServices(arr);
         }
         userID=uid;
+        createdBy=c;
+        seid=s;
     }
     //Parse needs to be fixed
-    Event(int id, String na, Timestamp timestamp, Timestamp timestamp2, String l, String n, String sl, int uid)
+    Event(int id, String na, Timestamp timestamp, Timestamp timestamp2, String l, String n, String sl, int uid, int c, int s)
     {
         ID = id;
         name = na;
@@ -76,6 +80,8 @@ public class Event
         	usedServices=ServiceDAOImp.getServices(data);
         }
         userID=uid;
+        createdBy=c;
+        seid=s;
     }
 
     @Override
