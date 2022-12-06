@@ -107,21 +107,22 @@ public class Login extends JPanel implements PropertyChangeListener{
 	     	}
 		});
 		
-		JPanel buttonPane = new JPanel(new GridLayout(0,1));
+		JPanel buttonPane = new JPanel(new SpringLayout());
 		buttonPane.add(loginButton);
 		buttonPane.add(newButton);
 		
-		JPanel labelPane = new JPanel(new GridLayout(0,1));
-		labelPane.add(userNameLabel);
-		labelPane.add(passwordLabel);
+	    SpringUtilities.makeCompactGrid(buttonPane, 1,2,10,10,10,10);
 		
-		JPanel fieldPane = new JPanel(new GridLayout(0,1));
-		fieldPane.add(userNameField);
-		fieldPane.add(passwordField);
+		JPanel mainPane = new JPanel(new SpringLayout());
+		mainPane.add(userNameLabel);
+		mainPane.add(userNameField);
+		mainPane.add(passwordLabel);
+		mainPane.add(passwordField);
+		mainPane.add(buttonPane);
 		
-		mainFrame.add(labelPane);
-		mainFrame.add(fieldPane);
-		mainFrame.add(buttonPane);
+        SpringUtilities.makeCompactGrid(mainPane, 5,1,10,10,10,10);
+		
+		mainFrame.add(mainPane);
 		
         mainFrame.pack();
         mainFrame.setVisible(true);
