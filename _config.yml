@@ -16,7 +16,6 @@ author: Yi Ding
 navbar-links:
   Members: "Member"
   Analytics: "https://github.com/PotatoFishes/MosesTravelGuide/graphs/contributors"
-  Documentation: "google.com" #documentation pdf
   Issue Tracking: "https://github.com/PotatoFishes/MosesTravelGuide/issues"
   Progress Tracking: "Hour"
 # --- Logo --- #
