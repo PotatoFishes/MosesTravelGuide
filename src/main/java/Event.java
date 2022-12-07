@@ -188,6 +188,7 @@ public class Event
         return ev;
     }
     public void addService(Service s) {
+        System.out.printf(s.toString());
     	usedServices.add(s);
     }
 }

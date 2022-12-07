@@ -87,6 +87,10 @@ public class AddServiceDialog extends JFrame implements ActionListener
         adder.add(" X ");
     }
 
+    public Event getEvent() {
+        return ev;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e)
     {

@@ -73,7 +73,7 @@ public class Service
     public void setName(String n) {
         name = n;
     }
-    public void setPrice(float p) {
+    public void setPrice(double p) {
         price = p;
     }
     public void setStartDate(String sD) throws ParseException {
