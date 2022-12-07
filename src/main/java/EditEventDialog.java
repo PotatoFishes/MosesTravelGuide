@@ -123,6 +123,7 @@ public class EditEventDialog extends JFrame implements ActionListener
         btnCancel.addActionListener(this);
         btnAddServ = new JButton("Create Service");
         btnAddServ.addActionListener(this);
+        btnAddServ.setToolTipText("Need to refresh to see buffered services");
         re = new JButton("Refresh");
         re.addActionListener(this);
 
