@@ -18,7 +18,7 @@ public class EditEventDialog extends JFrame {
     private TableRowSorter<DefaultTableModel> sorter;
     private final DefaultTableModel parent;
     int eventID;
-    static Event evt;
+    Event evt;
     private Vector<Object> adder = new Vector<>();
     private int index;
     private JTextField txtName, txtSDate, txtEDate, txtLoc, txtNote, txtServices = new JTextField(15);
@@ -169,6 +169,8 @@ public class EditEventDialog extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                AddServiceDialog a = new AddServiceDialog(model,evt);
+               evt = a.getEvent();
+               table.repaint();
             }
         });
         btnAddServ.setToolTipText("Need to save event to see added service");
@@ -177,9 +179,12 @@ public class EditEventDialog extends JFrame {
         re.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                BrowseService b = new BrowseService();
+                evt.addService(b.getService());
+                table.repaint();
             }
         });
+        re.setToolTipText("You must create a service if you would like to browse");
 
         //Setting Label Names
         JPanel content = new JPanel(new SpringLayout());
