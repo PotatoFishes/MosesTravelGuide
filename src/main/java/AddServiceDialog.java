@@ -125,7 +125,6 @@ public class AddServiceDialog extends JFrame implements ActionListener
         }
         else if(clicked == btnCancel)
         {
-            parent.removeRow(index);
             dispose();
         }
     }
