@@ -147,11 +147,12 @@ public class EventDAOImp{
 		         // Extract data from result set
 			System.out.println("Inserting new Event");
 			stmt.executeUpdate("INSERT INTO Events (eventName, Start, End, Location, notes, usedServices, userid, createdBy) VALUES('"+e.getName()+"', '"+e.getStartDate()+"', '"+e.getEndDate()+"', '"+e.getLocation()+"', '"+e.getNote()+"', '"+e.getUsedServices()+"', "+e.userID+", "+e.userID+")");
-			ResultSet rs = stmt.executeQuery("SELECT MAX(ID) FROM Services");
+			ResultSet rs = stmt.executeQuery("SELECT MAX(ID) FROM Events");
 			if(rs.next())
 			{
-				stmt.executeUpdate("UPDATE Events SET seid="+rs.getInt(1));
-				e.seid=rs.getInt(1);
+				int sid=rs.getInt(1);
+				stmt.executeUpdate("UPDATE Events SET seid="+sid+" WHERE userid="+e.userID);
+				e.seid=sid;
 			}
 			 stmt.close();
 		} catch (SQLException e1) {
@@ -228,6 +229,7 @@ public class EventDAOImp{
 			}
 			for(int i:l)
 			{
+				System.out.println(i);
 				rs = stmt.executeQuery("SELECT id, eventName, Start, End, Location, notes, usedServices, userid, createdBy FROM Events where seid="+i);
 				while (rs.next()) {
 					if(i==rs.getInt("id"))

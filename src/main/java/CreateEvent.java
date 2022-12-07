@@ -169,6 +169,7 @@ public class CreateEvent extends JDialog implements PropertyChangeListener{
 		
 		pack();
 		setLocationRelativeTo(getParent());
+		setVisible(true);
 	}
 	
 	@Override

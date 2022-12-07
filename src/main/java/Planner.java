@@ -208,17 +208,8 @@ public class Planner extends JPanel {
                     @Override
                     public void run()
                     {
-                        //setVisible(false);
-                        // TODO: make Add Business Dialog
-                        //Event temp = new Event();
-                        //model.insertRow(0, temp.toArray());
-                        //new AddLineDialog(0, model).setVisible(true);
-                        //setVisible(true);
-                        //AddBusiness addBus = new AddBusiness(table);
-                        //addBus.setVisible(true);
-                    	BusinessUI bui = new BusinessUI();
+                    	BusinessUI bui = new BusinessUI(UserLoginService.getUser().id);
                     	bui.setVisible(true);
-                        //addBus.show();
                     }
                 });
             }

@@ -26,18 +26,19 @@ public class BusinessUI extends JFrame implements ActionListener{
     };
 
 	private static final String[] ColumnNames = {"Price", "Start Date", "End Date", "ID", "Bookings", "Capacity"};
+    //id, eventName, Start, End, Location, notes, usedServices, userid, createdB
 
 	private JTextField idEntry;
 	final DefaultTableModel model;
     JButton delButton, createButton;
 	
-	public BusinessUI(){
+	public BusinessUI(int u){
 		super("Manage Business");
 		JPanel content = new JPanel(new SpringLayout());
 		this.setContentPane(content);
 		
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        model = new DefaultTableModel(null, ColumnNames) {
+        model = new DefaultTableModel(EventsServ.getAllEventsForBusiness(u), ColumnNames) {
 			private static final long serialVersionUID = 2767279126624268207L;
 			@Override
             public boolean isCellEditable(int row, int col) {

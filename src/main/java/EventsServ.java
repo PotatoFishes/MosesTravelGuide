@@ -70,6 +70,16 @@ public class EventsServ {
 		}
 		return data;
 	}
+
+	public static Object[][] getAllEventsForBusiness(int id) {
+		java.util.List<Event> events = EventDAOImp.getAllEventCreated(id);
+		Object[][] data = new Object[events.size()][];
+		for(int i = 0; i < data.length; ++i) {
+			data[i] = events.get(i).toArray();
+		}
+		return data;
+	}
+
 	
 	public static Object[][] getEventsForTable() {
 		java.util.List<Event> events = EventDAOImp.getEvents();
