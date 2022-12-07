@@ -35,13 +35,7 @@ public class CreateEvent extends JDialog implements PropertyChangeListener{
 		EDatelabel = new JLabel(EDatecol);
 		Loclabel = new JLabel(Loccol);
 		Notelabel = new JLabel(Notecol);
-		
-		/*
-		IDfield = new JFormattedTextField();
-		IDfield.setValue(new Integer(ID));
-		IDfield.setColumns(20);
-		IDfield.addPropertyChangeListener("value", this);
-		*/
+
 		Namefield = new JFormattedTextField();
 		Namefield.setValue(new String(Name));
 		Namefield.setColumns(20);
