@@ -96,7 +96,12 @@ public class EditEventDialog extends JFrame {
         Action editor = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               //TODO make edit service
+
+                try {
+                    new EditServiceDialog(table.getModel().getRowCount(), model).setVisible(true);
+                } catch (ParseException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         };
         ButtonColumn colButEditor = new ButtonColumn(table, editor, SEDITCELL);

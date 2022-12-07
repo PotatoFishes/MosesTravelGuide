@@ -25,8 +25,7 @@ public class BusinessUI extends JFrame implements ActionListener{
             String.class, String.class, String.class, String.class, String.class, String.class
     };
 
-	private static final String[] ColumnNames = {"Price", "Start Date", "End Date", "ID", "Bookings", "Capacity"};
-    //id, eventName, Start, End, Location, notes, usedServices, userid, createdB
+	private static final String[] ColumnNames = {"ID", "Start Date", "End Date", "Location", "Name", "Note"};
 
 	private JTextField idEntry;
 	final DefaultTableModel model;
