@@ -1,22 +1,21 @@
 **Benjamin Kilpatrick**
 * Project Leader
 * Use Case designer
-* TBD
-
+* UI Designer
 
 **Jason Wu** 
 * Use Case designer
-* TBD
+* UI programmer
 
 **Bryce Clark** 
 * Use Case designer
-* TBD
+* UI programmer
 
 **Yutai Xue** 
 * Use Case designer
-* TBD
+* DataBase Designer
 
 **Yi Ding** 
 * Website developer
 * Use Case designer
-* TBD
+* UI Designer
