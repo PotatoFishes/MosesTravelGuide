@@ -39,10 +39,11 @@ public class FriendsManagerUI extends JFrame implements ActionListener, ItemList
 	private static final String[] outGoingColumnNames = {"Name", "ID", " Remove "};
 	private static final int REMOVE = 2;
 	private static final int ID = 1;
+	private Set<User> possibleFriends;
 	
 	private static final String[][] inSample = {{"Bob", "Bob@bobhouse.net", "Moon", "1234"}};
-	private static final String[][] outSample ={ {"Bob", "1234", " X "}};
-	private JTextField idEntry;
+	private static final String[][] outSample ={{"Bob", "1234", " X "}};
+	private JComboBox selector;
 	final DefaultTableModel modelIncoming;
 	final DefaultTableModel modelOutGoing;
 	
@@ -104,10 +105,14 @@ public class FriendsManagerUI extends JFrame implements ActionListener, ItemList
         JScrollPane inSP = new JScrollPane(incomingFriends);
         JScrollPane outSP = new JScrollPane(outGoingFriends);
         
-        JButton addFriend = new JButton("add");
-        addFriend.addActionListener(this);
-        idEntry = new JTextField(15);
+        possibleFriends = FriendsService.getPossibleFriends();
         
+        
+        JButton addFriend = new JButton("add"); //
+        addFriend.addActionListener(this); //
+        //idEntry = new JTextField(15); //
+        selector = new JComboBox(possibleFriends.stream().map(f->f.getUsername()).toArray());
+        AutoFill.enable(selector);
         
         JPanel tables = new JPanel();
         tables.add(inSP);
@@ -116,7 +121,7 @@ public class FriendsManagerUI extends JFrame implements ActionListener, ItemList
         JPanel controlls = new JPanel();
         controlls.setLayout(new GridLayout(0,2));
         controlls.add(new JLabel("Enter Id"));
-        controlls.add(idEntry);
+        controlls.add(selector);
         controlls.add(new JLabel(""));
         controlls.add(addFriend);
         controlls.setMinimumSize(controlls.getPreferredSize());
@@ -137,30 +142,28 @@ public class FriendsManagerUI extends JFrame implements ActionListener, ItemList
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		try {
-			Integer id = Integer.parseInt(idEntry.getText());
-			if(id.equals(UserLoginService.getUser().id)) {
-				JOptionPane.showMessageDialog(null,
-	                    "You cannot be your own friend\nPlease Enter a valid User ID"
-	                    ,"Error"
-	                    ,JOptionPane.OK_OPTION);
+		for(User u: this.possibleFriends) {
+			String s = (String)selector.getSelectedItem();
+			if(u.getUsername().equals(s)) {
+				Integer id = u.id;
+				if(id.equals(UserLoginService.getUser().id)) {
+					JOptionPane.showMessageDialog(null,
+		                    "You cannot be your own friend\nPlease Enter a valid User ID"
+		                    ,"Error"
+		                    ,JOptionPane.OK_OPTION);
+				}
+				else if(UserDAO.checkExists(id)) {
+					FriendsService.addPermission(id);
+					updateOutgoingView();
+				}
+				else {
+					JOptionPane.showMessageDialog(null,
+		                    "User " + id + " does not exist\nPlease Enter a valid User ID"
+		                    ,"Error"
+		                    ,JOptionPane.OK_OPTION);
+				}
+				break;
 			}
-			else if(UserDAO.checkExists(id)) {
-				FriendsService.addPermission(id);
-				updateOutgoingView();
-			}
-			else {
-				JOptionPane.showMessageDialog(null,
-	                    "User " + id + " does not exist\nPlease Enter a valid User ID"
-	                    ,"Error"
-	                    ,JOptionPane.OK_OPTION);
-			}
-		}
-		catch(NumberFormatException nfe) {
-			JOptionPane.showMessageDialog(null,
-                    "Incorrect Value Given\nPlease Enter a valid User ID"
-                    ,"Error"
-                    ,JOptionPane.OK_OPTION);
 		}
 	}
 	//This 
