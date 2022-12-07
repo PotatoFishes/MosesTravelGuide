@@ -11,7 +11,7 @@
 
 **Yutai Xue** 
 * 40 Hours
-* 
+
 **Yi Ding** 
 * 66 Hours
 
