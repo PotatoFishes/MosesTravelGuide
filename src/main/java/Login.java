@@ -1,12 +1,19 @@
-import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SpringLayout;
 
 public class Login extends JPanel implements PropertyChangeListener{
     private UserLoginService userService = new UserLoginService();
@@ -101,7 +108,46 @@ public class Login extends JPanel implements PropertyChangeListener{
         		javax.swing.SwingUtilities.invokeLater(new Runnable() {
         			@Override
         			public void run() {
-        				NewAccount account = new NewAccount();
+        				
+        				JPanel pan=new JPanel();
+        				pan.setLayout(new FlowLayout());
+        				pan.add(new JLabel("Enter username for recovery"));
+        				JTextField t=new JTextField(30);
+        				JButton b=new JButton("Okay");
+        				b.addActionListener(new ActionListener() {
+        			     	@Override
+        		        	public void actionPerformed(ActionEvent e) {
+        		        		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+        		        			@Override
+        		        			public void run() {
+        		        				User u=UserDAO.getUser(t.getText());
+        		        				
+        		        				if(u!=null)
+        		        				{
+        		        					System.out.println(u.getEmail());
+        		        					NotificationService.notify(u);
+        		        					JOptionPane.showConfirmDialog(null,
+        		        							"Email Sent"
+        		        							, "Sent"
+        		        							, JOptionPane.OK_OPTION);
+        		        				}
+        		        				else
+        		        				{
+        		        					JOptionPane.showConfirmDialog(null,
+        		        							"Username don't exist"
+        		        							, "Error"
+        		        							, JOptionPane.OK_OPTION);
+        		        				}
+        		        			}
+        		        		});
+        			     	}
+        				});
+        				pan.add(t);
+        				pan.add(b);
+        				JDialog jd=new JDialog();
+        				jd.add(pan);
+        				jd.pack();
+        				jd.setVisible(true);
         			}
         		});
 	     	}
