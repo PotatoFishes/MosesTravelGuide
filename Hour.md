@@ -1,10 +1,10 @@
 ### Hours spent on project
 
 **Benjamin Kilpatrick** 
-* 56 Hours
+* 60 Hours
 
 **Jason Wu** 
-* 51 Hours
+* 57.5 Hours
 
 **Bryce Clark** 
 * 27 Hours
@@ -13,7 +13,7 @@
 * 40 Hours
 * 
 **Yi Ding** 
-* 62 Hours
+* 66 Hours
 
 We used [Trello](https://trello.com/b/rDML3qZz/ben-bryce-jason-yi-yutai) to keep track of our progress.
 
