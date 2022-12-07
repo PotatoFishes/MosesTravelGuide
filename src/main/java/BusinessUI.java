@@ -100,7 +100,6 @@ public class BusinessUI extends JFrame implements ActionListener{
         controlls.add(createButton);
         controlls.add(delButton);
 
-
         
         JPanel panelHolders = new JPanel();
         panelHolders.add(controlls);
