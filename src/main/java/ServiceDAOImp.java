@@ -30,6 +30,25 @@ public class ServiceDAOImp {
 		return s;
 	}
 
+	public static List<Service> getAllServices() {
+		List<Service> li=new ArrayList<Service>();
+		try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			Statement stmt = conn.createStatement();
+		) {
+			ResultSet rs;
+				rs = stmt.executeQuery("SELECT id, name, price, startTime, endTime, capacity FROM Services");
+			while (rs.next()) {
+				Service s = new Service(Integer.parseInt(rs.getString("id")), rs.getString("Name"),
+						rs.getDouble("Price"), rs.getTimestamp("StartTIme"), rs.getTimestamp("EndTime"),
+						rs.getInt("capacity"));
+				li.add(s);
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return li;
+	}
+
 	public static List<Service> getServices(int[] list) {
 		List<Service> li=new ArrayList<Service>();
 		try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -57,11 +76,8 @@ public class ServiceDAOImp {
 		try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
 				Statement stmt = conn.createStatement();){
 				ResultSet rs = stmt.executeQuery("SELECT name, price, startTime, endTime, capacity FROM Services WHERE id="+id);
-				// Extract data from result set
-				while (rs.next()) {
-					// Retrieve by column name
+				if(rs.next())
 					e=new Service(id,rs.getString("name"),rs.getDouble("price"),rs.getTimestamp("startTIme"),rs.getTimestamp("endTime"),rs.getInt("capacity"));
-				}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		} 
@@ -85,7 +101,23 @@ public class ServiceDAOImp {
 		      } catch (SQLException ex) {
 		         ex.printStackTrace();
 		      } 
-
+		
+	}
+	
+	public static Service addNewService(Service e) {
+		Service serv=e;
+		try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+		        Statement stmt = conn.createStatement();) {
+				stmt.executeUpdate("INSERT INTO Services (name, startTime, endTime, price, capacity) VALUES('"+e.getName()+"', '"+e.getStartDate()+"', '"+e.getEndDate()+"', "+e.getPrice()+", "+e.getCapacity()+")");
+		         // Extract data from result se
+				ResultSet rs = stmt.executeQuery("SELECT MAX(ID) FROM Services");
+				if(rs.next())
+		       	 	serv.setID(rs.getInt(1));
+				 stmt.close();
+		      } catch (SQLException ex) {
+		         ex.printStackTrace();
+		      } 
+		return serv;
 	}
 
 	public static void deleteService(Service e) {

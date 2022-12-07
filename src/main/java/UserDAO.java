@@ -16,7 +16,6 @@ public class UserDAO {
 	static final String PASS = "HelloWorld";
 
 	public static boolean checkExists(int userID) {
-		User u = null;
 		try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
 				Statement stmt = conn.createStatement();) {
 			ResultSet rs = stmt
@@ -29,6 +28,23 @@ public class UserDAO {
 			ex.printStackTrace();
 		}
 		return false;
+	}
+	
+	public static User getUser(String un) {
+		User u = null;
+		try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+				Statement stmt = conn.createStatement();) {
+			ResultSet rs = stmt
+					.executeQuery("SELECT ID, username, password, location, email FROM Users WHERE username='" + un +"'");
+			// Extract data from result set
+			if (rs.next()) {
+				u=new User(rs.getInt("ID"),un,rs.getString("password"),rs.getString("email"),rs.getString("location"));
+				return u;
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return null;
 	}
 
 	public static User checkPassword(String un, String pass) {

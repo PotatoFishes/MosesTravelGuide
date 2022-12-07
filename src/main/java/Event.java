@@ -16,6 +16,8 @@ public class Event
     Date eDate;
     String loc;
     String note;
+    int createdBy;
+    int seid;
     List<Service> usedServices = new ArrayList<Service>();
     int userID;
     
@@ -29,7 +31,7 @@ public class Event
         note = "";
     }
 
-    Event(String na, Timestamp timestamp, Timestamp timestamp2, String l, String n, String sl, int uid)
+    Event(String na, Timestamp timestamp, Timestamp timestamp2, String l, String n, String sl, int uid, int c)
     {
         name = na;
         sDate = new Date(timestamp.getTime());
@@ -48,9 +50,10 @@ public class Event
             usedServices=ServiceDAOImp.getServices(arr);
         }
         userID=uid;
+        createdBy=c;
     }
     //Parse needs to be fixed
-    Event(int id, String na, Timestamp timestamp, Timestamp timestamp2, String l, String n, String sl, int uid)
+    Event(int id, String na, Timestamp timestamp, Timestamp timestamp2, String l, String n, String sl, int uid, int c, int s)
     {
         ID = id;
         name = na;
@@ -76,6 +79,8 @@ public class Event
         	usedServices=ServiceDAOImp.getServices(data);
         }
         userID=uid;
+        createdBy=c;
+        seid=s;
     }
 
     @Override
@@ -156,13 +161,14 @@ public class Event
 
     public String getUsedServices() {
     	List<String> l=new ArrayList<String>();
-    	String us=null;
+    	String us="";
     	if(!usedServices.isEmpty())
     	{
     		for(Service s:usedServices)
     			l.add(""+s.getID());
     		us=String.join(",", l);
     	}
+    	System.out.print(usedServices.size());
 		return us;
 	}
     public List<Service> getUsedServices(List<Service> serv){
@@ -182,6 +188,7 @@ public class Event
         return ev;
     }
     public void addService(Service s) {
+        System.out.printf(s.toString());
     	usedServices.add(s);
     }
 }

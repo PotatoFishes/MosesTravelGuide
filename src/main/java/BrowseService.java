@@ -1,33 +1,32 @@
-import java.awt.GridLayout;
+import net.coderazzi.filters.gui.TableFilterHeader;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.text.ParseException;
 
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-
-import net.coderazzi.filters.gui.TableFilterHeader;
-
-public class AddEvent extends JFrame implements ActionListener, ItemListener{
-    private static final long serialVersionUID = 924430730575961493L;
+public class BrowseService extends JFrame implements ActionListener, ItemListener {
     final Class<?>[] columnClass = new Class[]{
             String.class, String.class,String.class,String.class,String.class,String.class,String.class, String.class
     };
     private String[] columnNames = {
-            "ID","Start Time", "End Time", "Location", "Name", "Note"
+            "ID","Price","Name", "Start Time", "End Time", "Capacity"
     };
     String s1[];
     final DefaultTableModel model;
+    Service s;
 
-    public AddEvent(User u) {
-        super("Add Event");
+    public BrowseService() {
+        super("Add Service");
         JPanel content = new JPanel(new SpringLayout());
         this.setContentPane(content);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        model = new DefaultTableModel(EventsServ.getAllEventsForTable() , columnNames) {
+        model = new DefaultTableModel(ServiceServ.getAllServicesForTable() , columnNames) {
 
             private static final long serialVersionUID = -4279510772803332762L;
             @Override
@@ -52,28 +51,16 @@ public class AddEvent extends JFrame implements ActionListener, ItemListener{
         JPanel tables = new JPanel();
         tables.add(scroll);
 
-        JButton addButton = new JButton("Add Event");
+        JButton addButton = new JButton("Add Service");
         addButton.addActionListener(new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                int row = table.getSelectedRow();
-                Event eve = new Event();
-                try {
-                    eve.setStartDate((String) table.getValueAt(row, 1));
-                } catch (ParseException ex) {
-                    throw new RuntimeException(ex);
+                if(table.getSelectedRow() > 0) {
+                    int row = table.getSelectedRow();
+                    s = ServiceDAOImp.getService((int) table.getValueAt(row, 0));
                 }
-                try {
-                    eve.setEndDate((String) table.getValueAt(row, 2));
-                } catch (ParseException ex) {
-                    throw new RuntimeException(ex);
-                }
-                eve.setLocation((String) table.getValueAt(row, 3));
-                eve.setName((String) table.getValueAt(row, 4));
-                eve.settNote((String) table.getValueAt(row, 5));
-                // TODO Yutai Update Database function
             }
         });
 
@@ -109,5 +96,9 @@ public class AddEvent extends JFrame implements ActionListener, ItemListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
+    }
+
+    public Service getService() {
+        return s;
     }
 }

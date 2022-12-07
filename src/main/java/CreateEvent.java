@@ -35,13 +35,7 @@ public class CreateEvent extends JDialog implements PropertyChangeListener{
 		EDatelabel = new JLabel(EDatecol);
 		Loclabel = new JLabel(Loccol);
 		Notelabel = new JLabel(Notecol);
-		
-		/*
-		IDfield = new JFormattedTextField();
-		IDfield.setValue(new Integer(ID));
-		IDfield.setColumns(20);
-		IDfield.addPropertyChangeListener("value", this);
-		*/
+
 		Namefield = new JFormattedTextField();
 		Namefield.setValue(new String(Name));
 		Namefield.setColumns(20);
@@ -118,7 +112,7 @@ public class CreateEvent extends JDialog implements PropertyChangeListener{
 					Timestamp timestamp2 = convertStringToTimestamp(EDatefield.getText());
 					timestamp.after(timestamp2);
 					
-					Event temp = new Event(Name, timestamp, timestamp2, Loc, Note, "", ID);
+					Event temp = new Event(Name, timestamp, timestamp2, Loc, Note, "", UserLoginService.getUser().id, UserLoginService.getUser().id);
 					if(!EventsServ.checkTimesValid(temp))
 					{
 						JOptionPane.showConfirmDialog(null,
@@ -130,7 +124,7 @@ public class CreateEvent extends JDialog implements PropertyChangeListener{
 					else
 					{
 						System.out.println("Can Insert event " + temp.toString());
-						EventsServ.createEvent(temp);
+						temp=EventsServ.createEvent(temp);
 						((DefaultTableModel)table.getModel()).insertRow(0, temp.toArray());
 						dispose();
 					}
@@ -175,6 +169,7 @@ public class CreateEvent extends JDialog implements PropertyChangeListener{
 		
 		pack();
 		setLocationRelativeTo(getParent());
+		setVisible(true);
 	}
 	
 	@Override

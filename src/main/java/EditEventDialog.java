@@ -1,60 +1,52 @@
-import net.coderazzi.filters.gui.AutoChoices;
-import net.coderazzi.filters.gui.TableFilterHeader;
-
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableRowSorter;
-import java.awt.*;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Vector;
 
-public class EditEventDialog extends JFrame implements ActionListener
-{
-    public SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss.SSS");
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+
+import net.coderazzi.filters.gui.AutoChoices;
+import net.coderazzi.filters.gui.TableFilterHeader;
+
+public class EditEventDialog extends JFrame {
     private static JTable table;
-    private static JFrame frame;
     private TableRowSorter<DefaultTableModel> sorter;
     private final DefaultTableModel parent;
     int eventID;
+    Event evt;
     private Vector<Object> adder = new Vector<>();
-    private List<Service> Services = new ArrayList<>();
     private int index;
-    private JTextField txtId, txtName, txtSDate, txtEDate, txtLoc, txtNote, txtServices = new JTextField(15);
-    private JButton btnOK, btnCancel, btnAddServ;
+    private JTextField txtName, txtSDate, txtEDate, txtLoc, txtNote, txtServices = new JTextField(15);
+    private JButton btnOK, btnCancel, btnAddServ, re;
     private int EIDCELL = 0;
     private int ESDATECELL = 1;
     private int EEDATECELL = 2;
     private int ELOCCELL = 3;
-    private int ENAMECELL = 4;
     private int ENOTECELL = 5;
-    private int SEDITCELL = 7;
+    private static int SEDITCELL = 7;
     private int SREMOVECELL = 8;
-    private String[] columnNames = {
+    private static DefaultTableModel model;
+    private static String[] columnNames = {
             "ID", "Price", "Name", "Start Time", "End Time", "Bookings", "Capacity", "Edit", "Remove"
     };
-    private Object[][] data = {
-            //TODO: Service loading functions
-            { "0", "0.00", "test", sdf.format(new Date()) , sdf.format(new Date()) ,"3", "5" , " . . . ", " X "}
+    static final Class<?>[] columnClass = new Class[]{
+            String.class, String.class, String.class,String.class,String.class,String.class,String.class,String.class, String.class
     };
-
+    Object[][] o;
     EditEventDialog(final int ndx, final DefaultTableModel eventModel) throws ParseException {
         super("Edit Event");
         setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         parent = eventModel;
         index = ndx;
         eventID = Integer.parseInt(((String)parent.getValueAt(ndx,EIDCELL)).trim());
-        //Create a table with a sorter.
-        final Class<?>[] columnClass = new Class[]{
-                String.class, String.class, String.class,String.class,String.class,String.class,String.class,String.class, String.class
-        };
-        final DefaultTableModel model = new DefaultTableModel(ServiceServ.getServicesForTable(eventID), columnNames) {
+        evt=EventDAOImp.getEvent(eventID);
+        o = ServiceServ.getServicesForTable(evt);
+         model = new DefaultTableModel(o, columnNames) {
             @Override
             public boolean isCellEditable(int row, int col) {
                 if(col < SEDITCELL) {
@@ -83,9 +75,6 @@ public class EditEventDialog extends JFrame implements ActionListener
         //Create the scroll pane and add the table to it.
         JScrollPane scrollPane = new JScrollPane(table);
 
-        //Add the scroll pane to this panel.
-
-
         // Remove Row button
         Action remove = new AbstractAction() {
             @Override
@@ -103,12 +92,16 @@ public class EditEventDialog extends JFrame implements ActionListener
             }
         };
         ButtonColumn colButRemover = new ButtonColumn(table, remove, SREMOVECELL);
-
         // Edit Row button
         Action editor = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //new EditDialog(table.getSelectedRow(),model).setVisible(true);
+
+                try {
+                    new EditServiceDialog(table.getModel().getRowCount(), model).setVisible(true);
+                } catch (ParseException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         };
         ButtonColumn colButEditor = new ButtonColumn(table, editor, SEDITCELL);
@@ -127,11 +120,76 @@ public class EditEventDialog extends JFrame implements ActionListener
 
         //Setting Up Buttons
         btnOK = new JButton("Save");
-        btnOK.addActionListener(this);
+        btnOK.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                initAdder();
+                try
+                {
+                    Timestamp timestamp = CreateEvent.convertStringToTimestamp(txtSDate.getText());
+                    Timestamp timestamp2 = CreateEvent.convertStringToTimestamp(txtEDate.getText());
+                    timestamp.after(timestamp2);
+
+                    String tempS = "";
+                    for(Service s : evt.usedServices)
+                    {
+                        tempS += s.getID() + ",";
+                    }
+                    tempS = chop(tempS);
+                    txtServices.setText(tempS + "");
+
+                    System.out.println(tempS );
+                    Event temp = evt;
+                    System.out.println(temp.getUsedServices());
+                    parent.removeRow(index);
+                    parent.insertRow(index,temp.toArray());
+                    EventsServ.EditEvent(temp);
+                }
+                catch(NumberFormatException nfe)
+                {
+                    JOptionPane.showMessageDialog(null,
+                            "Incorrect Value Given"
+                            ,"Error"
+                            ,JOptionPane.OK_OPTION);
+                    dispose();
+                    return;
+                }
+                catch (ParseException ex)
+                {
+                    ex.printStackTrace();
+                }
+
+                dispose();
+            }
+        });
         btnCancel = new JButton("Cancel");
-        btnCancel.addActionListener(this);
-        btnAddServ = new JButton("Add Service");
-        btnAddServ.addActionListener(this);
+        btnCancel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+        });
+        btnAddServ = new JButton("Create Service");
+        btnAddServ.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               AddServiceDialog a = new AddServiceDialog(model,evt);
+               evt = a.getEvent();
+               table.repaint();
+            }
+        });
+        btnAddServ.setToolTipText("Need to save event to see added service");
+
+        re = new JButton("Browse Services");
+        re.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                BrowseService b = new BrowseService();
+                evt.addService(b.getService());
+                table.repaint();
+            }
+        });
+        re.setToolTipText("You must create a service if you would like to browse");
 
         //Setting Label Names
         JPanel content = new JPanel(new SpringLayout());
@@ -158,7 +216,8 @@ public class EditEventDialog extends JFrame implements ActionListener
         servicer.setLayout(new SpringLayout());
         servicer.add(btnAddServ);
         servicer.add(scrollPane);
-        SpringUtilities.makeCompactGrid(servicer, 2, 1, 6, 6, 6, 6);
+        servicer.add(re);
+        SpringUtilities.makeCompactGrid(servicer, 3, 1, 6, 6, 6, 6);
 
         JPanel panelHolders = new JPanel();
         panelHolders.setLayout(new SpringLayout());
@@ -167,14 +226,8 @@ public class EditEventDialog extends JFrame implements ActionListener
         SpringUtilities.makeCompactGrid(panelHolders, 1, 2, 6, 6, 6, 6);
 
         setContentPane(panelHolders);
-        pack();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    }
-
-    private void addService()
-    {
-        // TODO: make Add Service Dialog
-        new AddServiceDialog((DefaultTableModel) table.getModel(), Services);
+        setSize(600, 400);
     }
 
     private void initAdder()
@@ -194,74 +247,5 @@ public class EditEventDialog extends JFrame implements ActionListener
             s = s.substring(0, s.length() - 1);
         }
         return s;
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e)
-    {
-        JButton clicked = (JButton) e.getSource();
-        if(clicked == btnOK)
-        {
-            initAdder();
-            try
-            {
-                //List<Service> temp = new ArrayList<Service>();
-                Timestamp timestamp = CreateEvent.convertStringToTimestamp(txtSDate.getText());
-                Timestamp timestamp2 = CreateEvent.convertStringToTimestamp(txtEDate.getText());
-                timestamp.after(timestamp2);
-
-                String tempS = "";
-                for(Service s : Services)
-                {
-                    tempS += s.getID() + ",";
-                }
-                tempS = chop(tempS);
-                txtServices.setText(tempS + "");
-
-                System.out.println(Services.get(Services.size() - 1).toString());
-                System.out.println(tempS );
-                Event temp = new Event(eventID, txtName.getText(), timestamp, timestamp2,txtLoc.getText(), txtNote.getText(), txtServices.getText(), 1);
-                System.out.println(temp.getUsedServices());
-                if(!EventsServ.checkTimesValid(temp))
-                {
-                    JOptionPane.showConfirmDialog(null,
-                            "Incorrect Time Format: Please Format as 'YYYY-MM-dd HH:mm:ss.SSS' from '1000-01-01' to '9999-12-31'"
-                            , "Error"
-                            , JOptionPane.OK_OPTION);
-                    dispose();
-                }
-                else
-                {
-                    parent.removeRow(index);
-                    parent.insertRow(index,temp.toArray());
-                    EventsServ.createEvent(temp);
-                }
-            }
-            catch(NumberFormatException nfe)
-            {
-                JOptionPane.showMessageDialog(null,
-                        "Incorrect Value Given"
-                        ,"Error"
-                        ,JOptionPane.OK_OPTION);
-                dispose();
-                return;
-            }
-            catch (ParseException ex)
-            {
-                ex.printStackTrace();
-            }
-
-            dispose();
-            return;
-        }
-        else if(clicked == btnCancel)
-        {
-            dispose();
-            return;
-        }
-        else if(clicked == btnAddServ)
-        {
-            addService();
-        }
     }
 }

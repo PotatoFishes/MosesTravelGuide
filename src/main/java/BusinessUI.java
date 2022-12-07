@@ -6,7 +6,6 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -22,30 +21,25 @@ public class BusinessUI extends JFrame implements ActionListener{
 	private static final long serialVersionUID = 6865092312557299097L;
 	
 	private JTable table;
+
 	//private JTable incomingFriends;
 	private static final Class<?>[] columnClass = new Class[]{
             String.class, String.class, String.class, String.class, String.class, String.class
     };
-	/*private static final Class<?>[] outGoingColumnClass = new Class[]{
-            String.class, String.class, String.class
-    };*/
-	private static final String[] incomeingColumnNames = {"Price", "Start Date", "End Date", "ID", "Bookings", "Capacity"};
-	//private static final String[] outGoingColumnNames = {"Name", "ID", " Remove "};
-	//private static final int REMOVE = 2;
-	//private static final int ID = 1;
-	
-	//private static final String[][] outSample ={ {"Bob", "1234", " X "}};
+
+	private static final String[] ColumnNames = {"ID", "Start Date", "End Date", "Location", "Name", "Note"};
+
 	private JTextField idEntry;
 	final DefaultTableModel model;
-	//final DefaultTableModel modelOutGoing;
+    JButton delButton, createButton;
 	
-	public BusinessUI(){
+	public BusinessUI(int u){
 		super("Manage Business");
 		JPanel content = new JPanel(new SpringLayout());
 		this.setContentPane(content);
 		
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        model = new DefaultTableModel(null, incomeingColumnNames) {
+        model = new DefaultTableModel(EventsServ.getAllEventsForBusiness(u), ColumnNames) {
 			private static final long serialVersionUID = 2767279126624268207L;
 			@Override
             public boolean isCellEditable(int row, int col) {
@@ -67,37 +61,47 @@ public class BusinessUI extends JFrame implements ActionListener{
                         ,JOptionPane.YES_NO_OPTION);
                 if(answer == JOptionPane.YES_OPTION)
                 {
-                	//Integer u = Integer.parseInt( (String) modelOutGoing.getValueAt(modelRow, ID));
-                	//FriendsService.removePermission(u);
-                	//modelOutGoing.removeRow(modelRow);
+                    System.out.println("" + model.getValueAt(modelRow, 0) );
+                    EventsServ.removeEvent(Integer.valueOf( "" + model.getValueAt(modelRow, 0)));
+                    model.removeRow(modelRow);
                 }
             }
         };
         table = new JTable(model);
-        //new TableFilterHeader(incomingFriends);
+
         new TableFilterHeader(table);
-        //new ButtonColumn(outGoingFriends, remove, REMOVE);
         
         JScrollPane sp = new JScrollPane(table);
-        //JScrollPane outSP = new JScrollPane(outGoingFriends);
-        
-        JButton addFriend = new JButton("add");
-        addFriend.addActionListener(this);
-        idEntry = new JTextField(15);
-        
+
+
+        createButton = new JButton("Create Event");
+        createButton.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                new CreateEvent(table);
+            }
+        });
+
+        delButton = new JButton("Cancel");
+        delButton.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                dispose();
+            }
+        });
         
         JPanel tables = new JPanel();
         tables.add(sp);
-        //tables.add(outSP);
         
         JPanel controlls = new JPanel();
-        controlls.setLayout(new GridLayout(0,2));
-        controlls.add(new JLabel("ID entry"));
-        controlls.add(idEntry);
-        controlls.add(new JLabel(""));
-        controlls.add(addFriend);
-        controlls.setMinimumSize(controlls.getPreferredSize());
-        controlls.setMaximumSize(controlls.getPreferredSize());
+        controlls.setLayout(new GridLayout(1,2));
+        controlls.add(createButton);
+        controlls.add(delButton);
+
         
         JPanel panelHolders = new JPanel();
         panelHolders.add(controlls);
@@ -107,38 +111,10 @@ public class BusinessUI extends JFrame implements ActionListener{
         
         pack();
         this.setVisible(true);
-        
-        //updateOutgoingView();
-        //updateIncomingView();
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		try {
-			Integer id = Integer.parseInt(idEntry.getText());
-			if(id.equals(UserLoginService.getUser().id)) {
-				JOptionPane.showMessageDialog(null,
-	                    "You cannot be your own friend\nPlease Enter a valid User ID"
-	                    ,"Error"
-	                    ,JOptionPane.OK_OPTION);
-			}
-			else if(UserDAO.checkExists(id)) {
-				FriendsService.addPermission(id);
-				//updateOutgoingView();
-			}
-			else {
-				JOptionPane.showMessageDialog(null,
-	                    "User " + id + " does not exist\nPlease Enter a valid User ID"
-	                    ,"Error"
-	                    ,JOptionPane.OK_OPTION);
-			}
-		}
-		catch(NumberFormatException nfe) {
-			JOptionPane.showMessageDialog(null,
-                    "Incorrect Value Given\nPlease Enter a valid User ID"
-                    ,"Error"
-                    ,JOptionPane.OK_OPTION);
-		}
 	}
 	
 	private void updateServices() {

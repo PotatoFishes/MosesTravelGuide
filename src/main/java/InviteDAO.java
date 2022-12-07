@@ -44,4 +44,18 @@ public class InviteDAO {
 			ex.printStackTrace();
 		} 
 	}
+	/*public static void sendInvite(User u, int uid2)
+	{
+		try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+				Statement stmt = conn.createStatement();){
+				ResultSet rs = stmt.executeQuery("SELECT user1, eventid, accepted  FROM Invites WHERE user2="+u.id+" and eventid="+e.getID());
+				// Extract data from result set
+				if (rs.next()) {
+					// Retrieve by column name
+					stmt.executeUpdate("INSERT INTO Events (eventName, Start, End, Location, notes, usedServices, userid) VALUES('"+e.getName()+"', '"+e.getStartDate()+"', '"+e.getEndDate()+"', '"+e.getLocation()+"', '"+e.getNote()+"', '"+e.getUsedServices()+"', "+u.id+")");
+				}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		} 
+	}*/
 }

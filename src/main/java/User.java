@@ -25,6 +25,14 @@ public class User
 		String[] r = null;
 		friends=f;
 	}
+	public User(int id,String un,String pw,String em,String l) {
+		this.id=id;
+		username=un;
+		password=pw;
+		email=em;
+		location=l;
+		String[] r = null;
+	}
 
 	public String getUsername() {
 		return username;
