@@ -31,15 +31,6 @@ public class ServiceServ {
 		return data;
 	}
 
-	public static Object[][] getAllServicesForTable() {
-		java.util.List<Service> events =  ServiceDAOImp.getAllServices();
-		Object[][] data = new Object[events.size()][];
-		for(int i = 0; i < data.length; ++i) {
-			data[i] = events.get(i).toArray();
-		}
-		return data;
-	}
-
 	public void book(Service s) {
 		s.addBooking();
 	}

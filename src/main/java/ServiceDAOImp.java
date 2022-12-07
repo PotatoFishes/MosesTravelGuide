@@ -30,25 +30,6 @@ public class ServiceDAOImp {
 		return s;
 	}
 
-	public static List<Service> getAllServices() {
-		List<Service> li=new ArrayList<Service>();
-		try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-			Statement stmt = conn.createStatement();
-		) {
-			ResultSet rs;
-				rs = stmt.executeQuery("SELECT id, name, price, startTime, endTime, capacity FROM Services");
-			while (rs.next()) {
-				Service s = new Service(Integer.parseInt(rs.getString("id")), rs.getString("Name"),
-						rs.getDouble("Price"), rs.getTimestamp("StartTIme"), rs.getTimestamp("EndTime"),
-						rs.getInt("capacity"));
-				li.add(s);
-			}
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-		}
-		return li;
-	}
-
 	public static List<Service> getServices(int[] list) {
 		List<Service> li=new ArrayList<Service>();
 		try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -76,8 +57,11 @@ public class ServiceDAOImp {
 		try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
 				Statement stmt = conn.createStatement();){
 				ResultSet rs = stmt.executeQuery("SELECT name, price, startTime, endTime, capacity FROM Services WHERE id="+id);
-				if(rs.next())
+				// Extract data from result set
+				while (rs.next()) {
+					// Retrieve by column name
 					e=new Service(id,rs.getString("name"),rs.getDouble("price"),rs.getTimestamp("startTIme"),rs.getTimestamp("endTime"),rs.getInt("capacity"));
+				}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		} 
