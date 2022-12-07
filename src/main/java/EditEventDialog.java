@@ -140,6 +140,11 @@ public class EditEventDialog extends JFrame {
 
                     System.out.println(tempS );
                     Event temp = evt;
+                    temp.sDate.setTime(timestamp.getTime());
+                    temp.eDate.setTime(timestamp2.getTime());
+                    temp.name=txtName.getText();
+                    temp.loc=txtLoc.getText();
+                    temp.note=txtNote.getText();
                     System.out.println(temp.getUsedServices());
                     parent.removeRow(index);
                     parent.insertRow(index,temp.toArray());
