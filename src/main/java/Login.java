@@ -110,8 +110,9 @@ public class Login extends JPanel implements PropertyChangeListener{
 		JPanel buttonPane = new JPanel(new SpringLayout());
 		buttonPane.add(loginButton);
 		buttonPane.add(newButton);
+		buttonPane.add(forButton);
 		
-	    SpringUtilities.makeCompactGrid(buttonPane, 1,2,10,10,10,10);
+	    SpringUtilities.makeCompactGrid(buttonPane, 1,3,10,10,10,10);
 		
 		JPanel mainPane = new JPanel(new SpringLayout());
 		mainPane.add(userNameLabel);

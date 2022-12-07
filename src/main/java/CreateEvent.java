@@ -130,7 +130,7 @@ public class CreateEvent extends JDialog implements PropertyChangeListener{
 					else
 					{
 						System.out.println("Can Insert event " + temp.toString());
-						EventsServ.createEvent(temp);
+						temp=EventsServ.createEvent(temp);
 						((DefaultTableModel)table.getModel()).insertRow(0, temp.toArray());
 						dispose();
 					}

@@ -14,6 +14,7 @@ public class Service
 	}
 
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd hh:mm:ss.SSS");
+	private static final SimpleDateFormat sdf2 = new SimpleDateFormat("YYYY-MM-dd hh:mm:ss");
     private static final DecimalFormat df = new DecimalFormat("0.00");
     int ID = 0;
     double price;
@@ -98,7 +99,7 @@ public class Service
     public Object[] toArray()
     {
         //TODO: make a table in Event Dialog that uses this array
-        Object[] ev = new Object[]{ name , bookings , capacity, " . . . ", " X "};
+        Object[] ev = new Object[]{ID, price, name, sdf2.format(sDate), sdf2.format(eDate), bookings, capacity};
         return ev;
     }
 	@Override
