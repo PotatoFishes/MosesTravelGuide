@@ -157,7 +157,6 @@ public class Planner extends JPanel {
                     }
                 });
         l1.setLabelFor(combo.getEditor().getEditorComponent());
-        new AutoFill(combo);
 
         // Settings (for notifications and stuff)
         JButton settings = new JButton("Settings");

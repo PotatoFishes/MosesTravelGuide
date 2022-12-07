@@ -98,7 +98,7 @@ public class EditEventDialog extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
                 try {
-                    new EditServiceDialog(table.getModel().getRowCount(), model).setVisible(true);
+                    new EditServiceDialog(table.getSelectedRow(), model).setVisible(true);
                 } catch (ParseException ex) {
                     throw new RuntimeException(ex);
                 }
