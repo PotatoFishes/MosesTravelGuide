@@ -23,6 +23,11 @@ public class EventsServ {
 		e=EventDAOImp.AddEvent(e);
 		return e;
 	}
+	
+	public static void EditEvent(Event e)
+	{
+		EventDAOImp.updateEvent(e);
+	}
 
 	public static boolean checkTimesValid(Event e) throws ParseException {
 		boolean valid = true;
