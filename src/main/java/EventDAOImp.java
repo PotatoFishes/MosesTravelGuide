@@ -214,4 +214,34 @@ public class EventDAOImp{
 		}
 		return li;
 	}
+	public static List<Event> getAllEventCreated(int uid) {
+		List<Event> li=new ArrayList<Event>();
+		List<Integer> l=new ArrayList<Integer>();
+		try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			Statement stmt = conn.createStatement();
+			) {
+			ResultSet rs = stmt.executeQuery("SELECT DISTINCT seid FROM Events WHERE userid="+uid);
+			// Extract data from result set
+			while (rs.next()) {
+				// Retrieve by column name
+				l.add(rs.getInt("seid"));
+			}
+			for(int i:l)
+			{
+				rs = stmt.executeQuery("SELECT id, eventName, Start, End, Location, notes, usedServices, userid, createdBy FROM Events where seid="+i);
+				while (rs.next()) {
+					if(i==rs.getInt("id"))
+					{
+						li.add(new Event(Integer.parseInt(rs.getString("id")), rs.getString("eventName"), rs.getTimestamp("Start"),
+								rs.getTimestamp("End"), rs.getString("Location"), rs.getString("notes"),
+								rs.getString("usedServices"), rs.getInt("userid"), rs.getInt("createdBy"), i));
+				
+					}
+				}
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return li;
+	}
 }
