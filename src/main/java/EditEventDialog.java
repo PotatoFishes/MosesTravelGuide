@@ -10,10 +10,8 @@ import java.awt.event.ActionListener;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Vector;
+
 
 public class EditEventDialog extends JFrame implements ActionListener
 {
@@ -23,29 +21,25 @@ public class EditEventDialog extends JFrame implements ActionListener
     private TableRowSorter<DefaultTableModel> sorter;
     private final DefaultTableModel parent;
     int eventID;
-    Event evt;
+    static Event evt;
     private Vector<Object> adder = new Vector<>();
     private int index;
     private JTextField txtId, txtName, txtSDate, txtEDate, txtLoc, txtNote, txtServices = new JTextField(15);
-    private JButton btnOK, btnCancel, btnAddServ;
+    private JButton btnOK, btnCancel, btnAddServ, re;
     private int EIDCELL = 0;
     private int ESDATECELL = 1;
     private int EEDATECELL = 2;
     private int ELOCCELL = 3;
     private int ENAMECELL = 4;
     private int ENOTECELL = 5;
-    private int SEDITCELL = 7;
+    private static int SEDITCELL = 7;
     private int SREMOVECELL = 8;
-    private DefaultTableModel model;
-    private String[] columnNames = {
+    private static DefaultTableModel model;
+    private static String[] columnNames = {
             "ID", "Price", "Name", "Start Time", "End Time", "Bookings", "Capacity", "Edit", "Remove"
     };
-    final Class<?>[] columnClass = new Class[]{
+    static final Class<?>[] columnClass = new Class[]{
             String.class, String.class, String.class,String.class,String.class,String.class,String.class,String.class, String.class
-    };
-    private Object[][] data = {
-            //TODO: Service loading functions
-            { "0", "0.00", "test", sdf.format(new Date()) , sdf.format(new Date()) ,"3", "5" , " . . . ", " X "}
     };
 
     EditEventDialog(final int ndx, final DefaultTableModel eventModel) throws ParseException {
@@ -55,9 +49,6 @@ public class EditEventDialog extends JFrame implements ActionListener
         index = ndx;
         eventID = Integer.parseInt(((String)parent.getValueAt(ndx,EIDCELL)).trim());
         evt=EventDAOImp.getEvent(eventID);
-        
-        //Create a table with a sorter.
-        
          model = new DefaultTableModel(ServiceServ.getServicesForTable(evt), columnNames) {
             @Override
             public boolean isCellEditable(int row, int col) {
@@ -87,9 +78,6 @@ public class EditEventDialog extends JFrame implements ActionListener
         //Create the scroll pane and add the table to it.
         JScrollPane scrollPane = new JScrollPane(table);
 
-        //Add the scroll pane to this panel.
-
-
         // Remove Row button
         Action remove = new AbstractAction() {
             @Override
@@ -107,7 +95,6 @@ public class EditEventDialog extends JFrame implements ActionListener
             }
         };
         ButtonColumn colButRemover = new ButtonColumn(table, remove, SREMOVECELL);
-
         // Edit Row button
         Action editor = new AbstractAction() {
             @Override
@@ -136,6 +123,8 @@ public class EditEventDialog extends JFrame implements ActionListener
         btnCancel.addActionListener(this);
         btnAddServ = new JButton("Create Service");
         btnAddServ.addActionListener(this);
+        re = new JButton("Refresh");
+        re.addActionListener(this);
 
         //Setting Label Names
         JPanel content = new JPanel(new SpringLayout());
@@ -162,7 +151,8 @@ public class EditEventDialog extends JFrame implements ActionListener
         servicer.setLayout(new SpringLayout());
         servicer.add(btnAddServ);
         servicer.add(scrollPane);
-        SpringUtilities.makeCompactGrid(servicer, 2, 1, 6, 6, 6, 6);
+        servicer.add(re);
+        SpringUtilities.makeCompactGrid(servicer, 3, 1, 6, 6, 6, 6);
 
         JPanel panelHolders = new JPanel();
         panelHolders.setLayout(new SpringLayout());
@@ -173,30 +163,6 @@ public class EditEventDialog extends JFrame implements ActionListener
         setContentPane(panelHolders);
         pack();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    }
-
-    private void addService()
-    {
-        AddServiceDialog a=new AddServiceDialog((DefaultTableModel) table.getModel(), evt);
-        evt=a.e;
-        System.out.println(evt.getUsedServices());
-        model = new DefaultTableModel(ServiceServ.getServicesForTable(evt), columnNames) {
-            @Override
-            public boolean isCellEditable(int row, int col) {
-                if(col < SEDITCELL) {
-                    return false;
-                } else {
-                    return true;
-                }
-            }
-            @Override
-            public Class <?> getColumnClass(int col)
-            {
-                return columnClass[col];
-            }
-        };
-        table.setModel(model);
-        table.repaint();
     }
 
     private void initAdder()
@@ -227,7 +193,6 @@ public class EditEventDialog extends JFrame implements ActionListener
             initAdder();
             try
             {
-                //List<Service> temp = new ArrayList<Service>();
                 Timestamp timestamp = CreateEvent.convertStringToTimestamp(txtSDate.getText());
                 Timestamp timestamp2 = CreateEvent.convertStringToTimestamp(txtEDate.getText());
                 timestamp.after(timestamp2);
@@ -262,16 +227,51 @@ public class EditEventDialog extends JFrame implements ActionListener
             }
 
             dispose();
-            return;
         }
         else if(clicked == btnCancel)
         {
             dispose();
-            return;
         }
-        else if(clicked == btnAddServ)
-        {
-            addService();
+        else if(clicked == btnAddServ) {
+            new AddServiceDialog(model,evt);
+            model = new DefaultTableModel(ServiceServ.getServicesForTable(evt), columnNames) {
+                @Override
+                public boolean isCellEditable(int row, int col) {
+                    if(col < SEDITCELL) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+                @Override
+                public Class <?> getColumnClass(int col)
+                {
+                    return columnClass[col];
+                }
+            };
+            table.setModel(model);
+            table.repaint();
+
+        }
+        else if(clicked == re) {
+            AddServiceDialog t = new AddServiceDialog(model,evt);
+            t.stop();
+            model = new DefaultTableModel(ServiceServ.getServicesForTable(evt), columnNames) {
+                @Override
+                public boolean isCellEditable(int row, int col) {
+                    if(col < SEDITCELL) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+                @Override
+                public Class <?> getColumnClass(int col)
+                {
+                    return columnClass[col];
+                }
+            };
+            table.setModel(model);
             table.repaint();
         }
     }

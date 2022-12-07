@@ -41,6 +41,9 @@ public class ServiceServ {
 		Service se=ServiceDAOImp.addNewService(s);
 		return se;
 	}
+	public static void createService(Service s) {
+		ServiceDAOImp.updateService(s);
+	}
 	public static void removeService(Service s) {
 		ServiceDAOImp.deleteService(s);
 	}

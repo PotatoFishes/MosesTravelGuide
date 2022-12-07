@@ -1,19 +1,11 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Timestamp;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
 
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SpringLayout;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 public class AddServiceDialog extends JFrame implements ActionListener
@@ -21,18 +13,18 @@ public class AddServiceDialog extends JFrame implements ActionListener
     SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss.SSS");
     private Vector<Object> adder = new Vector<>();
     DefaultTableModel parent;
-    Event e;
+    Event ev;
     private int index;
     private JTextField txtId, txtName, txtBookings, txtSDate, txtEDate, txtPrice, txtCapacity;
     private JButton btnOK, btnCancel, btnAddServ;
 
-    AddServiceDialog( DefaultTableModel model, Event e)
+    AddServiceDialog(DefaultTableModel model, Event e)
     {
-        super("Add Service");
+        super("Create Service");
         setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         parent = model;
         index = 0;
-        this.e=e;
+        this.ev =e;
 
         //Setting Input Fields' Initial Values
         txtName = new JTextField(30);
@@ -83,6 +75,10 @@ public class AddServiceDialog extends JFrame implements ActionListener
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
+    public void stop() {
+        this.dispose();
+    }
+
     private void initAdder()
     {
         adder.add(txtName.getText());
@@ -114,8 +110,8 @@ public class AddServiceDialog extends JFrame implements ActionListener
                 
                 System.out.println(temp.getStartDate());
                 temp=ServiceServ.addService( temp );
-                this.e.addService(temp);
-                System.out.println(this.e.getUsedServices());
+                this.ev.addService(temp);
+                System.out.println(this.ev.getUsedServices());
             }
             catch(NumberFormatException nfe)
             {
@@ -126,13 +122,11 @@ public class AddServiceDialog extends JFrame implements ActionListener
                 nfe.printStackTrace();
             }
             dispose();
-            return;
         }
         else if(clicked == btnCancel)
         {
             parent.removeRow(index);
             dispose();
-            return;
         }
     }
 }
