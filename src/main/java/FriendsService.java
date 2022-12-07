@@ -48,4 +48,7 @@ public class FriendsService {
 		
 		return friends;
 	}
+	static public Set<User> getPossibleFriends(){
+		return UserDAO.getAllUsers();
+	}
 }

@@ -214,5 +214,22 @@ public class UserDAO {
 		}
 		return uis;
 	}
+	
+	public static Set<User> getAllUsers(){
+		Set<User> out = new HashSet<User>();
+		try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+				Statement stmt = conn.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT ID, username, password, location, email FROM Users");) {
+			// Extract data from result set
+			while (rs.next()) {
+				out.add(new User(rs.getInt("ID"), rs.getString("username"), null,
+						null, null, null));
+			}
+			rs.close();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return out;
+	}
 
 }
