@@ -16,7 +16,7 @@ public class CartDialog {
     // main class
     public CartDialog() {
         // create a new frame
-        f = new JFrame("Settings");
+        f = new JFrame("Shopping Cart");
 
         // set layout of frame
         f.setLayout(new FlowLayout());
