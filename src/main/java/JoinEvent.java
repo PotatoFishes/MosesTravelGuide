@@ -59,20 +59,9 @@ public class JoinEvent extends JFrame implements ActionListener, ItemListener{
             public void actionPerformed(ActionEvent e)
             {
                 int row = table.getSelectedRow();
-                Event eve = new Event();
-                try {
-                    eve.setStartDate((String) table.getValueAt(row, 1));
-                } catch (ParseException ex) {
-                    throw new RuntimeException(ex);
-                }
-                try {
-                    eve.setEndDate((String) table.getValueAt(row, 2));
-                } catch (ParseException ex) {
-                    throw new RuntimeException(ex);
-                }
-                eve.setLocation((String) table.getValueAt(row, 3));
-                eve.setName((String) table.getValueAt(row, 4));
-                eve.settNote((String) table.getValueAt(row, 5));
+                Event eve = EventDAOImp.getEvent(Integer.parseInt((String)table.getValueAt(row, 0)));
+                eve.userID=UserLoginService.getUser().id;
+                EventDAOImp.joinEvent(eve);
                 // TODO Yutai Update Database function
             }
         });

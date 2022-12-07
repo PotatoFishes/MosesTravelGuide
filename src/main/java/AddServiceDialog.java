@@ -75,10 +75,6 @@ public class AddServiceDialog extends JFrame implements ActionListener
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
-    public void stop() {
-        this.dispose();
-    }
-
     private void initAdder()
     {
         adder.add(txtName.getText());
